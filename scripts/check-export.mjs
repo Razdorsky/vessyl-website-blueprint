@@ -35,48 +35,48 @@ function checkPageCanvas(html, file) {
 }
 let checked = 0;
 const targets = new Set();
-for (const edition of ['classic', 'immersive'])
-  for (const locale of ['', 'es-LA'])
-    for (const page of pages) {
-      const file = path.join(root, base, edition, locale, page, 'index.html');
-      let html;
-      try {
-        html = await readFile(file, 'utf8');
-      } catch {
-        errors.push('Missing ' + file);
-        continue;
-      }
-      checked++;
-      checkPageCanvas(html, file);
-      if (!html.includes(`<html lang="${locale ? 'es-419' : 'en'}"`))
-        errors.push('Incorrect document language: ' + file);
-      if ((html.match(/<h1[ >]/g) || []).length !== 1)
-        errors.push('Invalid heading count: ' + file);
-      if (!html.includes('akenhotels.com/en/vessyl-home/'))
-        errors.push('Missing booking path: ' + file);
-      const expectedFilm = {
-        '': 'main',
-        founder: 'founder',
-        sessions: 'sessions',
-        music: 'music',
-      }[page];
-      const videoCount = (html.match(/<video[ >]/g) || []).length;
-      const playerCount = (
-        html.match(/class="editorial-film" data-film=/g) || []
-      ).length;
-      if (
-        videoCount !== playerCount ||
-        (expectedFilm && !html.includes(`data-film="${expectedFilm}"`))
-      )
-        errors.push('Video bypasses the shared player: ' + file);
-      for (const match of html.matchAll(/(?:href|src|poster)="([^"#]+)"/g)) {
-        const value = match[1].replaceAll('&amp;', '&');
-        if (!value.startsWith('/') || value.startsWith('//')) continue;
-        if (base && !value.startsWith(base + '/'))
-          errors.push('Unprefixed local URL: ' + value + ' in ' + file);
-        targets.add(value.split(/[?#]/)[0]);
-      }
+for (const locale of ['', 'es-LA'])
+  for (const page of pages) {
+    const file = path.join(root, base, locale, page, 'index.html');
+    let html;
+    try {
+      html = await readFile(file, 'utf8');
+    } catch {
+      errors.push('Missing ' + file);
+      continue;
     }
+    checked++;
+    if (!html.includes('data-design-system="vessyl-blueprint"'))
+      errors.push('Missing Blueprint renderer: ' + file);
+    checkPageCanvas(html, file);
+    if (!html.includes(`<html lang="${locale ? 'es-419' : 'en'}"`))
+      errors.push('Incorrect document language: ' + file);
+    if ((html.match(/<h1[ >]/g) || []).length !== 1)
+      errors.push('Invalid heading count: ' + file);
+    if (!html.includes('akenhotels.com/en/vessyl-home/'))
+      errors.push('Missing booking path: ' + file);
+    const expectedFilm = {
+      '': 'main',
+      founder: 'founder',
+      sessions: 'sessions',
+      music: 'music',
+    }[page];
+    const videoCount = (html.match(/<video[ >]/g) || []).length;
+    const playerCount = (html.match(/class="editorial-film" data-film=/g) || [])
+      .length;
+    if (
+      videoCount !== playerCount ||
+      (expectedFilm && !html.includes(`data-film="${expectedFilm}"`))
+    )
+      errors.push('Video bypasses the shared player: ' + file);
+    for (const match of html.matchAll(/(?:href|src|poster)="([^"#]+)"/g)) {
+      const value = match[1].replaceAll('&amp;', '&');
+      if (!value.startsWith('/') || value.startsWith('//')) continue;
+      if (base && !value.startsWith(base + '/'))
+        errors.push('Unprefixed local URL: ' + value + ' in ' + file);
+      targets.add(value.split(/[?#]/)[0]);
+    }
+  }
 for (const file of [
   path.join(root, base, 'index.html'),
   path.join(root, '404.html'),
@@ -96,5 +96,5 @@ if (errors.length) {
   process.exitCode = 1;
 } else
   console.log(
-    `PASS: ${checked} edition pages, one H1 each, booking routes, ${targets.size} unique internal links and assets. Base path: ${base || '/'}`,
+    `PASS: ${checked} Blueprint pages, one H1 each, booking routes, ${targets.size} unique internal links and assets. Base path: ${base || '/'}`,
   );

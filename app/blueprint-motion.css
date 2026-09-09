@@ -1,0 +1,155 @@
+/* One restrained signature: immediate response, gentle settling, shorter exits. */
+[data-bp-reveal] {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity var(--bp-reveal-duration, var(--bp-duration-scene)) var(--bp-ease),
+    translate var(--bp-reveal-duration, var(--bp-duration-scene)) var(--bp-ease);
+  transition-delay: var(--bp-reveal-delay, 0ms);
+}
+[data-bp-visible='false'] {
+  opacity: 0;
+  translate: 0 var(--bp-distance-reveal);
+}
+[data-bp-reveal]:focus-within {
+  opacity: 1;
+  translate: 0 0;
+  transition: none;
+  transition-delay: 0ms;
+}
+.hero-photo[data-bp-scene='true'] {
+  scale: 1.04;
+  translate: 0 var(--bp-hero-offset, 0px);
+}
+.classic .experience-mega {
+  transition:
+    opacity var(--bp-duration-control),
+    transform var(--bp-duration-panel) var(--bp-ease),
+    visibility 0s var(--bp-duration-panel);
+}
+.classic .experience-mega[data-open='true'] {
+  transition-delay: 0s;
+}
+.classic .experience-mega[data-open='false'] {
+  transition-duration: var(--bp-duration-exit), var(--bp-duration-control), 0s;
+  transition-delay: 0s, 0s, var(--bp-duration-control);
+}
+.classic .experience-mega img,
+.classic .experience-mega .mega-index {
+  transition-duration: var(--bp-duration-panel);
+  transition-timing-function: var(--bp-ease);
+}
+:is(.language-popover, [data-slot='dialog-content']) {
+  transition-duration:
+    var(--bp-duration-control), var(--bp-duration-panel),
+    var(--bp-duration-panel);
+}
+:is(.language-popover, [data-slot='dialog-content'])[data-ending-style] {
+  transition-duration: var(--bp-duration-exit);
+}
+[data-slot='dialog-overlay'] {
+  transition-duration: var(--bp-duration-control);
+}
+[data-slot='dialog-overlay'][data-ending-style] {
+  transition-duration: var(--bp-duration-exit);
+}
+.classic .image-arrow {
+  transition:
+    background-color var(--bp-duration-control),
+    color var(--bp-duration-control);
+}
+.photo-carousel-caption small {
+  font-variant-numeric: tabular-nums;
+}
+.gallery-stack-front,
+.gallery-stack-back {
+  box-shadow: var(--bp-shadow-photo);
+}
+.gallery-stack-back {
+  transition-duration: var(--bp-duration-panel);
+}
+.classic :is(.photo-edge > span, .gallery-stack-open) {
+  transition-duration: var(--bp-duration-control), var(--bp-duration-panel);
+}
+.editorial-film-controls {
+  animation: bp-controls-in var(--bp-duration-panel) var(--bp-ease) both;
+}
+@keyframes bp-controls-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+.bp-state-icon {
+  display: grid;
+  width: 22px;
+  height: 22px;
+}
+.bp-state-icon > svg {
+  grid-area: 1 / 1;
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(4px);
+  transition:
+    opacity var(--bp-duration-control),
+    scale var(--bp-duration-control) var(--bp-ease),
+    filter var(--bp-duration-control);
+}
+.bp-state-icon[data-active='true'] > :first-child,
+.bp-state-icon[data-active='false'] > :last-child {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+}
+.bp-state-icon .lucide-play {
+  translate: 1px 0;
+}
+html[data-leaving='true'] body {
+  transition: opacity var(--bp-duration-exit) var(--bp-ease-exit);
+}
+html[data-page-motion='fallback'] body {
+  animation-duration: var(--bp-duration-page);
+}
+::view-transition-old(root) {
+  animation-duration: var(--bp-duration-exit);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-bp-reveal] {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+  .hero-photo[data-bp-scene] {
+    scale: 1;
+    translate: none;
+  }
+  .bp-state-icon > svg {
+    scale: 1;
+    filter: none;
+    transition: none;
+  }
+  .editorial-film-controls {
+    animation: none;
+  }
+  .classic :is(.button, .text-link, .nav-book, .nav-download):active,
+  .classic-controls :is(.button, .text-link, .nav-book, .nav-download):active {
+    scale: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .classic
+    :is(.experience-card, .practice-card):is(:hover, :focus-visible)
+    .image-window
+    img,
+  .classic .experience-mega a:is(:hover, :focus-visible) img,
+  .classic .experience-mega .mega-index:is(:hover, :focus-visible) {
+    transform: none;
+  }
+  .classic :is(.button, .text-link, .nav-book) svg {
+    transform: none;
+  }
+}

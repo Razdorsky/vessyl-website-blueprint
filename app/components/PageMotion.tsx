@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+import { basePath } from '../../lib/paths';
 
 // Native cross-document transitions preserve browser navigation and history.
 // Browsers without that API use a short exit/entry dissolve for internal links.
@@ -25,7 +26,7 @@ export function PageMotion() {
       const url = new URL(link.href);
       if (
         url.origin !== location.origin ||
-        !/\/(classic|immersive)(\/|$)/.test(url.pathname)
+        !url.pathname.startsWith(basePath + '/')
       )
         return;
       if (url.pathname === location.pathname && url.search === location.search)
@@ -59,7 +60,11 @@ export function PageMotion() {
       event.preventDefault();
       if (root.dataset.leaving) return;
       root.dataset.leaving = 'true';
-      timer = window.setTimeout(() => location.assign(url.href), 220);
+      const duration =
+        Number.parseFloat(
+          getComputedStyle(root).getPropertyValue('--bp-duration-exit'),
+        ) || 180;
+      timer = window.setTimeout(() => location.assign(url.href), duration);
     };
     window.addEventListener('pageshow', reset);
     document.addEventListener('click', leave);

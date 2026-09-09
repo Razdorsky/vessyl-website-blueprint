@@ -115,22 +115,28 @@ export function EditorialFilm({ name }: { name: keyof typeof films }) {
               if (el) el.muted = !el.muted;
             }}
           >
-            {muted ? (
-              <VolumeX aria-hidden="true" />
-            ) : (
-              <Volume2 aria-hidden="true" />
-            )}
+            <span
+              className="bp-state-icon"
+              data-active={muted}
+              aria-hidden="true"
+            >
+              <VolumeX />
+              <Volume2 />
+            </span>
           </button>
           <button
             type="button"
             aria-label={playing ? c('ui.pauseFilm') : c('ui.film')}
             onClick={togglePlayback}
           >
-            {playing ? (
-              <Pause aria-hidden="true" />
-            ) : (
-              <Play aria-hidden="true" />
-            )}
+            <span
+              className="bp-state-icon"
+              data-active={playing}
+              aria-hidden="true"
+            >
+              <Pause />
+              <Play />
+            </span>
           </button>
         </fieldset>
       )}

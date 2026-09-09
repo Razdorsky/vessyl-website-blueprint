@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, type ReactNode } from 'react';
+import { useState, useRef, type ReactNode } from 'react';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -29,6 +29,7 @@ import {
 } from '../../lib/content';
 import { asset, pagePath } from '../../lib/paths';
 import { classicPhoto } from '../../lib/classic-photography';
+import { useBlueprintMotion } from './BlueprintMotion';
 import { SiteNavigation } from './SiteNavigation';
 import { type CopyKey, type Locale } from '../../lib/copy';
 import { LocaleProvider, useLocale } from './LocaleProvider';
@@ -60,31 +61,7 @@ function ClassicPage({ page }: { page: string }) {
   const photo = (slot: string, fallback: string) =>
     classicPhoto(page, slot, fallback);
   const href = (p = 'home') => pagePath(edition, p, locale);
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('reveal-waiting');
-            entry.target.classList.add('editorial-enter');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12 },
-    );
-    document
-      .querySelectorAll(
-        '.classic .photo-bridge > img, .classic .photo-bridge > div, .classic .experience-card, .classic .press-marks img, .classic .intro-section > div, .classic .section-heading, .classic .gallery-item',
-      )
-      .forEach((node) => {
-        if (node.getBoundingClientRect().top < innerHeight) return;
-        node.classList.add('reveal-waiting');
-        observer.observe(node);
-      });
-    return () => observer.disconnect();
-  }, [page]);
+  useBlueprintMotion(page, locale);
   const [selected, setSelected] = useState<Practice | null>(null);
   const [practiceOpen, setPracticeOpen] = useState(false);
   const practiceDialog = useRef<HTMLDivElement>(null);
@@ -137,8 +114,8 @@ function ClassicPage({ page }: { page: string }) {
     link?: [string, CopyKey],
     showTitle = title !== page,
   ) => (
-    <section className="intro-section">
-      <div>
+    <section className="intro-section" data-block="prose">
+      <div data-bp-reveal="copy">
         {showTitle && heading(title, false, true)}
         <div className="intro-body">
           {bodies.map((key) => (
@@ -164,7 +141,12 @@ function ClassicPage({ page }: { page: string }) {
   const cards = (
     <div className="experience-grid">
       {cardExperiences.map((e) => (
-        <a className="experience-card" key={e.id} href={href(e.id)}>
+        <a
+          className="experience-card"
+          data-bp-reveal="card"
+          key={e.id}
+          href={href(e.id)}
+        >
           <div className="image-window">
             <Photo id={photo(`experience:${e.id}`, e.image)} alt={e.name} />
             <span className="image-arrow">
@@ -185,6 +167,7 @@ function ClassicPage({ page }: { page: string }) {
       {items.map((item) => (
         <button
           className="practice-card"
+          data-bp-reveal="card"
           key={item.id}
           onClick={() => {
             setSelected({
@@ -229,7 +212,7 @@ function ClassicPage({ page }: { page: string }) {
         {text('guidesIntro')}
         <LinkArrow href={href('sessions')}>{c('sessionCta')}</LinkArrow>
       </div>
-      <div className="session-cta-image">
+      <div className="session-cta-image" data-bp-reveal="photo">
         <Photo id={photo('facilitators-cta', 'massage')} alt={c('wellness')} />
       </div>
     </section>
@@ -238,7 +221,7 @@ function ClassicPage({ page }: { page: string }) {
   const twoDoors = (
     <section className="two-doors section pattern-panel">
       <Pattern tone="forest" />
-      <div className="two-doors-content">
+      <div className="two-doors-content" data-bp-reveal="copy">
         <div className="two-doors-heading">
           {heading('twoDoors', true)}
           {text('twoDoorsIntro')}
@@ -283,18 +266,24 @@ function ClassicPage({ page }: { page: string }) {
       }))}
     />
   );
+  let storyIndex = 0;
   const story = (
     image: string,
     title: CopyKey,
     body: CopyKey | null,
     link?: [string, CopyKey],
   ) => (
-    <section className="split-editorial section photo-bridge">
+    <section
+      className="split-editorial section photo-bridge"
+      data-block="story"
+      data-story-side={storyIndex++ % 2 ? 'end' : 'start'}
+    >
       <Photo
+        reveal
         id={photo(title === 'founder' ? 'portrait' : `story:${title}`, image)}
         alt={c(title)}
       />
-      <div>
+      <div data-bp-reveal="copy">
         {title !== page && heading(title)}
         {body && text(body)}
         {link && link[0] !== page && (
@@ -412,7 +401,9 @@ function ClassicPage({ page }: { page: string }) {
           </div>
         </section>
         <section className="section experience-section">
-          <div className="section-heading">{heading('experience')}</div>
+          <div className="section-heading" data-bp-reveal="copy">
+            {heading('experience')}
+          </div>
           {cards}
         </section>
         <div className="home-quote-sequence">
@@ -431,9 +422,12 @@ function ClassicPage({ page }: { page: string }) {
       <>
         {hero('founder', 'founderOpening', 'nature')}
         <div className="founder-bridge founder-portrait-story">
-          <section className="split-editorial section photo-bridge">
+          <section
+            className="split-editorial section photo-bridge"
+            data-block="story"
+          >
             <Photo id={photo('portrait', 'founder')} alt={c('quoteAuthor')} />
-            <div className="founder-profile-copy">
+            <div className="founder-profile-copy" data-bp-reveal="copy">
               {heading('quoteAuthor')}
               {text('founderProfileLead')}
               {text('founderBrothers')}
@@ -492,7 +486,7 @@ function ClassicPage({ page }: { page: string }) {
           <div className="sensory-visual">
             <Photo id={photo('technology', 'dome-detail')} alt={c('dome')} />
           </div>
-          <div className="sensory-copy">
+          <div className="sensory-copy" data-bp-reveal="copy">
             {heading('technology', true)}
             <Tabs value={layer} onValueChange={(v) => setLayer(String(v))}>
               <TabsList className="sensory-tabs" aria-label={c('technology')}>
@@ -509,7 +503,7 @@ function ClassicPage({ page }: { page: string }) {
           </div>
         </section>
         <section className="section">
-          <div className="section-heading">
+          <div className="section-heading" data-bp-reveal="copy">
             {heading('domeSession')}
             <LinkArrow href={href('sessions')}>{c('sessionCta')}</LinkArrow>
           </div>
@@ -647,7 +641,9 @@ function ClassicPage({ page }: { page: string }) {
       <>
         {hero('stay', 'stayIntro', 'pool')}
         <section className="section stay-options">
-          <div className="section-heading">{heading('rooms')}</div>
+          <div className="section-heading" data-bp-reveal="copy">
+            {heading('rooms')}
+          </div>
           <div className="room-feature">
             <PhotoCarousel
               label={c('roomConcept')}
@@ -735,7 +731,9 @@ function ClassicPage({ page }: { page: string }) {
           </article>
         </section>
         <section className="section">
-          <div className="section-heading">{heading('sessions')}</div>
+          <div className="section-heading" data-bp-reveal="copy">
+            {heading('sessions')}
+          </div>
           {practiceCards(
             practices.filter((p) =>
               [
@@ -768,7 +766,7 @@ function ClassicPage({ page }: { page: string }) {
             ['Enrique Molina', 'enriqueIntro', 'equine'],
             ['Oscar', 'birdIntro', 'nature'],
           ].map(([name, key, image]) => (
-            <article key={name}>
+            <article key={name} data-bp-reveal="copy">
               <figure className="guide-activity">
                 <Photo
                   id={photo(`guide:${name}`, image)}
@@ -907,7 +905,8 @@ function ClassicPage({ page }: { page: string }) {
     );
   return (
     <div
-      className={`site ${edition}`}
+      className={`site ${edition} blueprint`}
+      data-design-system="vessyl-blueprint"
       data-page={page}
       data-locale={locale}
       lang={locale === 'es-LA' ? 'es-419' : 'en'}
@@ -949,6 +948,14 @@ function ClassicPage({ page }: { page: string }) {
         </section>
       </main>
       <footer className="site-footer">
+        <img
+          className="footer-signature"
+          src={asset('/brand/logo-white.svg')}
+          width="380"
+          height="76"
+          alt="Vessyl"
+          loading="lazy"
+        />
         <div className="footer-grid">
           {[
             [
@@ -1006,16 +1013,6 @@ function ClassicPage({ page }: { page: string }) {
           <span>© {new Date().getFullYear()} Vessyl</span>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
         </div>
-        <nav className="edition-switch" aria-label={c('ui.edition')}>
-          <a
-            className="active"
-            aria-current="true"
-            href={pagePath('classic', page, locale)}
-          >
-            {c('ui.classic')}
-          </a>
-          <a href={pagePath('immersive', page, locale)}>{c('ui.immersive')}</a>
-        </nav>
       </footer>
       <Dialog
         open={practiceOpen}

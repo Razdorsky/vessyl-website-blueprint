@@ -1,5 +1,5 @@
 {
-  "name": "vessyl-website",
+  "name": "vessyl-website-blueprint",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -11,7 +11,7 @@
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt",
-    "build:github": "NEXT_PUBLIC_BASE_PATH=/vessyl-website npm run build",
+    "build:github": "NEXT_PUBLIC_BASE_PATH=/vessyl-website-blueprint npm run build",
     "preview": "node scripts/serve.mjs",
     "check": "tsc --noEmit && oxlint && node scripts/check-export.mjs && python3 scripts/check-copy.py && python3 scripts/check-locales.py"
   },

@@ -2,7 +2,7 @@ import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 const root = path.resolve('dist/client');
-const port = Number(process.env.PORT || 4173);
+const port = Number(process.env.PORT || 4174);
 const base = (process.env.BASE_PATH || '').replace(/\/$/, '');
 const mime = {
   '.html': 'text/html; charset=utf-8',
@@ -96,7 +96,5 @@ http
     }
   })
   .listen(port, '127.0.0.1', () =>
-    console.log(
-      `Vessyl production preview: http://localhost:${port}${base}/classic/ and ${base}/immersive/`,
-    ),
+    console.log(`Vessyl production preview: http://localhost:${port}${base}/`),
   );

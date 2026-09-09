@@ -1,8 +1,8 @@
-name: Validate and deploy Vessyl
+name: Validate and deploy Vessyl Blueprint
 
 on:
   push:
-    branches: [main]
+    branches: [blueprint]
   pull_request:
   workflow_dispatch:
 
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      NEXT_PUBLIC_BASE_PATH: /vessyl-website
+      NEXT_PUBLIC_BASE_PATH: /vessyl-website-blueprint
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -29,7 +29,7 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Export both editions
+      - name: Export Blueprint
         run: npm run build:github
       - name: Validate types, lint, routes, assets and source copy
         run: npm run check
@@ -54,6 +54,6 @@ jobs:
     steps:
       - name: Configure Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
-      - name: Publish both editions
+      - name: Publish Blueprint
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

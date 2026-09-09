@@ -1,68 +1,53 @@
-# Vessyl — two website editions
+# Vessyl Blueprint
 
-An editorial website for Vessyl in Arenal, Costa Rica. Both editions share 17 pages in English and Latin American Spanish, approved content, original photography and enquiry destinations.
+An independent, Classic-based Vessyl website, published at **https://razdorsky.github.io/vessyl-website-blueprint/**.
 
-- **Classic 2D:** https://razdorsky.github.io/vessyl-website/classic/
-- **Immersive 3D:** https://razdorsky.github.io/vessyl-website/immersive/
+The `blueprint` branch in `Razdorsky/vessyl-website-blueprint` is the only publication target. The original `Razdorsky/vessyl-website` repository and Classic/Immersive deployments are separate and unchanged. Baseline: `cf87d51256a608376815a1b1a77a024250f7400d`.
 
-Classic and Immersive have separate page renderers and compositions. Immersive uses a continuous scroll-driven camera through 56 architectural and photographic chapters. The edition switch preserves the current page; Classic does not initialize WebGL.
+## Design
+
+The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English and Latin American Spanish copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
+
+All 17 pages are available at clean URLs, such as `/founder/`, `/experience/`, `/sessions/` and `/stay/`. Spanish uses `/es-LA/` with formal usted and document language `es-419`. The globe selector preserves the current page.
 
 ## Local development
 
-Requires Node.js 24 or newer and Python 3 for content validation.
+Node.js 24 and Python 3 are required.
 
 ```sh
 npm ci
+npm run dev -- --host 127.0.0.1 --port 5174
+```
+
+Production preview:
+
+```sh
 npm run build
 npm run check
 npm run preview
 ```
 
-Open http://localhost:4173/classic/ or http://localhost:4173/immersive/. For development:
+Open http://localhost:4174/. This port is independent of the original Classic preview.
 
-```sh
-npm run dev -- --host 127.0.0.1 --port 5173
-```
+## Publication
 
-The site exports static HTML and needs no database or application backend.
-
-## GitHub Pages
-
-The Pages workflow builds and validates both editions on pushes to `main`, then deploys `outputs/github-pages`. Pull requests run the same validation without deployment. Repository Pages settings use **GitHub Actions** as the publishing source.
-
-To reproduce the public artifact:
+GitHub Actions publishes pushes to `blueprint`. GitHub Pages uses Actions as its source. Reproduce the artifact with:
 
 ```sh
 npm run build:github
-NEXT_PUBLIC_BASE_PATH=/vessyl-website npm run check
+NEXT_PUBLIC_BASE_PATH=/vessyl-website-blueprint npm run check
 ```
 
-The artifact includes `.nojekyll`, both editions, bundled scripts, fonts and media. Run `npm run build` again to restore root-relative URLs for the local preview.
+Only `outputs/github-pages` is deployed. Run `npm run build` again to restore unprefixed local URLs. Original raw sources, full media masters and research archives remain outside Git.
 
-## Pages and interactions
+## Preserved product contracts
 
-Home; Founder; Experience; Frequency Dome; Harmonic Hearth; Equine & Nature; Personal Sessions; Quantum; Wellness; Facilitators; AKEN Soul; El Rancho; App; Music; Press; Contact; FAQ.
+- Approved English and Spanish copy, all 17 pages, booking/email destinations, and required disabled app-store placeholders.
+- H1 Bold; mobile H1 39px and 16px heading gutters; desktop display artwork preserved. Prose measure 680px, H3/prose gap 28px.
+- Outlined 4px CTAs, selected photograph/video radius 10px, original optical Dome alignment and 2× Dome mark.
+- Film width 80% desktop and 95% at <=820px; silent loop on view, restart with sound/no loop at first activation, then icon-only sound/playback controls on every film.
+- Stacked gallery previews, keyboard/edge/swipe navigation, thumbnails, Escape and opener-focus restoration.
+- Header top, html/body canvas and theme-color all derive from `lib/header-theme.ts`, including mobile overscroll. Keep native zoom, safe-area behavior and scrolling.
+- Progressive motion: content exists in SSR, reduced motion disables entrances and scenic drift, offscreen/background video pauses, focus reveals content immediately.
 
-Session filters, detail dialogs, room carousels, galleries and FAQ use keyboard-accessible controls. Galleries show a stacked preview and support keyboard arrows, image-edge clicks, drag/swipe and thumbnails. Menus and dialogs support Escape and focus restoration. All films use one player: silent looping playback on view, restart with sound and looping disabled on first activation, then shared sound and playback controls. Automatic playback respects reduced motion. The 3D renderer pauses offscreen and in hidden tabs. If WebGL fails, the complete journey remains available as text and full photographs.
-
-The globe language selector preserves the page and edition. Spanish routes use `/classic/es-LA/` and `/immersive/es-LA/`, with `es-419` as the document language and formal usted address.
-
-Booking opens the existing AKEN partner. App downloads remain disabled until release destinations are available; the app page links to the existing waitlist. Personal sessions use email enquiries. No booking, payment or form success is simulated.
-
-## Content and typography
-
-`lib/approved-copy.json` records approved wording and its source attribution. Spanish copy and image descriptions live in `lib/locales/`. `npm run check` validates all 68 edition/language routes, internal resources, source copy, translations, display-heading artwork and independent renderers. Generated QA reports are local and ignored by Git.
-
-Fixed headings use Telugu MN glyph outlines and accessible HTML text. Body and interface text use bundled Roboto. Normal builds use the committed SVG artwork and do not require macOS fonts. See [typography generation](scripts/typography/README.md). The Roboto license is in `public/licenses`.
-
-Classic mobile headings use 16px side gutters and wrap their word outlines to the available width. H1 is 39px Bold; H2/H3 retain their approved sizes. This applies to both languages without changing desktop or Immersive typography, or the insets of paragraphs and photographs.
-
-Only prepared website assets are included. Raw source archives and local research records are excluded from this repository.
-
-## Required page-background contract
-
-The document canvas (`html` and `body`), the opaque top edge of the page header, and the server-rendered `theme-color` must share the color defined in `lib/header-theme.ts`. This applies to both editions, both languages, initial rendering, page transitions and the background exposed by mobile overscroll or unused viewport space. Classic Home and Immersive use the warm header color; other Classic pages use the dark header color. Authored section backgrounds remain separate from this outer canvas.
-
-Keep the browser's automatic safe-area layout and native scrolling; do not introduce `viewport-fit=cover`, disabled zoom or scroll suppression as a background fix. If full-bleed safe-area layout is introduced later, account for all safe-area insets before shipping. Browser-owned controls receive the matching `theme-color` hint; their final appearance remains browser-controlled.
-
-Do not override document backgrounds with white, paper or a separate arbitrary color. Change header colors through the shared palette and validate the route's rendered background and browser theme together. The export check enforces matching header tokens and theme metadata on all routes, including Home and 404; UI changes also require mobile browser inspection.
+`npm run check` validates types, lint, all 34 language/page exports, internal assets, source-linked copy, duplicate prose, heading artwork, translation completeness, numeric facts and usted register. UI changes also require browser inspection at desktop/mobile and the affected breakpoints.

@@ -1,10 +1,12 @@
 import './globals.css';
 import './motion.css';
 import './classic-spacing.css';
-import './immersive.css';
 import './localization.css';
 import './photography.css';
 import './classic-typography.css';
+import './blueprint-tokens.css';
+import './blueprint.css';
+import './blueprint-motion.css';
 import { PageMotion } from './components/PageMotion';
 import { asset } from '../lib/paths';
 import { copy } from '../lib/copy';

@@ -1,10 +1,9 @@
 import { notFound } from 'next/navigation';
-import { ImmersiveSite } from '../../components/ImmersiveSite';
-import { ClassicSite } from '../../components/ClassicSite';
-import { pageKeys, pageTitles } from '../../../lib/content';
-import { copy, translateText, type Locale } from '../../../lib/copy';
-import { pagePath } from '../../../lib/paths';
-import { headerColor } from '../../../lib/header-theme';
+import { ClassicSite } from '../components/ClassicSite';
+import { pageKeys, pageTitles } from '../../lib/content';
+import { copy, translateText, type Locale } from '../../lib/copy';
+import { pagePath } from '../../lib/paths';
+import { headerColor } from '../../lib/header-theme';
 const route = (slug: string[] = []) => {
   const locale: Locale = slug[0] === 'es-LA' ? 'es-LA' : 'en';
   return {
@@ -13,24 +12,24 @@ const route = (slug: string[] = []) => {
   };
 };
 export async function generateStaticParams() {
-  return ['classic', 'immersive'].flatMap((edition) =>
-    (['en', 'es-LA'] as Locale[]).flatMap((locale) =>
-      pageKeys.map((page) => ({
-        edition,
+  return (['en', 'es-LA'] as Locale[]).flatMap((locale) =>
+    pageKeys
+      .filter((page) => locale !== 'en' || page !== 'home')
+      .map((page) => ({
         slug: [
           ...(locale === 'es-LA' ? ['es-LA'] : []),
           ...(page === 'home' ? [] : [page]),
         ],
       })),
-    ),
   );
 }
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ edition: string; slug?: string[] }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { edition, slug = [] } = await params;
+  const { slug } = await params;
+  const edition = 'classic';
   const { locale, page } = route(slug);
   return {
     title: `${translateText(pageTitles[page] || 'Vessyl', locale)} — Vessyl`,
@@ -46,23 +45,20 @@ export async function generateMetadata({
 export async function generateViewport({
   params,
 }: {
-  params: Promise<{ edition: string; slug?: string[] }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { edition, slug = [] } = await params;
+  const { slug } = await params;
+  const edition = 'classic';
   return { themeColor: headerColor(edition, route(slug).page) };
 }
 export default async function Page({
   params,
 }: {
-  params: Promise<{ edition: string; slug?: string[] }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { edition, slug = [] } = await params;
+  const { slug } = await params;
   const { locale, page } = route(slug);
-  if (!['classic', 'immersive'].includes(edition) || !pageKeys.includes(page))
+  if (!pageKeys.includes(page) || (slug[0] !== 'es-LA' && slug.length !== 1))
     notFound();
-  return edition === 'immersive' ? (
-    <ImmersiveSite page={page} locale={locale} />
-  ) : (
-    <ClassicSite page={page} locale={locale} />
-  );
+  return <ClassicSite page={page} locale={locale} />;
 }

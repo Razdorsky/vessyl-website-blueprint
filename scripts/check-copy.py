@@ -55,9 +55,10 @@ for copy_key,entry in entries.items():
  if lowercase_start(entry['text']):errors.append('Lowercase copy start: '+copy_key+': '+entry['text'])
  if entry.get('kind')=='capitalization-corrected' and entry['text'].lower()!=entry.get('sourceText','').lower():
   errors.append('Capitalization edit changed wording: '+copy_key)
-for edition in ['classic','immersive']:
- for f in sorted((output/edition).glob('**/index.html')):
-  slug=str(f.parent.relative_to(output/edition));key=edition+'/'+('home' if slug=='.' else slug)
+for edition in ['classic']:
+ for f in sorted(output.glob('**/index.html')):
+  if f.parent==output/'404':continue
+  slug=str(f.parent.relative_to(output));key=edition+'/'+('home' if slug=='.' else slug)
   localized='es-LA' in f.relative_to(output).parts
   known={norm(spanish[k] if localized else v['text']):v for k,v in entries.items()}
   p=Parser();p.feed(f.read_text());rows=[]
@@ -106,21 +107,6 @@ for page,texts in main.items():
  if duplicates:classic_duplicates[page]=duplicates
  for text,count in duplicates.items():errors.append(f'{page} editorial sentence repeats {count} times: '+text)
 (root/'docs/compliance/classic-uniqueness.json').write_text(json.dumps(classic_duplicates,ensure_ascii=False,indent=2)+'\n')
-# Immersive must receive the same editorial cleanup, with no scene-control chrome.
-immersive_duplicates={}
-for page,texts in main.items():
- if not page.startswith('immersive/'):continue
- duplicates={t:n for t,n in Counter(sentence for t in texts for sentence in prose_sentences(t)).items() if n>1}
- if duplicates:immersive_duplicates[page]=duplicates
- for text,count in duplicates.items():errors.append(f'{page} editorial sentence repeats {count} times: '+text)
- for forbidden in ['Play', 'Pause', 'Scroll to enter', 'Interactive interpretation']:
-  if any(row['text']==forbidden for row in report[page]):errors.append(page+': extraneous control '+forbidden)
-for text in main.get('immersive/founder',[]):
- for sentence in prose_sentences(text):
-  for page,texts in main.items():
-   if page.startswith('immersive/') and page!='immersive/founder' and any(sentence in norm(other).casefold() for other in texts):
-    errors.append('Immersive Founder editorial copy repeats '+page+': '+sentence)
-(root/'docs/compliance/immersive-uniqueness.json').write_text(json.dumps(immersive_duplicates,ensure_ascii=False,indent=2)+'\n')
 # Every selected container-aware display variant must exist with usable dimensions.
 art=json.loads((root/'lib/typography-art.json').read_text())
 for key,entry in art.items():
@@ -128,18 +114,14 @@ for key,entry in art.items():
   path=root/'public/typography'/variant['file']
   if not path.is_file() or variant['width']<=0 or variant['height']<=0:
    errors.append('Invalid responsive heading artwork: '+key)
-# The user requested separate compositions: wording stays source-linked, sequence may differ.
-# Guard against accidentally routing Immersive back to the Classic layout.
-for f in (output/'immersive').glob('**/index.html'):
- if 'data-renderer="independent-scroll-world"' not in f.read_text():errors.append('Missing independent immersive renderer: '+str(f))
-for f in (output/'classic').glob('**/index.html'):
- if 'data-renderer="independent-scroll-world"' in f.read_text():errors.append('Immersive renderer leaked into Classic: '+str(f))
+# Blueprint is a Classic-only publishing surface, and must never initialize 3D.
+for f in output.glob('**/index.html'):
+ if 'data-renderer="independent-scroll-world"' in f.read_text():errors.append('Immersive renderer leaked into Blueprint: '+str(f))
+if len(report)!=34:errors.append('Expected 34 Blueprint routes, found '+str(len(report)))
 report_path=root/'docs/compliance/copy-coverage.json'
 report_path.parent.mkdir(parents=True,exist_ok=True)
 report_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 if errors:print('\n'.join(errors));sys.exit(1)
-print(f'PASS: {len(report)} routes; every rendered text unit is source-linked copy or documented interface behavior; all display headings have Telugu MN artwork; independent edition renderers verified.')
+print(f'PASS: {len(report)} routes; every rendered text unit is source-linked copy or documented interface behavior; all display headings have Telugu MN artwork; Classic-only renderer verified.')
 print('PASS: Founder editorial sentences do not repeat another Classic page.')
 print('PASS: No repeated editorial sentences within any Classic page; responsive artwork references verified.')
-
-print('PASS: No repeated Immersive editorial sentences, unique Founder copy, and no scene-control labels.')

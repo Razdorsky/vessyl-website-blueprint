@@ -6,8 +6,8 @@ const base = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(
 );
 // The root layout is shared by the export. Mark each Spanish document before
 // publishing so its language is correct even without client-side JavaScript.
-for (const edition of ['classic', 'immersive']) {
-  const localizedRoot = path.join('dist/client', base, edition, 'es-LA');
+{
+  const localizedRoot = path.join('dist/client', base, 'es-LA');
   for (const name of await readdir(localizedRoot, { recursive: true })) {
     if (!name.endsWith('.html')) continue;
     const file = path.join(localizedRoot, name);

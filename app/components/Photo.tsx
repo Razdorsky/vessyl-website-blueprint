@@ -15,12 +15,14 @@ export function Photo({
   className = '',
   eager = false,
   sizes,
+  reveal,
 }: {
   id: string;
   alt?: string;
   className?: string;
   eager?: boolean;
   sizes?: string;
+  reveal?: boolean;
 }) {
   const { locale } = useLocale();
   const dimensions = imageDimensions[id as keyof typeof imageDimensions];
@@ -35,6 +37,7 @@ export function Photo({
     <img
       className={className}
       data-photo-id={id}
+      data-bp-reveal={reveal ? 'photo' : undefined}
       style={metadata ? { objectPosition: metadata.objectPosition } : undefined}
       src={picture(id)}
       srcSet={

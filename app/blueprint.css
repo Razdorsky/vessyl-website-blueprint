@@ -1,0 +1,364 @@
+/* The inherited Classic establishes approved media/copy behavior. This file
+   owns the Blueprint composition and consumes its semantic token layer. */
+.classic {
+  --page-pad: clamp(24px, 5.55vw, 96px);
+  --space-section: var(--bp-section);
+  --space-accent: calc(var(--bp-section) + var(--bp-space-4));
+  --space-stack: var(--bp-grid-gap);
+  --space-copy: var(--bp-copy-gap);
+}
+.classic #content p {
+  text-wrap: pretty;
+}
+.classic #content :is(.section, .intro-section, .press-marks) {
+  padding-inline: max(var(--page-pad), calc((100vw - var(--bp-measure)) / 2));
+}
+.classic #content :is(.intro-body, .page-hero-copy > p) {
+  max-width: var(--bp-prose-measure);
+}
+.classic
+  #content
+  :is(.split-editorial, .session-cta, .hearth-section, .sensory-section) {
+  column-gap: var(--bp-story-gap);
+}
+.classic #content :is(.split-editorial, .session-cta) > div {
+  min-width: 0;
+}
+.classic .home-hero {
+  min-height: 760px;
+  height: min(1080px, 100svh);
+  max-height: none;
+}
+.classic .home-hero .hero-copy {
+  max-width: 1000px;
+}
+.classic #content .home-introduction {
+  --block-start: var(--space-accent);
+  --block-end: calc(var(--photo-overlap) + var(--bp-space-8));
+}
+.classic #content .experience-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bp-space-8) var(--bp-grid-gap);
+}
+.classic .experience-card {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.classic .experience-card .image-window {
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+.classic .experience-card .brand-heading {
+  margin-block: var(--bp-space-3) 0;
+  padding-bottom: var(--bp-space-3);
+  border-bottom: 1px solid var(--bp-border);
+}
+.classic .experience-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--copper);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--bp-duration-panel) var(--bp-ease);
+}
+.classic .experience-card .image-arrow,
+.classic .practice-card .image-arrow {
+  width: 48px;
+  height: 48px;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid color-mix(in srgb, var(--cream) 65%, transparent);
+  border-radius: var(--bp-radius-control);
+  color: var(--cream);
+  background: rgb(17 17 17 / 38%);
+  backdrop-filter: blur(8px);
+}
+.classic
+  :is(
+    .image-window,
+    .session-cta-image,
+    .photo-bridge > img,
+    .guide-activity img
+  ) {
+  box-shadow: var(--bp-shadow-photo);
+}
+.classic .image-window img {
+  transition: transform var(--bp-duration-scene) var(--bp-ease);
+}
+.classic #content .section-heading {
+  align-items: center;
+}
+.classic .practice-grid {
+  column-gap: var(--bp-grid-gap);
+}
+.classic .practice-card {
+  border-bottom: 1px solid var(--bp-border);
+  padding-bottom: var(--bp-space-4);
+}
+.classic .practice-card .eyebrow {
+  margin-block: var(--bp-space-3) var(--bp-space-2);
+  color: var(--forest);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+.classic .practice-card p {
+  margin-block: var(--bp-space-2) 0;
+}
+.classic .filter-tabs {
+  border: 1px solid var(--bp-border);
+  padding: 6px;
+  border-radius: calc(var(--bp-radius-control) + 6px);
+  background: transparent;
+  gap: 4px;
+  height: auto;
+}
+.classic .filter-tabs [data-slot='tabs-trigger'] {
+  min-height: 48px;
+  border: 0;
+  border-radius: var(--bp-radius-control);
+  padding-inline: 24px;
+  box-shadow: none;
+  transition:
+    background-color var(--bp-duration-control),
+    color var(--bp-duration-control);
+}
+.classic .filter-tabs [data-slot='tabs-trigger'][data-active] {
+  background: var(--forest);
+  color: var(--cream);
+}
+.classic .filter-tabs [data-slot='tabs-trigger'][aria-selected='true'] {
+  background: var(--forest);
+  color: var(--cream);
+}
+.classic #content .two-doors-options {
+  column-gap: var(--bp-story-gap);
+}
+.classic .two-doors-option {
+  padding-top: var(--bp-space-4);
+  border-top: 1px solid color-mix(in srgb, var(--cream) 36%, transparent);
+}
+.classic .two-doors-content {
+  max-width: 1120px;
+}
+.classic .two-doors-heading p {
+  max-width: var(--bp-prose-measure);
+}
+.classic .arrival-section .travel-columns > article {
+  border-top: 1px solid var(--bp-border);
+  padding-top: var(--bp-space-4);
+}
+.classic #content .press-resources {
+  width: 100%;
+  max-width: none;
+}
+.classic .resource-links {
+  border-top: 1px solid var(--bp-border);
+}
+.classic .contact-links a,
+.classic .resource-links a {
+  border-color: var(--bp-border);
+}
+.classic .contact-links a {
+  gap: var(--bp-space-3);
+}
+.classic .resource-links a {
+  min-height: 80px;
+}
+.classic :is(.contact-links, .resource-links) a svg {
+  transition: transform var(--bp-duration-panel) var(--bp-ease);
+}
+.classic .faq-list [data-slot='accordion-item'] {
+  border-color: var(--bp-border);
+}
+.classic .faq-list [data-slot='accordion-trigger'] {
+  padding-block: var(--bp-space-3);
+  gap: var(--bp-space-3);
+}
+.classic .faq-list [data-slot='accordion-trigger']:hover {
+  text-decoration: none;
+}
+.classic .faq-list [data-slot='accordion-content'] p {
+  padding-bottom: var(--bp-space-3);
+  max-width: var(--bp-prose-measure);
+}
+.classic .people-list figcaption {
+  padding-top: var(--bp-space-2);
+}
+.classic .press-marks {
+  opacity: 0.85;
+}
+.classic .site-footer {
+  background: var(--forest);
+  color: var(--cream);
+}
+.classic .footer-grid {
+  border-color: color-mix(in srgb, var(--cream) 24%, transparent);
+}
+.classic .footer-grid a {
+  color: inherit;
+}
+.classic .footer-grid a:not(.eyebrow) {
+  opacity: 0.8;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+.classic .footer-grid .eyebrow {
+  margin-bottom: var(--bp-space-2);
+}
+.classic .footer-bottom {
+  color: var(--cream);
+  opacity: 0.8;
+}
+.classic .footer-signature {
+  width: clamp(220px, 26vw, 380px);
+  margin-bottom: var(--bp-space-8);
+  height: auto;
+  opacity: 0.95;
+}
+.classic :is(.button, .text-link, .nav-book, .nav-download),
+.classic-controls :is(.button, .text-link, .nav-book, .nav-download) {
+  transition:
+    background-color var(--bp-duration-control),
+    color var(--bp-duration-control),
+    border-color var(--bp-duration-control),
+    scale var(--bp-duration-response) var(--bp-ease);
+}
+.classic :is(.button, .text-link):hover {
+  transform: none;
+}
+.classic
+  :is(.button, .text-link, .nav-book, .nav-download):not(:disabled):active,
+.classic-controls
+  :is(.button, .text-link, .nav-book, .nav-download):not(:disabled):active {
+  scale: var(--bp-scale-press);
+}
+.classic :is(.button, .text-link) svg,
+.classic .site-header svg,
+.classic .image-arrow svg {
+  stroke-width: 1.5px;
+}
+.classic .experience-mega {
+  border-radius: 0 0 var(--bp-radius-panel) var(--bp-radius-panel);
+  box-shadow: var(--bp-shadow-panel);
+}
+.classic .experience-mega .mega-image {
+  border-radius: var(--bp-radius-photo);
+}
+.classic .experience-mega img {
+  border-radius: 0;
+}
+.language-popover {
+  border-radius: 12px;
+  box-shadow: var(--bp-shadow-panel);
+}
+.classic-controls.practice-dialog {
+  box-shadow: var(--bp-shadow-panel);
+}
+.classic :is(a, button):focus-visible,
+.classic-controls :is(a, button):focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: 5px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .classic .experience-card:is(:hover, :focus-visible)::after {
+    transform: scaleX(1);
+  }
+  .classic
+    :is(.experience-card, .practice-card):is(:hover, :focus-visible)
+    .image-window
+    img {
+    transform: scale(var(--bp-scale-hover));
+  }
+  .classic :is(.contact-links, .resource-links) a:hover svg {
+    transform: translate(2px, -2px);
+  }
+  .classic .footer-grid a:hover {
+    opacity: 1;
+  }
+}
+@media (min-width: 821px) {
+  .classic #content > .split-editorial[data-story-side='end'] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .classic #content > .split-editorial[data-story-side='end'] > img {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .classic #content > .split-editorial[data-story-side='end'] > div {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+@media (max-width: 820px) {
+  .classic {
+    --bp-section: 64px;
+    --space-accent: 96px;
+    --bp-story-gap: 32px;
+  }
+  .classic #content .experience-grid {
+    gap: 40px 24px;
+  }
+  .classic .home-hero {
+    min-height: 720px;
+    height: 100svh;
+  }
+  .classic .footer-signature {
+    margin-bottom: 40px;
+  }
+}
+@media (max-width: 560px) {
+  .classic #content .experience-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .classic .experience-card .image-window {
+    aspect-ratio: 4 / 3;
+  }
+  .classic .experience-card .brand-heading {
+    padding-bottom: 20px;
+  }
+  .classic .filter-tabs [data-slot='tabs-trigger'] {
+    padding-inline: 16px;
+  }
+  .classic .two-doors-option {
+    padding-top: 24px;
+  }
+  .classic .home-hero {
+    min-height: 680px;
+  }
+}
+
+/* The preceding navigation item already owns this boundary. */
+.menu-dialog .language-selector-mobile {
+  border-top: 0;
+  padding-top: 8px;
+}
+
+.practice-dialog.classic-controls .practice-dialog-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.practice-dialog.classic-controls .practice-dialog-copy > .eyebrow {
+  margin: 0 0 var(--bp-space-3);
+}
+.practice-dialog.classic-controls [data-slot='dialog-title'] {
+  margin: 0 0 var(--bp-copy-gap);
+}
+.practice-dialog.classic-controls [data-slot='dialog-description'] {
+  margin: 0 0 var(--bp-space-3);
+}
+.practice-dialog.classic-controls small {
+  font-size: var(--bp-font-caption);
+  line-height: 1.5;
+  margin-top: var(--bp-space-2);
+}
+.photo-carousel-caption small {
+  font-size: var(--bp-font-caption);
+}

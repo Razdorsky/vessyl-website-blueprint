@@ -55,17 +55,17 @@ class Links(HTMLParser):
 
 output = root / 'dist/client' / os.environ.get('NEXT_PUBLIC_BASE_PATH', '').strip('/')
 checked = 0
-for edition in ['classic', 'immersive']:
-    for file in (output / edition / 'es-LA').glob('**/index.html'):
+for edition in ['blueprint']:
+    for file in (output / 'es-LA').glob('**/index.html'):
         checked += 1
         parser = Links()
         parser.feed(file.read_text())
         for link in parser.links:
             href = link.get('href', '')
-            if re.search(r'/(classic|immersive)/', href) and not link.get('hreflang') and '/es-LA/' not in href:
+            if href.startswith('/') and href.endswith('/') and not link.get('hreflang') and '/es-LA/' not in href:
                 errors.append(f'{file}: navigation leaves the selected language: {href}')
-if checked != 34:
-    errors.append(f'Expected 34 Spanish edition routes, found {checked}.')
+if checked != 17:
+    errors.append(f'Expected 17 Spanish Blueprint routes, found {checked}.')
 if errors:
     raise SystemExit('\n'.join(errors))
 print(f'PASS: {len(target)} translated entries, {len(image_target)} image descriptions, numeric facts, usted register and language-preserving links on {checked} Spanish routes.')

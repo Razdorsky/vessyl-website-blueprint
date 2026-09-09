@@ -1,0 +1,46 @@
+/* Vessyl Blueprint: semantic roles, adapted to the approved brand contract. */
+:root {
+  --bp-space-1: 8px;
+  --bp-space-2: 16px;
+  --bp-space-3: 24px;
+  --bp-space-4: 32px;
+  --bp-space-6: 48px;
+  --bp-space-8: 64px;
+  --bp-space-12: 96px;
+  --bp-space-16: 128px;
+  --bp-copy-gap: 28px;
+  --bp-font-label: 16px;
+  --bp-font-caption: 14px;
+  --bp-grid-gap: clamp(24px, 3.33vw, 48px);
+  --bp-story-gap: clamp(32px, 6.66vw, 96px);
+  --bp-section: clamp(64px, 8vw, 128px);
+  --bp-measure: 1280px;
+  --bp-prose-measure: 680px;
+  --bp-radius-control: 4px;
+  --bp-radius-photo: 10px;
+  --bp-radius-panel: 18px;
+  --bp-border: color-mix(in srgb, var(--forest) 18%, transparent);
+  --bp-surface: var(--paper);
+  --bp-surface-raised: var(--brand-warm-surface);
+  --bp-shadow-photo:
+    0 2px 4px rgb(0 0 0 / 4%), 0 16px 40px -24px rgb(0 0 0 / 24%);
+  --bp-shadow-panel:
+    0 4px 8px rgb(0 0 0 / 4%), 0 24px 64px -16px rgb(0 0 0 / 20%);
+  --bp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --bp-ease-exit: cubic-bezier(0.4, 0, 0.8, 0.4);
+  --bp-duration-response: 160ms;
+  --bp-duration-control: 240ms;
+  --bp-duration-panel: 420ms;
+  --bp-duration-scene: 800ms;
+  --bp-duration-page: 480ms;
+  --bp-duration-exit: 180ms;
+  --bp-distance-reveal: 24px;
+  --bp-scale-hover: 1.06;
+  --bp-scale-press: 0.97;
+  --ease-refined: var(--bp-ease);
+  --ease-editorial: var(--bp-ease);
+  --motion-control: var(--bp-duration-control);
+  --motion-panel: var(--bp-duration-panel);
+  --motion-page: var(--bp-duration-page);
+  --photo-radius: var(--bp-radius-photo);
+}

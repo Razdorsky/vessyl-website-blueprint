@@ -196,6 +196,9 @@ export function SiteNavigation({
                 alt=""
                 width="800"
                 height="600"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
             <span className="mega-label">{label}</span>

@@ -30,6 +30,7 @@ import {
 import { asset, pagePath } from '../../lib/paths';
 import { classicPhoto } from '../../lib/classic-photography';
 import { useBlueprintMotion } from './BlueprintMotion';
+import { DomeJourney } from './DomeJourney';
 import { SiteNavigation } from './SiteNavigation';
 import { type CopyKey, type Locale } from '../../lib/copy';
 import { LocaleProvider, useLocale } from './LocaleProvider';
@@ -220,27 +221,65 @@ function ClassicPage({ page }: { page: string }) {
   const hasTwoDoors = page === 'home' || page === 'experience';
   const twoDoors = (
     <section className="two-doors section pattern-panel">
+      <Photo
+        className="bp-doors-backdrop"
+        id={photo('closing', 'closing-design-direction')}
+        sizes="100vw"
+      />
       <Pattern tone="forest" />
-      <div className="two-doors-content" data-bp-reveal="copy">
+      <div className="two-doors-content">
         <div className="two-doors-heading">
           {heading('twoDoors', true)}
           {text('twoDoorsIntro')}
         </div>
         <div className="two-doors-options">
-          <div className="two-doors-option">
-            <span className="eyebrow">{c('inPerson')}</span>
-            <Heading as="h3" text={c('stayCostaRica')} light />
-            <LinkArrow href={BOOKING} button light external>
-              {c('bookStay')}
-            </LinkArrow>
+          <div className="two-doors-option bp-door-place" data-bp-reveal="card">
+            <div className="bp-door-image" aria-hidden="true">
+              <img
+                src={asset('/brand/logo-aken-white.svg')}
+                width="280"
+                height="60"
+                alt=""
+              />
+            </div>
+            <div className="bp-door-copy">
+              <span className="eyebrow">{c('inPerson')}</span>
+              <Heading as="h3" text={c('stayCostaRica')} light />
+              <LinkArrow href={BOOKING} button light external>
+                {c('bookStay')}
+              </LinkArrow>
+            </div>
           </div>
-          <div className="two-doors-option">
-            <span className="eyebrow">{c('fromAnywhere')}</span>
-            <Heading as="h3" text={c('sessionsPocket')} light />
-            <LinkArrow href={href('app')} button light>
-              {c('downloadTheApp')}
-            </LinkArrow>
+          <div
+            className="two-doors-option bp-door-digital"
+            data-bp-reveal="card"
+          >
+            <div className="bp-door-image bp-door-brand" aria-hidden="true">
+              <img
+                src={asset('/brand/logo-white.svg')}
+                width="246"
+                height="48"
+                alt=""
+              />
+              <img
+                className="bp-door-echo"
+                src={asset('/brand/dome-echo.svg')}
+                width="1440"
+                height="810"
+                alt=""
+              />
+            </div>
+            <div className="bp-door-copy">
+              <span className="eyebrow">{c('fromAnywhere')}</span>
+              <Heading as="h3" text={c('sessionsPocket')} light />
+              <LinkArrow href={href('app')} button light>
+                {c('downloadTheApp')}
+              </LinkArrow>
+            </div>
           </div>
+        </div>
+        <div className="bp-doors-signature" data-bp-reveal="copy">
+          <Heading text={c('closingPresence')} light align="center" />
         </div>
       </div>
     </section>
@@ -276,6 +315,7 @@ function ClassicPage({ page }: { page: string }) {
     <section
       className="split-editorial section photo-bridge"
       data-block="story"
+      data-story-title={title}
       data-story-side={storyIndex++ % 2 ? 'end' : 'start'}
     >
       <Photo
@@ -284,7 +324,7 @@ function ClassicPage({ page }: { page: string }) {
         alt={c(title)}
       />
       <div data-bp-reveal="copy">
-        {title !== page && heading(title)}
+        {title !== page && heading(title, false, title === 'natureWalk')}
         {body && text(body)}
         {link && link[0] !== page && (
           <LinkArrow href={href(link[0])}>{c(link[1])}</LinkArrow>
@@ -421,36 +461,33 @@ function ClassicPage({ page }: { page: string }) {
     content = (
       <>
         {hero('founder', 'founderOpening', 'nature')}
-        <div className="founder-bridge founder-portrait-story">
-          <section
-            className="split-editorial section photo-bridge"
-            data-block="story"
-          >
+        {divider}
+        <section className="bp-founder-story section">
+          <div className="bp-founder-portrait">
             <Photo id={photo('portrait', 'founder')} alt={c('quoteAuthor')} />
+          </div>
+          <div className="bp-founder-narrative">
             <div className="founder-profile-copy" data-bp-reveal="copy">
               {heading('quoteAuthor')}
               {text('founderProfileLead')}
               {text('founderBrothers')}
             </div>
-          </section>
-        </div>
-        <PressMarks />
-        {divider}
-        <section className="intro-section founder-biography">
-          <div>
-            <Heading
-              as="h3"
-              text={c('founderExplorationIntro')}
-              align="center"
-            />
-            <div className="intro-body">
-              {text('founderExplorationQuestion')}
-              {text('founderNext')}
-              {text('founderDestination')}
+            <div className="founder-biography" data-bp-reveal="copy">
+              <Heading
+                as="h3"
+                text={c('founderExplorationIntro')}
+                align="center"
+              />
+              <div className="intro-body">
+                {text('founderExplorationQuestion')}
+                {text('founderNext')}
+                {text('founderDestination')}
+              </div>
             </div>
           </div>
         </section>
         {divider}
+        <PressMarks />
         <EditorialFilm name="founder" />
         {quote('founderQuote')}
         {story('dome-exterior', 'press', 'ui.pressRoomIntro', [
@@ -481,27 +518,46 @@ function ClassicPage({ page }: { page: string }) {
   else if (page === 'dome')
     content = (
       <>
-        {hero('dome', 'domeIntro', 'dome-interior')}
-        <section className="sensory-section section">
-          <div className="sensory-visual">
-            <Photo id={photo('technology', 'dome-detail')} alt={c('dome')} />
-          </div>
-          <div className="sensory-copy" data-bp-reveal="copy">
-            {heading('technology', true)}
-            <Tabs value={layer} onValueChange={(v) => setLayer(String(v))}>
-              <TabsList className="sensory-tabs" aria-label={c('technology')}>
-                <TabsTrigger value="sound">{c('audio')}</TabsTrigger>
-                <TabsTrigger value="light">{c('video')}</TabsTrigger>
-                <TabsTrigger value="touch">{c('floor')}</TabsTrigger>
-              </TabsList>
-              <AutoHeight>
-                <TabsContent value="sound">{text('soundIntro')}</TabsContent>
-                <TabsContent value="light">{text('videoIntro')}</TabsContent>
-                <TabsContent value="touch">{text('floorIntro')}</TabsContent>
-              </AutoHeight>
-            </Tabs>
-          </div>
-        </section>
+        <DomeJourney
+          layer={layer}
+          opening={
+            <>
+              <img
+                className="bp-dome-emblem"
+                src={asset('/brand/dome-symbol.svg')}
+                alt=""
+                width="70"
+                height="70"
+                aria-hidden="true"
+              />
+              <Heading
+                as="h1"
+                weight="bold"
+                text={c('dome')}
+                light
+                align="center"
+              />
+              {text('domeIntro')}
+            </>
+          }
+          technology={
+            <>
+              {heading('technology', true, true)}
+              <Tabs value={layer} onValueChange={(v) => setLayer(String(v))}>
+                <TabsList className="sensory-tabs" aria-label={c('technology')}>
+                  <TabsTrigger value="sound">{c('audio')}</TabsTrigger>
+                  <TabsTrigger value="light">{c('video')}</TabsTrigger>
+                  <TabsTrigger value="touch">{c('floor')}</TabsTrigger>
+                </TabsList>
+                <AutoHeight>
+                  <TabsContent value="sound">{text('soundIntro')}</TabsContent>
+                  <TabsContent value="light">{text('videoIntro')}</TabsContent>
+                  <TabsContent value="touch">{text('floorIntro')}</TabsContent>
+                </AutoHeight>
+              </Tabs>
+            </>
+          }
+        />
         <section className="section">
           <div className="section-heading" data-bp-reveal="copy">
             {heading('domeSession')}
@@ -585,7 +641,8 @@ function ClassicPage({ page }: { page: string }) {
           page === 'quantum' ? 'quantumApproach' : 'guidesIntro',
           page === 'quantum' ? 'session' : 'massage',
         )}
-        <section className="section sessions-section choice-section">
+        <section className="section sessions-section choice-section pattern-panel">
+          <Pattern tone="paper" variant="fans" />
           <Heading
             as={page === 'sessions' ? 'h3' : 'h2'}
             visualStyle="h3"
@@ -917,35 +974,16 @@ function ClassicPage({ page }: { page: string }) {
       <SiteNavigation edition={edition} page={page} />
       <main id="content">
         {content}
-        <section
-          className={`closing-invitation ${hasTwoDoors ? 'closing-signature' : ''} ${page === 'home' ? 'closing-reference' : ''}`}
-        >
-          <Photo
-            id={photo(
-              'closing',
-              page === 'home'
-                ? 'closing-design-direction'
-                : page === 'experience'
-                  ? 'nature-waterfall'
-                  : 'hero-arenal',
-            )}
-            alt=""
-            sizes={
-              page === 'home' ? '(max-width: 1000px) 1120px, 100vw' : '100vw'
-            }
-          />
-          <div />
-          <Heading
-            text={c(hasTwoDoors ? 'closingPresence' : 'stayCta')}
-            light
-            align="center"
-          />
-          {!hasTwoDoors && (
+        {!hasTwoDoors && (
+          <section className="closing-invitation">
+            <Photo id={photo('closing', 'hero-arenal')} alt="" sizes="100vw" />
+            <div />
+            <Heading text={c('stayCta')} light align="center" />
             <LinkArrow href={BOOKING} button light external>
               {c('bookStay')}
             </LinkArrow>
-          )}
-        </section>
+          </section>
+        )}
       </main>
       <footer className="site-footer">
         <img

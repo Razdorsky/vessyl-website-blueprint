@@ -14712,5 +14712,91 @@
         }
       ]
     }
+  },
+  "3a79f4cf": {
+    "text": "Technology",
+    "style": "h2",
+    "desktop": "3a79f4cf-desktop.svg",
+    "mobile": "3a79f4cf-mobile.svg",
+    "desktopWidth": 760,
+    "desktopHeight": 84.6,
+    "mobileWidth": 340,
+    "mobileHeight": 50.76,
+    "responsive": {
+      "small": {
+        "file": "3a79f4cf-small.svg",
+        "size": 36,
+        "width": 280,
+        "height": 50.76
+      },
+      "medium": {
+        "file": "3a79f4cf-medium.svg",
+        "size": 42,
+        "width": 480,
+        "height": 59.21999999999999
+      },
+      "large": {
+        "file": "3a79f4cf-large.svg",
+        "size": 52,
+        "width": 720,
+        "height": 73.32
+      }
+    },
+    "mobileFlow": {
+      "file": "8e08b08b-flow.svg",
+      "lineHeight": 41.76,
+      "size": 36,
+      "spaceWidth": 7.3828125,
+      "words": [
+        {
+          "width": 201.78
+        }
+      ]
+    },
+    "align": "center"
+  },
+  "3f1a06bc": {
+    "text": "Tecnología",
+    "style": "h2",
+    "desktop": "3f1a06bc-desktop.svg",
+    "mobile": "3f1a06bc-mobile.svg",
+    "desktopWidth": 760,
+    "desktopHeight": 84.6,
+    "mobileWidth": 340,
+    "mobileHeight": 50.76,
+    "responsive": {
+      "small": {
+        "file": "3f1a06bc-small.svg",
+        "size": 36,
+        "width": 280,
+        "height": 50.76
+      },
+      "medium": {
+        "file": "3f1a06bc-medium.svg",
+        "size": 42,
+        "width": 480,
+        "height": 59.21999999999999
+      },
+      "large": {
+        "file": "3f1a06bc-large.svg",
+        "size": 52,
+        "width": 720,
+        "height": 73.32
+      }
+    },
+    "locale": "es-LA",
+    "sourceHeading": "3a79f4cf",
+    "mobileFlow": {
+      "file": "1e023e30-flow.svg",
+      "lineHeight": 41.76,
+      "size": 36,
+      "spaceWidth": 7.3828125,
+      "words": [
+        {
+          "width": 190.09
+        }
+      ]
+    },
+    "align": "center"
   }
 }

@@ -73,7 +73,7 @@ export function SiteNavigation({
     };
   }, []);
   useEffect(() => {
-    const breakpoint = window.matchMedia('(max-width: 1200px)');
+    const breakpoint = window.matchMedia('(max-width: 1320px)');
     const closeMenus = () => {
       setMobileOpen(false);
       setExperienceOpen(false);
@@ -108,7 +108,14 @@ export function SiteNavigation({
           height="35"
         />
       </a>
-      <nav className="desktop-navigation" aria-label={c('ui.mainNavigation')}>
+      <nav
+        className="desktop-navigation"
+        aria-label={c('ui.mainNavigation')}
+        onFocusCapture={(event) => {
+          if (event.target instanceof HTMLAnchorElement)
+            setExperienceOpen(false);
+        }}
+      >
         <button
           className="experience-trigger"
           ref={trigger}
@@ -116,7 +123,11 @@ export function SiteNavigation({
           aria-controls="experience-menu"
           onClick={() => setExperienceOpen(!experienceOpen)}
           onKeyDown={(event) => {
-            if (event.key !== 'ArrowDown') return;
+            if (
+              event.key !== 'ArrowDown' &&
+              !(event.key === 'Tab' && !event.shiftKey && experienceOpen)
+            )
+              return;
             event.preventDefault();
             setExperienceOpen(true);
             requestAnimationFrame(() =>
@@ -128,36 +139,6 @@ export function SiteNavigation({
         >
           {c('navExperience')} <ChevronDown size={14} />
         </button>
-        <div
-          id="experience-menu"
-          className="experience-mega"
-          data-open={experienceOpen}
-          aria-hidden={!experienceOpen}
-          inert={!experienceOpen}
-        >
-          {spaces.map(([id, label, photo]) => (
-            <a
-              href={href(id)}
-              key={id}
-              aria-current={page === id ? 'page' : undefined}
-            >
-              <div className="mega-image">
-                <img
-                  src={asset(
-                    `/images/${classicNavigationPhoto(id, photo)}-thumb.webp`,
-                  )}
-                  alt=""
-                  width="800"
-                  height="600"
-                />
-              </div>
-              <span className="mega-label">{label}</span>
-            </a>
-          ))}
-          <a href={href('experience')} className="mega-index">
-            {c('ui.overview')} <ArrowUpRight size={16} />
-          </a>
-        </div>
         <a
           href={href('founder')}
           aria-current={page === 'founder' ? 'page' : undefined}
@@ -175,6 +156,55 @@ export function SiteNavigation({
           aria-current={page === 'press' ? 'page' : undefined}
         >
           {c('navPress')}
+        </a>
+      </nav>
+      <nav
+        id="experience-menu"
+        aria-label={c('navExperience')}
+        className="experience-mega"
+        data-open={experienceOpen}
+        aria-hidden={!experienceOpen}
+        inert={!experienceOpen}
+      >
+        {spaces.map(([id, label, photo], index) => (
+          <a
+            href={href(id)}
+            key={id}
+            aria-current={page === id ? 'page' : undefined}
+            onKeyDown={(event) => {
+              if (index === 0 && event.key === 'Tab' && event.shiftKey) {
+                event.preventDefault();
+                trigger.current?.focus();
+              }
+            }}
+          >
+            <div className="mega-image">
+              <img
+                src={asset(
+                  `/images/${classicNavigationPhoto(id, photo)}-thumb.webp`,
+                )}
+                alt=""
+                width="800"
+                height="600"
+              />
+            </div>
+            <span className="mega-label">{label}</span>
+          </a>
+        ))}
+        <a
+          href={href('experience')}
+          className="mega-index"
+          onKeyDown={(event) => {
+            if (event.key === 'Tab' && !event.shiftKey) {
+              event.preventDefault();
+              setExperienceOpen(false);
+              header.current
+                ?.querySelector<HTMLAnchorElement>('.desktop-navigation > a')
+                ?.focus();
+            }
+          }}
+        >
+          {c('ui.overview')} <ArrowUpRight size={16} />
         </a>
       </nav>
       <div className="header-actions">

@@ -6,7 +6,7 @@ The `blueprint` branch in `Razdorsky/vessyl-website-blueprint` is the only publi
 
 ## Design
 
-The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English and Latin American Spanish copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
+The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English and Latin American Spanish copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. The cinematic iteration adds glass navigation and cards, a scroll-linked photographic Dome chapter, a sticky Founder portrait, a wide Nature composition and one shared Two Doors atmosphere. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
 
 All 17 pages are available at clean URLs, such as `/founder/`, `/experience/`, `/sessions/` and `/stay/`. Spanish uses `/es-LA/` with formal usted and document language `es-419`. The globe selector preserves the current page.
 
@@ -37,6 +37,8 @@ GitHub Actions publishes pushes to `blueprint`. GitHub Pages uses Actions as its
 npm run build:github
 NEXT_PUBLIC_BASE_PATH=/vessyl-website-blueprint npm run check
 ```
+
+To preview this prefixed build, run `npm run preview` and open `http://localhost:4174/vessyl-website-blueprint/` (do not set `BASE_PATH`; the exported directory already includes the prefix).
 
 Only `outputs/github-pages` is deployed. Run `npm run build` again to restore unprefixed local URLs. Original raw sources, full media masters and research archives remain outside Git.
 

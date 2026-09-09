@@ -7,9 +7,9 @@
 @media (max-width: 560px) {
   .classic #content .brand-heading.heading-fluid-mobile,
   .classic #content .faq-list :is(h2, h3) {
-    width: calc(100vw - 32px);
-    max-width: none;
-    margin-inline: calc(50% - 50vw + 16px);
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
   }
   :is(.classic #content, .classic-controls)
     .heading-fluid-mobile
@@ -42,15 +42,10 @@
     height: auto;
     overflow: visible;
   }
-  /* Widen the animation clip, keeping the existing card/photo/prose widths. */
-  .classic #content .sessions-section .motion-height {
-    margin-inline: calc(16px - var(--page-pad));
-    padding-inline: calc(var(--page-pad) - 16px);
-  }
   .classic-controls .brand-heading.heading-fluid-mobile {
-    width: calc(100vw - 32px);
-    max-width: none;
-    margin-inline: calc(50% - 50vw + 16px);
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
   }
   .classic-controls.practice-dialog[data-slot='dialog-content'] {
     width: max(94vw, calc(100vw - 32px));

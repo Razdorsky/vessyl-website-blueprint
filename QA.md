@@ -1,9 +1,26 @@
-# Blueprint deep QA — 2026-09-09
+# Blueprint QA
 
 Independent repository: `Razdorsky/vessyl-website-blueprint`, publication branch `blueprint`. Original Classic remains at `cf87d51256a608376815a1b1a77a024250f7400d` with a clean local tree and matching remote main.
 
+## Systemic correction pass - 2026-09-10
 
-## Deep follow-up
+User screenshots exposed defects that the previous overflow checks missed. The earlier checks below are historical evidence, not proof of visual consistency. This pass measures alignment and proportions and reviews complete rendered pages.
+
+- Shared fixes: 16px mobile heading/prose/photo alignment; container-based heading flow; 29px flowing quotation outlines; 48px desktop header controls and centered hamburger; full-width Experience menu; uncapped Home Founder container; source-aspect editorial photos; wrapping collection heading/action rows; restored lightweight Two Doors and original closing composition.
+- Shared rhythm fixes: 28px prose/action and Room Concept heading/body gaps, compact accordion rows without extra heading margins, matching Contact photo corners, and room for the English filter label at narrow widths.
+- Complete visual review: all 17 English pages at 375px and 1440px, plus localized component views. Independent mobile review measured 514 heading/prose boxes on all 34 localized routes and 76 photographs on all 17 English pages at 375px; all align at 16px. Independent 360/560px review found a remaining travel prose cap, corrected in both uses/locales.
+- Independent desktop/tablet review covered 34 localized routes at 821, 1000, 1440 and 1920px, plus 20 short-window desktop menu cases. It found the fixed-height photo crops and squeezed Spanish Dome action; both were corrected at component level.
+- Responsive sweep (rechecked against the publication export): 1,870 page/locale/viewport combinations across Chromium, Firefox and WebKit, 360-3840px, breakpoint boundaries and short landscape windows; no horizontal overflow, clipped text, header collisions, page errors or failed resource requests. A further 60 final checks confirm Room Concept spacing, compact FAQ rows, Contact corners and filter label fit, including 360px.
+- Component regression checks: 192 cases across EN/es-LA and widths 360-2560px confirm quotation width/type size, Founder proportions, header geometry, full-width menu, lightweight Two Doors, photo aspect ratios and CTA gaps.
+- Independent functional review: 78 scenarios in Chromium/WebKit/Firefox, 68 axe page scans, 62 navigation observations, 12 settled drawer-focus checks and 20 gallery gesture cases. No new actionable functional issue; only user-approved heading-order advisories. The reviewer report is in `/tmp/vessyl-blueprint-a11y-2026-09-10/report.md`.
+- Slow local uncompressed-export lab (150ms RTT, 1.6Mbps, 4x CPU, 390px): all visible images loaded, no overflow or long tasks, CLS below 0.001. LCP remained over 2.5s under this deliberately constrained local delivery; this is not a claim of a passing real-user speed score. Public compressed delivery is checked separately.
+- Source checks pass for all 34 exports, 331 internal links/assets, approved text, duplicate prose, 251 translations and 132 image descriptions. No approved prose, registry photo assignment or font size was changed.
+
+Evidence: ignored `docs/qa/system-2026-09-10/` and independent reports. Minimum supported design width is 360px; 375px is mandatory. Physical-device and real-user performance claims remain outside this evidence.
+
+## Historical checks - 2026-09-09
+
+### Deep follow-up
 
 - Chromium, Firefox and WebKit: 17 pages in both locales. Responsive matrix covers 1,904 combinations, including widths 320–3840px, each CSS breakpoint on both sides, portrait/landscape and short desktop windows. A 720×450 CSS viewport checks reflow equivalent to 200% zoom on a 1440×900 window.
 - Independent SVG glyph measurements: 13,014 checks across eight EN/es-LA routes, every width from 320 through 560px. Mobile glass frames now extend to an 8px outer gutter while heading artwork retains its approved 16px viewport gutter. No final glyph escapes its card.

@@ -13,6 +13,9 @@
 .classic #content :is(.section, .intro-section, .press-marks) {
   padding-inline: max(var(--page-pad), calc((100vw - var(--bp-measure)) / 2));
 }
+.classic #content :is(.split-editorial, .session-cta, .people-list) p {
+  max-width: var(--bp-prose-measure);
+}
 .classic #content :is(.intro-body, .page-hero-copy > p) {
   max-width: var(--bp-prose-measure);
 }
@@ -90,8 +93,37 @@
 .classic .image-window img {
   transition: transform var(--bp-duration-scene) var(--bp-ease);
 }
+/* Collection headings and actions wrap as a row before either is squeezed. */
 .classic #content .section-heading {
   align-items: center;
+  flex-wrap: wrap;
+}
+.classic #content .section-heading > .text-link {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+@media (min-width: 821px) {
+  .classic #content .section-heading > .brand-heading {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+  .classic #content .section-heading > .text-link {
+    white-space: nowrap;
+  }
+}
+.classic #content .room-description > .brand-heading + p {
+  margin-top: var(--bp-copy-gap);
+}
+/* Photography follows its source proportions. Fixed-height portrait crops
+   must be an explicit composition, never the default for editorial stories. */
+.classic .split-editorial > img {
+  height: auto;
+}
+.classic #content .section p:has(+ :is(.text-link, .button)) {
+  margin-bottom: 0;
+}
+.classic #content .section p + :is(.text-link, .button) {
+  margin-top: var(--bp-copy-gap);
 }
 .classic .practice-grid {
   column-gap: var(--bp-grid-gap);
@@ -135,16 +167,6 @@
   background: var(--forest);
   color: var(--cream);
 }
-.classic #content .two-doors-options {
-  column-gap: var(--bp-story-gap);
-}
-.classic .two-doors-option {
-  padding-top: var(--bp-space-4);
-  border-top: 1px solid color-mix(in srgb, var(--cream) 36%, transparent);
-}
-.classic .two-doors-content {
-  max-width: 1120px;
-}
 .classic .two-doors-heading p {
   max-width: var(--bp-prose-measure);
 }
@@ -159,6 +181,9 @@
 .classic .resource-links {
   border-top: 1px solid var(--bp-border);
 }
+.classic .contact-aside > img {
+  border-radius: var(--bp-radius-photo);
+}
 .classic .contact-links a,
 .classic .resource-links a {
   border-color: var(--bp-border);
@@ -171,6 +196,9 @@
 }
 .classic :is(.contact-links, .resource-links) a svg {
   transition: transform var(--bp-duration-panel) var(--bp-ease);
+}
+.classic #content .faq-list [data-slot='accordion-item'] > :is(h2, h3) {
+  margin-block: 0;
 }
 .classic .faq-list [data-slot='accordion-item'] {
   border-color: var(--bp-border);
@@ -322,11 +350,11 @@
   .classic .experience-card .brand-heading {
     padding-bottom: 20px;
   }
-  .classic .filter-tabs [data-slot='tabs-trigger'] {
-    padding-inline: 16px;
+  .classic .session-filter .filter-tabs {
+    grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, 1fr));
   }
-  .classic .two-doors-option {
-    padding-top: 24px;
+  .classic .filter-tabs [data-slot='tabs-trigger'] {
+    padding-inline: 8px;
   }
   .classic .home-hero {
     min-height: 680px;

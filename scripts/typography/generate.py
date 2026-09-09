@@ -46,7 +46,7 @@ with tempfile.TemporaryDirectory(prefix='vessyl-type-') as temporary:
                                             else entry.get('responsive', {}).get('small', {}).get('size', sizes['mobile'][entry['style']][0])),
                       weight=entry.get('weight', 700 if entry['style'] == 'h1' else 400), file=f'{key}-flow.svg')
                  for key, entry in manifest.items()
-                 if entry['style'] in ('h2', 'h3') or (entry['style'] == 'h1' and entry.get('weight') == 700)]
+                 if entry['style'] in ('h2', 'h3', 'quote') or (entry['style'] == 'h1' and entry.get('weight') == 700)]
     job_path.write_text(json.dumps(flow_jobs))
     flow_result = subprocess.run(['swift', str(Path(__file__).with_name('mobile-flow.swift')),
                                   str(job_path), str(root / 'public/typography'),

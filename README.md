@@ -6,7 +6,7 @@ The `blueprint` branch in `Razdorsky/vessyl-website-blueprint` is the only publi
 
 ## Design
 
-The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English and Latin American Spanish copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. The cinematic iteration adds glass navigation and cards, a scroll-linked photographic Dome chapter, a sticky Founder portrait, a wide Nature composition and one shared Two Doors atmosphere. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
+The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English and Latin American Spanish copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. The cinematic iteration adds glass navigation and cards, a scroll-linked photographic Dome chapter, a sticky Founder portrait, a wide Nature composition and the approved lightweight Two Doors composition. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
 
 All 17 pages are available at clean URLs, such as `/founder/`, `/experience/`, `/sessions/` and `/stay/`. Spanish uses `/es-LA/` with formal usted and document language `es-419`. The globe selector preserves the current page.
 
@@ -45,7 +45,8 @@ Only `outputs/github-pages` is deployed. Run `npm run build` again to restore un
 ## Preserved product contracts
 
 - Approved English and Spanish copy, all 17 pages, booking/email destinations, and required disabled app-store placeholders.
-- H1 Bold; mobile H1 39px and 16px heading gutters; desktop display artwork preserved. Prose measure 680px, H3/prose gap 28px.
+- Mobile minimum 360px, with 375px also required in design and QA.
+- H1 Bold; mobile H1 39px and shared 16px mobile content gutters; desktop display artwork preserved. Prose measure 680px, H3/prose gap 28px.
 - Outlined 4px CTAs, selected photograph/video radius 10px, original optical Dome alignment and 2× Dome mark.
 - Film width 80% desktop and 95% at <=820px; silent loop on view, restart with sound/no loop at first activation, then icon-only sound/playback controls on every film.
 - Stacked gallery previews, keyboard/edge/swipe navigation, thumbnails, Escape and opener-focus restoration.

@@ -221,65 +221,27 @@ function ClassicPage({ page }: { page: string }) {
   const hasTwoDoors = page === 'home' || page === 'experience';
   const twoDoors = (
     <section className="two-doors section pattern-panel">
-      <Photo
-        className="bp-doors-backdrop"
-        id={photo('closing', 'closing-design-direction')}
-        sizes="100vw"
-      />
       <Pattern tone="forest" />
-      <div className="two-doors-content">
+      <div className="two-doors-content" data-bp-reveal="copy">
         <div className="two-doors-heading">
           {heading('twoDoors', true)}
           {text('twoDoorsIntro')}
         </div>
         <div className="two-doors-options">
-          <div className="two-doors-option bp-door-place" data-bp-reveal="card">
-            <div className="bp-door-image" aria-hidden="true">
-              <img
-                src={asset('/brand/logo-aken-white.svg')}
-                width="280"
-                height="60"
-                alt=""
-              />
-            </div>
-            <div className="bp-door-copy">
-              <span className="eyebrow">{c('inPerson')}</span>
-              <Heading as="h3" text={c('stayCostaRica')} light />
-              <LinkArrow href={BOOKING} button light external>
-                {c('bookStay')}
-              </LinkArrow>
-            </div>
+          <div className="two-doors-option">
+            <span className="eyebrow">{c('inPerson')}</span>
+            <Heading as="h3" text={c('stayCostaRica')} light />
+            <LinkArrow href={BOOKING} button light external>
+              {c('bookStay')}
+            </LinkArrow>
           </div>
-          <div
-            className="two-doors-option bp-door-digital"
-            data-bp-reveal="card"
-          >
-            <div className="bp-door-image bp-door-brand" aria-hidden="true">
-              <img
-                src={asset('/brand/logo-white.svg')}
-                width="246"
-                height="48"
-                alt=""
-              />
-              <img
-                className="bp-door-echo"
-                src={asset('/brand/dome-echo.svg')}
-                width="1440"
-                height="810"
-                alt=""
-              />
-            </div>
-            <div className="bp-door-copy">
-              <span className="eyebrow">{c('fromAnywhere')}</span>
-              <Heading as="h3" text={c('sessionsPocket')} light />
-              <LinkArrow href={href('app')} button light>
-                {c('downloadTheApp')}
-              </LinkArrow>
-            </div>
+          <div className="two-doors-option">
+            <span className="eyebrow">{c('fromAnywhere')}</span>
+            <Heading as="h3" text={c('sessionsPocket')} light />
+            <LinkArrow href={href('app')} button light>
+              {c('downloadTheApp')}
+            </LinkArrow>
           </div>
-        </div>
-        <div className="bp-doors-signature" data-bp-reveal="copy">
-          <Heading text={c('closingPresence')} light align="center" />
         </div>
       </div>
     </section>
@@ -974,16 +936,35 @@ function ClassicPage({ page }: { page: string }) {
       <SiteNavigation edition={edition} page={page} />
       <main id="content">
         {content}
-        {!hasTwoDoors && (
-          <section className="closing-invitation">
-            <Photo id={photo('closing', 'hero-arenal')} alt="" sizes="100vw" />
-            <div />
-            <Heading text={c('stayCta')} light align="center" />
+        <section
+          className={`closing-invitation ${hasTwoDoors ? 'closing-signature' : ''} ${page === 'home' ? 'closing-reference' : ''}`}
+        >
+          <Photo
+            id={photo(
+              'closing',
+              page === 'home'
+                ? 'closing-design-direction'
+                : page === 'experience'
+                  ? 'nature-waterfall'
+                  : 'hero-arenal',
+            )}
+            alt=""
+            sizes={
+              page === 'home' ? '(max-width: 1000px) 1120px, 100vw' : '100vw'
+            }
+          />
+          <div />
+          <Heading
+            text={c(hasTwoDoors ? 'closingPresence' : 'stayCta')}
+            light
+            align="center"
+          />
+          {!hasTwoDoors && (
             <LinkArrow href={BOOKING} button light external>
               {c('bookStay')}
             </LinkArrow>
-          </section>
-        )}
+          )}
+        </section>
       </main>
       <footer className="site-footer">
         <img

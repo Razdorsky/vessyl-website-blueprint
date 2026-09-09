@@ -18,7 +18,7 @@ export function DomeJourney({
     const section = root.current;
     if (!section) return;
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
-    const wide = matchMedia('(min-width: 1001px)');
+    const wide = matchMedia('(min-width: 1001px) and (min-height: 601px)');
     let frame = 0;
     let visible = false;
     const update = () => {
@@ -96,16 +96,24 @@ export function DomeJourney({
           width="1060"
           height="1300"
           decoding="async"
-        />
-        <img
-          className="bp-dome-shell"
-          src={asset('/cinematic/dome-shell.webp')}
-          alt=""
-          width="1500"
-          height="1165"
-          decoding="async"
           fetchPriority="high"
         />
+        <picture>
+          {/* Static layouts never display the exterior; skip its download. */}
+          <source
+            media="(max-width: 1000px), (max-height: 600px), (prefers-reduced-motion: reduce)"
+            srcSet="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1'%20height='1'/%3E"
+          />
+          <img
+            className="bp-dome-shell"
+            src={asset('/cinematic/dome-shell.webp')}
+            alt=""
+            width="1500"
+            height="1165"
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
       </div>
     </section>
   );

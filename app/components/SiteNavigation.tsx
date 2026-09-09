@@ -35,6 +35,7 @@ export function SiteNavigation({
   const [experienceOpen, setExperienceOpen] = useState(false);
   const header = useRef<HTMLElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
+  const focusExperienceOnOpen = useRef(false);
   const href = (p = 'home') => pagePath(edition, p, locale);
   const jointLogo = ['stay', 'rancho', 'contact'].includes(page);
   const spaces = [
@@ -43,6 +44,13 @@ export function SiteNavigation({
     ['nature', c('navNature'), 'equine'],
     ['stay', c('stay'), 'pool'],
   ];
+  useEffect(() => {
+    if (!experienceOpen || !focusExperienceOnOpen.current) return;
+    focusExperienceOnOpen.current = false;
+    header.current
+      ?.querySelector<HTMLAnchorElement>('#experience-menu a')
+      ?.focus();
+  }, [experienceOpen]);
   useEffect(() => {
     const outside = (event: PointerEvent) => {
       if (!header.current?.contains(event.target as Node))
@@ -129,12 +137,14 @@ export function SiteNavigation({
             )
               return;
             event.preventDefault();
-            setExperienceOpen(true);
-            requestAnimationFrame(() =>
+            if (experienceOpen) {
               header.current
                 ?.querySelector<HTMLAnchorElement>('#experience-menu a')
-                ?.focus(),
-            );
+                ?.focus();
+            } else {
+              focusExperienceOnOpen.current = true;
+              setExperienceOpen(true);
+            }
           }}
         >
           {c('navExperience')} <ChevronDown size={14} />

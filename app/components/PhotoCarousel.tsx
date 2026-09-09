@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type MouseEvent,
 } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -32,6 +33,7 @@ export function PhotoCarousel({
   const { c } = useLocale();
   const [start] = useState(initialIndex);
   const scope = useRef<HTMLElement>(null);
+  const controlStart = useRef<number | null>(null);
   const [index, setIndex] = useState(initialIndex);
   const [viewport, api] = useEmblaCarousel({
     loop: images.length > 1,
@@ -60,6 +62,24 @@ export function PhotoCarousel({
     if (api?.canScrollNext()) api.scrollNext();
     else api?.scrollTo(0);
   }, [api]);
+  const rememberControlStart = () => {
+    controlStart.current = api?.selectedScrollSnap() ?? index;
+  };
+  const activateControl = (
+    event: MouseEvent<HTMLButtonElement>,
+    step: number,
+  ) => {
+    if (!api) return;
+    // A pointer can interrupt an in-flight drag animation before click fires.
+    // Advance from the requested photo while preserving swipes over the edges.
+    const from =
+      event.detail > 0
+        ? (controlStart.current ?? api.selectedScrollSnap())
+        : api.selectedScrollSnap();
+    controlStart.current = null;
+    api.scrollTo((from + step + images.length) % images.length);
+    event.currentTarget.focus({ preventScroll: true });
+  };
   const handleKey = useCallback(
     (event: globalThis.KeyboardEvent) => {
       if (
@@ -142,7 +162,8 @@ export function PhotoCarousel({
               className="photo-edge photo-edge-previous"
               type="button"
               aria-label={c('ui.previous')}
-              onClick={previous}
+              onPointerDown={rememberControlStart}
+              onClick={(event) => activateControl(event, -1)}
             >
               <span>
                 <ArrowLeft size={21} aria-hidden="true" />
@@ -152,7 +173,8 @@ export function PhotoCarousel({
               className="photo-edge photo-edge-next"
               type="button"
               aria-label={c('ui.next')}
-              onClick={next}
+              onPointerDown={rememberControlStart}
+              onClick={(event) => activateControl(event, 1)}
             >
               <span>
                 <ArrowRight size={21} aria-hidden="true" />
@@ -181,7 +203,10 @@ export function PhotoCarousel({
               key={item.id}
               aria-label={`${c('ui.view')} ${item.caption} (${i + 1} / ${images.length})`}
               aria-pressed={index === i}
-              onClick={() => api?.scrollTo(i)}
+              onClick={(event) => {
+                api?.scrollTo(i);
+                event.currentTarget.focus({ preventScroll: true });
+              }}
             >
               <Photo id={item.id} sizes="80px" />
             </button>

@@ -87,6 +87,18 @@
   padding: 30px 24px;
   gap: 24px;
 }
+.classic-controls .mobile-brand {
+  max-width: calc(100% - 56px);
+}
+.classic .press-marks > .eyebrow {
+  color: var(--accent-pressed);
+}
+.classic .press-marks {
+  opacity: 1;
+}
+.classic .press-marks > div {
+  opacity: 0.85;
+}
 .classic .header-actions .language-trigger {
   border-radius: 50px;
   padding-inline: 12px;
@@ -387,6 +399,7 @@
 .bp-dome-opening p,
 .bp-dome-technology p {
   max-width: 540px;
+  margin-inline: auto;
   color: var(--cream);
 }
 .classic .bp-dome-journey p:not(.eyebrow) {
@@ -408,7 +421,11 @@
 }
 .bp-dome-technology .sensory-tabs {
   justify-content: center;
+  align-items: stretch;
   width: 100%;
+}
+.bp-dome-technology .sensory-tabs [data-slot='tabs-trigger'] {
+  height: auto;
 }
 .bp-dome-stage {
   grid-column: 2;
@@ -417,12 +434,12 @@
   top: 0;
   align-self: start;
   height: 100svh;
-  min-height: 650px;
+  min-height: 0;
   perspective: 1200px;
   isolation: isolate;
   pointer-events: none;
 }
-.bp-dome-stage > img {
+.bp-dome-stage img {
   position: absolute;
   object-fit: contain;
 }
@@ -521,7 +538,9 @@
   opacity: calc(0.16 - var(--dome-progress) * 0.1);
   transform: scale(calc(0.9 + var(--dome-progress) * 0.2));
 }
-@media (max-width: 1000px) {
+@media (max-width: 1000px),
+  (max-height: 600px),
+  (prefers-reduced-motion: reduce) {
   .classic .bp-dome-journey {
     display: flex;
     flex-direction: column;
@@ -539,7 +558,7 @@
   .bp-dome-stage {
     order: 1;
     position: relative;
-    height: min(720px, 105vw);
+    height: min(720px, 105vw, calc(100svh - 48px));
     min-height: 0;
     width: 100%;
   }
@@ -591,8 +610,17 @@
   }
 }
 @media (max-width: 560px) {
-  .classic #content .two-doors-options {
+  .classic
+    #content
+    :is(.two-doors-options, .practice-grid, .experience-grid, .travel-columns) {
     margin-inline: calc(8px - var(--page-pad));
+  }
+  .classic #content .app-features {
+    padding-inline: 8px;
+  }
+  .classic #content .sessions-section .motion-height {
+    margin-inline: calc(-1 * var(--page-pad));
+    padding-inline: var(--page-pad);
   }
   .classic .experience-card {
     padding: 8px 8px 0;
@@ -621,7 +649,18 @@
     height: 64px;
   }
 }
+@media (max-height: 600px) {
+  .bp-founder-portrait {
+    position: relative;
+    top: auto;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .classic .experience-mega,
+  .classic .experience-mega *,
+  .classic .practice-card {
+    transition: none;
+  }
   .bp-dome-stage .bp-dome-shell {
     display: none;
   }

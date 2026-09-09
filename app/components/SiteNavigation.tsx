@@ -221,9 +221,9 @@ export function SiteNavigation({
         </a>
       </nav>
       <div className="header-actions">
-        <LanguageSelector edition={edition} page={page} />
-        {appAction}
         {bookAction}
+        {appAction}
+        <LanguageSelector edition={edition} page={page} />
       </div>
       <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
         <DialogTrigger className="menu-toggle" aria-label={c('ui.menu')}>

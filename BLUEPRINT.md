@@ -64,6 +64,7 @@ The motion/react recipes are adapted to the existing CSS, browser View Transitio
 
 ## Responsive component contracts
 
+- The Dome interior uses an 800px / 94,700-byte derivative on narrow screens when pixel density allows; larger screens and high-density phones retain the 1060px original. Responsive preload and image candidates must agree so only one interior is downloaded. The desktop photographic layers remain approximately 474 KiB combined.
 - Ordinary story photos use their source aspect ratio. Fixed crops belong only to named hero/portrait/scenic compositions. Preserve faces and the existing registry positions.
 - Collection heading/action rows wrap before squeezing an action into a narrow column.
 - Mobile quotes use Telugu MN word outlines at 29px; their container is the available content width. Desktop quotation artwork remains unchanged.

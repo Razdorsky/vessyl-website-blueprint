@@ -89,9 +89,13 @@ export function DomeJourney({
           width="1440"
           height="810"
         />
+        {/* Responsive candidates also populate React's image preload. Keep the
+            original on larger screens and phones whose density needs it. */}
         <img
           className="bp-dome-inside"
           src={asset('/cinematic/dome-inside.webp')}
+          srcSet={`${asset('/cinematic/dome-inside-800.webp')} 800w, ${asset('/cinematic/dome-inside.webp')} 1060w`}
+          sizes="(max-width: 560px) calc(100vw - 32px), 1060px"
           alt=""
           width="1060"
           height="1300"

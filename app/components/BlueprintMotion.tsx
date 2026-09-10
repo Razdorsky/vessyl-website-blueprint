@@ -1,8 +1,9 @@
 'use client';
 import { useEffect } from 'react';
 
-const HERO_PARALLAX_RATE = (0.04 * 4) / 3;
-const HERO_PARALLAX_LIMIT = 32;
+const HERO_PARALLAX_STRENGTH = 1.15;
+const HERO_PARALLAX_RATE = ((0.04 * 4) / 3) * HERO_PARALLAX_STRENGTH;
+const HERO_PARALLAX_LIMIT = 32 * HERO_PARALLAX_STRENGTH;
 
 /** Progressive enhancement: complete static content is the initial state.
  * Observe semantic groups once; never obscure content reached with a keyboard. */

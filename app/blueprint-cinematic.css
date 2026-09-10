@@ -2,77 +2,53 @@
 :root {
   --bp-radius-glass: 24px;
   --bp-glass-edge: rgb(245 235 231 / 22%);
-  --bp-glass-dark: rgb(21 28 20 / 88%);
+  --bp-menu-color: #151c14;
+  --bp-glass-dark: color-mix(in srgb, var(--bp-menu-color) 88%, transparent);
   --bp-glass-light: rgb(245 235 231 / 91%);
+  --bp-menu-background:
+    linear-gradient(135deg, rgb(245 235 231 / 7%), transparent 60%),
+    var(--bp-glass-dark);
+  --bp-menu-fallback: var(--forest);
+  --bp-navigation-background:
+    linear-gradient(135deg, rgb(245 235 231 / 12%), transparent 80%),
+    color-mix(in srgb, var(--header-background) 78%, transparent);
+  --bp-menu-text: var(--cream);
   --bp-glass-blur: 16px;
   --bp-glass-shadow:
     0 16px 48px -16px rgb(0 0 0 / 32%), inset 0 1px 0 rgb(245 235 231 / 22%);
   --bp-header-height: 110px;
-  --bp-header-control-height: 48px;
+  --bp-header-gradient-reach: 175%;
+  --bp-header-gradient-mid-opacity: 60%;
+  --bp-header-gradient-mid-stop: 42%;
+  --bp-header-control-height: var(--bp-control-height);
   --bp-header-control-radius: calc(var(--bp-header-control-height) / 2);
 }
 .classic
   .site-header
-  :is(
-    .desktop-navigation,
-    .header-action-group,
-    .header-actions .language-trigger
-  ) {
+  :is(.desktop-navigation, .header-actions .language-trigger) {
   height: var(--bp-header-control-height);
   min-height: var(--bp-header-control-height);
   padding-block: 0;
   align-items: center;
   border: 1px solid var(--bp-glass-edge);
   border-radius: var(--bp-header-control-radius);
-  background:
-    linear-gradient(135deg, rgb(245 235 231 / 12%), transparent 80%),
-    color-mix(in srgb, var(--header-background) 78%, transparent);
+  background: var(--bp-navigation-background);
   backdrop-filter: blur(12px);
   box-shadow: var(--bp-glass-shadow);
 }
-.classic .site-header :is(.desktop-navigation, .header-action-group) {
+.classic .site-header .desktop-navigation {
   padding-inline: 22px;
   gap: 24px;
 }
 .classic .site-header .header-actions {
   display: contents;
 }
-.classic .site-header .header-action-group {
-  display: flex;
-  flex-shrink: 0;
-}
-.classic .site-header .header-actions .header-action-group > a {
-  position: relative;
-  height: 44px;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  color: inherit;
-  font-size: 16px;
-}
-.classic .header-action-group > a::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  bottom: 5px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--bp-duration-control) var(--bp-ease);
-}
-.classic .header-action-group > .nav-book::after {
-  right: 27px;
-}
-.classic .header-action-group > a:is(:hover, :focus-visible)::after {
-  transform: scaleX(1);
-}
-.classic .desktop-navigation > a {
+.classic .desktop-navigation > :is(a, button) {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  height: calc(var(--bp-header-control-height) - 2px);
+  min-height: calc(var(--bp-header-control-height) - 2px);
+  padding-block: 0;
 }
 .classic .site-header .desktop-navigation > a::after {
   bottom: 5px;
@@ -89,15 +65,13 @@
   gap: 24px;
   border: 1px solid var(--bp-glass-edge);
   border-radius: var(--bp-radius-glass);
-  background:
-    linear-gradient(135deg, rgb(245 235 231 / 7%), transparent 60%),
-    var(--bp-glass-dark);
-  color: var(--cream);
+  background: var(--bp-menu-background);
+  color: var(--bp-menu-text);
   backdrop-filter: blur(var(--bp-glass-blur));
   box-shadow: var(--bp-glass-shadow);
 }
 .classic .experience-mega .mega-index {
-  color: var(--cream);
+  color: var(--bp-menu-text);
 }
 .classic .site-header .experience-mega > a::after {
   display: none;
@@ -168,19 +142,112 @@
   }
 }
 @media (min-width: 1321px) and (max-width: 1500px) {
-  .classic .site-header :is(.desktop-navigation, .header-action-group) {
+  .classic .site-header .desktop-navigation {
     gap: 18px;
     padding-inline: 18px;
   }
 }
+@media (min-width: 1321px) {
+  html:has(.classic[data-page='home']) {
+    --bp-menu-background: var(--bp-navigation-background);
+    --bp-menu-fallback: var(--header-background);
+  }
+  .classic
+    .site-header
+    :is(
+      .desktop-navigation > a,
+      .experience-trigger,
+      .header-actions .language-trigger
+    ) {
+    font-size: var(--bp-control-font-size);
+    line-height: var(--bp-control-line-height);
+  }
+  .classic .site-header {
+    justify-content: flex-start;
+    column-gap: var(--bp-space-1);
+  }
+  .classic .site-header .desktop-navigation {
+    margin-inline-start: auto;
+    flex-shrink: 0;
+  }
+  .language-popover {
+    background: var(--bp-menu-background);
+    color: var(--bp-menu-text);
+    border-color: var(--bp-glass-edge);
+  }
+  .language-popover a:is(:hover, :focus-visible),
+  .language-popover a[aria-current] {
+    background: color-mix(in srgb, var(--bp-menu-text) 8%, transparent);
+    color: var(--bp-menu-text);
+  }
+}
 @supports not (backdrop-filter: blur(1px)) {
   .classic .experience-mega {
-    background: var(--forest);
+    background: var(--bp-menu-fallback);
   }
   .language-popover,
   .menu-dialog.classic-controls[data-slot='dialog-content'] {
     background: var(--paper);
   }
+  @media (min-width: 1321px) {
+    .language-popover {
+      background: var(--bp-menu-fallback);
+    }
+  }
+}
+
+/* Every header shares the same painted reach, independent of hero height.
+   Page-specific colors, navigation geometry and dropdown placement stay intact. */
+.classic[data-page] .site-header[data-header-tone] {
+  background: none;
+  border-bottom: 0;
+  isolation: isolate;
+}
+.classic[data-page] .site-header[data-header-tone]::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--bp-header-gradient-reach);
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    var(--header-background),
+    color-mix(
+        in srgb,
+        var(--header-background) var(--bp-header-gradient-mid-opacity),
+        transparent
+      )
+      var(--bp-header-gradient-mid-stop),
+    transparent
+  );
+}
+.classic[data-page='home'] .site-header[data-header-tone]::before {
+  background: linear-gradient(
+    180deg,
+    var(--classic-hero-shade) 8.152%,
+    color-mix(in srgb, var(--classic-hero-shade) 60%, transparent) 41.163%,
+    color-mix(in srgb, var(--classic-hero-shade) 0%, transparent) 100%
+  );
+}
+
+/* One photo-opening size, based on Sessions; the Dome has its own scene. */
+.classic #content > .photo-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: var(--bp-photo-hero-height);
+  max-height: none;
+  padding: var(--bp-photo-hero-top) var(--page-pad) var(--bp-photo-hero-bottom);
+}
+.classic #content > .photo-hero > :is(.hero-copy, .page-hero-copy) {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: 100%;
+  max-width: 960px;
+  text-align: center;
 }
 
 /* Photos sit inside a light frame; smaller surfaces carry the glass material. */
@@ -263,7 +330,12 @@
   backdrop-filter: blur(12px);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 80%);
 }
-/* A human story: the portrait stays present while the biography unfolds. */
+/* Keep the guest's face inside Nature's narrower background-photo crop. */
+.classic[data-page='nature'] .page-hero .hero-photo {
+  object-position: 66% center;
+}
+
+/* A human story: the portrait and profile introduce the founder. */
 /* Viewport gutters belong to a full-width section, not a second capped box. */
 .classic #content .founder-bridge .photo-bridge {
   width: 100%;
@@ -295,43 +367,6 @@
     margin-inline: auto;
   }
 }
-.classic #content .bp-founder-story {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: var(--bp-story-gap);
-  align-items: start;
-  overflow: visible;
-  --block-start: 32px;
-  --block-end: 32px;
-}
-.bp-founder-portrait {
-  position: sticky;
-  top: 32px;
-  margin-top: -64px;
-  z-index: 1;
-}
-.bp-founder-portrait > img {
-  width: 100%;
-  height: min(760px, calc(100svh - 64px));
-  min-height: 400px;
-  object-fit: cover;
-  object-position: center 35%;
-  border-radius: var(--bp-radius-photo);
-  box-shadow: var(--bp-shadow-photo);
-}
-.bp-founder-narrative {
-  display: grid;
-  gap: 64px;
-}
-.bp-founder-narrative p {
-  margin-block: 28px 0;
-}
-.bp-founder-narrative .intro-body {
-  margin-top: 28px;
-}
-.classic #content .bp-founder-narrative .brand-heading {
-  max-width: 100%;
-}
 /* The Dome's original photographic layers form one local scroll chapter. */
 .classic .bp-dome-journey {
   --dome-progress: 0;
@@ -348,13 +383,8 @@
   overflow-x: clip;
 }
 .classic:has(.bp-dome-journey) .site-header {
-  border-bottom: 0;
-  background: linear-gradient(
-    180deg,
-    var(--header-background) 0%,
-    color-mix(in srgb, var(--header-background) 85%, transparent) 45%,
-    transparent 100%
-  );
+  --bp-header-gradient-mid-opacity: 85%;
+  --bp-header-gradient-mid-stop: 45%;
 }
 .bp-dome-narrative {
   grid-column: 1;
@@ -380,9 +410,6 @@
   max-width: 540px;
   margin-inline: auto;
   color: var(--cream);
-}
-.classic .bp-dome-journey p:not(.eyebrow) {
-  text-shadow: var(--paragraph-shadow-dark);
 }
 .bp-dome-opening > .brand-heading {
   margin-bottom: 28px;
@@ -559,26 +586,6 @@
     opacity: 0.12;
   }
 }
-@media (max-width: 820px) {
-  .classic #content .bp-founder-story {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 40px;
-  }
-  .bp-founder-portrait {
-    position: relative;
-    top: auto;
-    margin-top: -48px;
-  }
-  .bp-founder-portrait > img {
-    height: auto;
-    max-height: 700px;
-    min-height: 0;
-    object-fit: contain;
-  }
-  .bp-founder-narrative {
-    gap: 40px;
-  }
-}
 /* Mobile content has one alignment line at 16px. Framed cards may extend
    8px beyond it; their 1px border + 7px inset return ALL content to that line. */
 @media (max-width: 560px) {
@@ -630,7 +637,6 @@
       .split-editorial,
       .session-cta,
       .people-list,
-      .bp-founder-narrative,
       .quote-section,
       .travel-columns
     )
@@ -648,16 +654,9 @@
     height: 64px;
   }
 }
-@media (max-height: 600px) {
-  .bp-founder-portrait {
-    position: relative;
-    top: auto;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .classic .experience-mega,
   .classic .experience-mega *,
-  .classic .header-action-group > a::after,
   .classic .practice-card {
     transition: none;
   }
@@ -671,7 +670,6 @@
   .bp-dome-stage .bp-dome-rings {
     transform: none;
   }
-  .bp-founder-portrait,
   .bp-dome-stage {
     position: relative;
   }

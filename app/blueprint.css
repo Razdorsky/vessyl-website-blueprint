@@ -6,6 +6,10 @@
   --space-accent: calc(var(--bp-section) + var(--bp-space-4));
   --space-stack: var(--bp-grid-gap);
   --space-copy: var(--bp-copy-gap);
+  /* Midpoint of the former large top and photo-bridge bottom insets. */
+  --bp-pattern-inset: calc(
+    (var(--space-accent) + var(--photo-overlap) + var(--photo-clearance)) / 2
+  );
 }
 .classic #content p {
   text-wrap: pretty;
@@ -35,9 +39,20 @@
 .classic .home-hero .hero-copy {
   max-width: 1000px;
 }
-.classic #content .home-introduction {
-  --block-start: var(--space-accent);
-  --block-end: calc(var(--photo-overlap) + var(--bp-space-8));
+/* Pattern surfaces own equal insets, including the wrapped Home introduction.
+   Explicit padding keeps inherited photo-bridge rules from shortening one edge. */
+.classic #content section.pattern-panel,
+.classic #content #introduction > .intro-section {
+  --block-start: var(--bp-pattern-inset);
+  --block-end: var(--bp-pattern-inset);
+  padding-block: var(--bp-pattern-inset);
+}
+.classic #content section.pattern-panel > .brand-pattern + *,
+.classic #content section.pattern-panel > .brand-pattern + div > :first-child {
+  margin-top: 0;
+}
+.classic #content section.pattern-panel > :last-child {
+  margin-bottom: 0;
 }
 .classic #content .experience-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -221,7 +236,8 @@
   opacity: 0.85;
 }
 .classic .site-footer {
-  background: var(--forest);
+  /* Every page uses the Home header color, independent of its own header tone. */
+  background: var(--header-warm);
   color: var(--cream);
 }
 .classic .footer-grid {
@@ -248,6 +264,14 @@
   margin-bottom: var(--bp-space-8);
   height: auto;
   opacity: 0.95;
+}
+@media (min-width: 1321px) {
+  .classic :is(.button, .text-link),
+  .classic-controls :is(.button, .text-link) {
+    min-height: var(--bp-control-height);
+    font-size: var(--bp-control-font-size);
+    line-height: var(--bp-control-line-height);
+  }
 }
 .classic :is(.button, .text-link, .nav-book, .nav-download),
 .classic-controls :is(.button, .text-link, .nav-book, .nav-download) {

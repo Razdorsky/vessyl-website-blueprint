@@ -1,6 +1,9 @@
 'use client';
 import { useEffect } from 'react';
 
+const HERO_PARALLAX_RATE = (0.04 * 4) / 3;
+const HERO_PARALLAX_LIMIT = 32;
+
 /** Progressive enhancement: complete static content is the initial state.
  * Observe semantic groups once; never obscure content reached with a keyboard. */
 export function useBlueprintMotion(page: string, locale: string) {
@@ -17,13 +20,9 @@ export function useBlueprintMotion(page: string, locale: string) {
       '.home-hero, .page-hero:not(.people-hero)',
     );
     const image = hero?.querySelector<HTMLElement>('.hero-photo');
-    const connection = (
-      navigator as Navigator & { connection?: { saveData?: boolean } }
-    ).connection;
-    const gentleScene =
-      page !== 'sessions' &&
-      !connection?.saveData &&
-      navigator.hardwareConcurrency > 4;
+    // Preserve Sessions' approved face-sensitive crop; other photo scenes work
+    // at every viewport width without relying on reported CPU counts.
+    const gentleScene = page !== 'sessions';
     const reveal = (node: HTMLElement, instant = false) => {
       if (instant) {
         node.style.setProperty('--bp-reveal-delay', '0ms');
@@ -80,8 +79,7 @@ export function useBlueprintMotion(page: string, locale: string) {
     const updateScene = () => {
       frame = 0;
       if (!hero || !image) return;
-      const enabled =
-        gentleScene && wide.matches && !reduced.matches && !document.hidden;
+      const enabled = gentleScene && !reduced.matches && !document.hidden;
       image.dataset.bpScene = enabled ? 'true' : 'false';
       if (!enabled) {
         image.style.removeProperty('--bp-hero-offset');
@@ -90,7 +88,7 @@ export function useBlueprintMotion(page: string, locale: string) {
       const rect = hero.getBoundingClientRect();
       image.style.setProperty(
         '--bp-hero-offset',
-        `${Math.max(0, Math.min(24, -rect.top * 0.04))}px`,
+        `${Math.max(0, Math.min(HERO_PARALLAX_LIMIT, -rect.top * HERO_PARALLAX_RATE))}px`,
       );
     };
     const scroll = () => {
@@ -110,6 +108,7 @@ export function useBlueprintMotion(page: string, locale: string) {
     wide.addEventListener('change', preference);
     root.addEventListener('focusin', focused);
     window.addEventListener('scroll', scroll, { passive: true });
+    window.addEventListener('resize', scroll, { passive: true });
     document.addEventListener('visibilitychange', preference);
     updateScene();
     return () => {
@@ -121,6 +120,7 @@ export function useBlueprintMotion(page: string, locale: string) {
       wide.removeEventListener('change', preference);
       root.removeEventListener('focusin', focused);
       window.removeEventListener('scroll', scroll);
+      window.removeEventListener('resize', scroll);
       document.removeEventListener('visibilitychange', preference);
       targets.forEach((node) => {
         delete node.dataset.bpVisible;

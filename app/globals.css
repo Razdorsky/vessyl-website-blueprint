@@ -4232,14 +4232,19 @@ blockquote {
 .classic .page-hero .page-hero-copy > p {
   max-width: 680px;
 }
-.classic .home-hero .hero-shade,
-.classic .page-hero:not(.people-hero) .hero-shade {
-  background: linear-gradient(
+/* All photographic openings share Stay's 55% / 50% / 32% opacity ramp.
+   Home layers its separate copper header fade above the same photo shading. */
+.classic {
+  --classic-photo-shade: linear-gradient(
     180deg,
     rgb(17 17 17 / 55%),
     rgb(17 17 17 / 50%) 55%,
     rgb(17 17 17 / 32%)
   );
+}
+.classic .home-hero .hero-shade,
+.classic .page-hero:not(.people-hero) .hero-shade {
+  background: var(--classic-photo-shade);
 }
 /* Sessions uses a background photograph with both faces clear of the copy. */
 .classic[data-page='sessions'] .page-hero:not(.people-hero) {
@@ -4253,14 +4258,6 @@ blockquote {
   transform: scale(1.12);
   transform-origin: 37% 0%;
 }
-.classic[data-page='sessions'] .page-hero .hero-shade {
-  background: linear-gradient(
-    180deg,
-    rgb(17 17 17 / 35%),
-    rgb(17 17 17 / 40%) 45%,
-    rgb(17 17 17 / 82%)
-  );
-}
 @media (max-width: 560px) {
   .classic[data-page='sessions'] .page-hero:not(.people-hero) {
     padding-block: 323px 135px;
@@ -4269,21 +4266,13 @@ blockquote {
     transform: scale(1.08);
   }
 }
-/* Design direction 548:282/548:418: shared header/hero gradient at every width. */
+/* Design direction 548:282/548:418: Home's warm header color at every width. */
 .classic[data-page='home'] {
   --classic-hero-shade: var(--header-background);
 }
 .classic[data-page='home'] .site-header {
   background: transparent;
   border-bottom: 0;
-}
-.classic[data-page='home'] .home-hero .hero-shade {
-  background: linear-gradient(
-    180deg,
-    var(--classic-hero-shade) 8.152%,
-    color-mix(in srgb, var(--classic-hero-shade) 60%, transparent) 41.163%,
-    color-mix(in srgb, var(--classic-hero-shade) 0%, transparent) 100%
-  );
 }
 .classic[data-page='home'] .site-header .nav-book {
   color: var(--classic-hero-shade);
@@ -4459,32 +4448,30 @@ blockquote {
   margin-top: 12px;
 }
 
-/* Strong, layered paragraph shadows use the opposite tone of the text. */
+/* All paragraph shadows are dark; dark text uses the softer 10% treatment. */
 .classic,
 .practice-dialog.classic-controls {
   --paragraph-shadow-dark:
-    0 2px 4px rgb(0 0 0 / 80%), 0 4px 10px rgb(0 0 0 / 60%);
-  --paragraph-shadow-light:
-    0 2px 4px rgb(255 255 255 / 90%), 0 4px 10px rgb(255 255 255 / 75%);
-}
-.classic p:not(.eyebrow),
-.practice-dialog.classic-controls [data-slot='dialog-description'] {
-  text-shadow: var(--paragraph-shadow-light);
+    0 2px 2px rgb(0 0 0 / 80%), 0 4px 6px rgb(0 0 0 / 60%);
+  --paragraph-shadow-subtle:
+    0 2px 2px rgb(0 0 0 / 10%), 0 4px 6px rgb(0 0 0 / 10%);
+  --paragraph-shadow: var(--paragraph-shadow-subtle);
 }
 .classic
   :is(
     .home-hero,
     .page-hero,
-    #introduction,
+    .home-introduction,
     .dome-feature,
-    .sensory-section,
-    .hearth-section,
-    .app-cta,
     .two-doors,
-    .digital-hero
-  )
-  p:not(.eyebrow) {
-  text-shadow: var(--paragraph-shadow-dark);
+    .bp-dome-journey,
+    .hearth-section
+  ) {
+  --paragraph-shadow: var(--paragraph-shadow-dark);
+}
+.classic p:not(.eyebrow),
+.practice-dialog.classic-controls [data-slot='dialog-description'] {
+  text-shadow: var(--paragraph-shadow);
 }
 
 /* Classic prose: the original +2px refinement, plus the user's additional 1px. */

@@ -75,18 +75,13 @@ function ClassicPage({ page }: { page: string }) {
       align={centered ? 'center' : undefined}
     />
   );
-  const hasSplitHeroPhoto = (image: string) =>
-    page !== 'sessions' &&
-    ['massage', 'session', 'equine-bond', 'pool', 'dining'].includes(image);
   const hero = (
     key: CopyKey,
     body: CopyKey | null,
     image: string,
-    compact = false,
+    actions?: ReactNode,
   ) => (
-    <section
-      className={`page-hero ${compact ? 'compact-hero' : ''} ${hasSplitHeroPhoto(image) ? 'people-hero' : ''}`}
-    >
+    <section className="page-hero photo-hero">
       <Photo
         id={photo('hero', image)}
         eager
@@ -103,9 +98,10 @@ function ClassicPage({ page }: { page: string }) {
           weight="bold"
           text={c(key)}
           light
-          align={hasSplitHeroPhoto(image) ? undefined : 'center'}
+          align="center"
         />
         {body && text(body)}
+        {actions}
       </div>
     </section>
   );
@@ -327,7 +323,7 @@ function ClassicPage({ page }: { page: string }) {
   if (page === 'home')
     content = (
       <>
-        <section className="home-hero">
+        <section className="home-hero photo-hero">
           <Photo
             id={photo('hero', 'hero-design-direction')}
             alt={c('locationIntro')}
@@ -423,33 +419,37 @@ function ClassicPage({ page }: { page: string }) {
     content = (
       <>
         {hero('founder', 'founderOpening', 'nature')}
-        {divider}
-        <section className="bp-founder-story section">
-          <div className="bp-founder-portrait">
-            <Photo id={photo('portrait', 'founder')} alt={c('quoteAuthor')} />
-          </div>
-          <div className="bp-founder-narrative">
+        <div className="founder-bridge founder-portrait-story">
+          <section className="split-editorial section photo-bridge">
+            <Photo
+              reveal
+              id={photo('portrait', 'founder')}
+              alt={c('quoteAuthor')}
+            />
             <div className="founder-profile-copy" data-bp-reveal="copy">
               {heading('quoteAuthor')}
               {text('founderProfileLead')}
               {text('founderBrothers')}
             </div>
-            <div className="founder-biography" data-bp-reveal="copy">
-              <Heading
-                as="h3"
-                text={c('founderExplorationIntro')}
-                align="center"
-              />
-              <div className="intro-body">
-                {text('founderExplorationQuestion')}
-                {text('founderNext')}
-                {text('founderDestination')}
-              </div>
+          </section>
+        </div>
+        <PressMarks />
+        {divider}
+        <section className="intro-section founder-biography">
+          <div data-bp-reveal="copy">
+            <Heading
+              as="h3"
+              text={c('founderExplorationIntro')}
+              align="center"
+            />
+            <div className="intro-body">
+              {text('founderExplorationQuestion')}
+              {text('founderNext')}
+              {text('founderDestination')}
             </div>
           </div>
         </section>
         {divider}
-        <PressMarks />
         <EditorialFilm name="founder" />
         {quote('founderQuote')}
         {story('dome-exterior', 'press', 'ui.pressRoomIntro', [
@@ -705,17 +705,11 @@ function ClassicPage({ page }: { page: string }) {
   else if (page === 'app')
     content = (
       <>
-        <section className="digital-hero section pattern-panel">
-          <Pattern tone="forest" />
-          <div>
-            <Heading
-              as="h1"
-              weight="bold"
-              align="center"
-              text={c('appHeadline')}
-              light
-            />
-            {text('appIntro')}
+        {hero(
+          'appHeadline',
+          'appIntro',
+          'hero-ambient-poster',
+          <>
             <div className="store-actions">
               <button
                 className="button cream"
@@ -735,8 +729,8 @@ function ClassicPage({ page }: { page: string }) {
             <LinkArrow href={WAITLIST} external>
               {c('ui.waitlist')}
             </LinkArrow>
-          </div>
-        </section>
+          </>,
+        )}
         {intro('appDoor', ['appStory'])}
         <section className="section three-columns app-features">
           <article>
@@ -779,7 +773,7 @@ function ClassicPage({ page }: { page: string }) {
   else if (page === 'facilitators')
     content = (
       <>
-        {hero('facilitators', 'guidesIntro', 'session', true)}
+        {hero('facilitators', 'guidesIntro', 'session')}
         <section className="section people-list">
           {[
             ['Enrique Molina', 'enriqueIntro', 'equine'],
@@ -887,10 +881,7 @@ function ClassicPage({ page }: { page: string }) {
   else
     content = (
       <>
-        <section className="plain-hero section">
-          <Heading as="h1" weight="bold" align="center" text={c('press')} />
-          {text('homeShort')}
-        </section>
+        {hero('press', 'homeShort', 'photo-pr9-1558')}
         {intro('overview', ['homeOrigins'], undefined, false)}
         <section className="section press-resources">
           {heading('facts')}
@@ -970,8 +961,8 @@ function ClassicPage({ page }: { page: string }) {
         <img
           className="footer-signature"
           src={asset('/brand/logo-white.svg')}
-          width="380"
-          height="76"
+          width="3552"
+          height="660"
           alt="Vessyl"
           loading="lazy"
         />

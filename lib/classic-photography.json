@@ -146,7 +146,8 @@
       "practice:breathwork": "photo-z92-6238",
       "practice:vibrational-yoga": "still-hero-038",
       "facilitators-cta": "photo-pr9-0851",
-      "closing": "photo-z92-8707"
+      "closing": "photo-z92-8707",
+      "hero": "hero-ambient-poster"
     },
     "music": {
       "hero": "still-events-010",
@@ -167,6 +168,7 @@
       "closing": "still-hero-086"
     },
     "press": {
+      "hero": "photo-pr9-1558",
       "closing": "still-hero-126"
     }
   },
@@ -596,6 +598,10 @@
     "photo-villa-3": {
       "alt": "The living and kitchen area inside a Pulse Villa",
       "objectPosition": "50% 40%"
+    },
+    "hero-ambient-poster": {
+      "alt": "Clouds drifting around Arenal Volcano above the rainforest",
+      "objectPosition": "50% center"
     }
   },
   "allowedRepeats": {

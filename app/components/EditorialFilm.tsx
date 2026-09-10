@@ -102,28 +102,12 @@ export function EditorialFilm({ name }: { name: keyof typeof films }) {
         }
         onClick={activated ? togglePlayback : playFromStart}
       />
-      {activated && (
-        <fieldset
-          className="editorial-film-controls"
-          aria-label={c('ui.filmControls')}
-        >
-          <button
-            type="button"
-            aria-label={muted ? c('ui.unmuteFilm') : c('ui.muteFilm')}
-            onClick={() => {
-              const el = video.current;
-              if (el) el.muted = !el.muted;
-            }}
-          >
-            <span
-              className="bp-state-icon"
-              data-active={muted}
-              aria-hidden="true"
-            >
-              <VolumeX />
-              <Volume2 />
-            </span>
-          </button>
+      <fieldset
+        className="editorial-film-controls"
+        data-activated={activated}
+        aria-label={c('ui.filmControls')}
+      >
+        {activated && (
           <button
             type="button"
             aria-label={playing ? c('ui.pauseFilm') : c('ui.film')}
@@ -138,8 +122,29 @@ export function EditorialFilm({ name }: { name: keyof typeof films }) {
               <Play />
             </span>
           </button>
-        </fieldset>
-      )}
+        )}
+        <button
+          type="button"
+          aria-label={muted ? c('ui.unmuteFilm') : c('ui.muteFilm')}
+          onClick={() => {
+            if (!activated) {
+              playFromStart();
+              return;
+            }
+            const el = video.current;
+            if (el) el.muted = !el.muted;
+          }}
+        >
+          <span
+            className="bp-state-icon"
+            data-active={muted}
+            aria-hidden="true"
+          >
+            <VolumeX />
+            <Volume2 />
+          </span>
+        </button>
+      </fieldset>
     </div>
   );
 }

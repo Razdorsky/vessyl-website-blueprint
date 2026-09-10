@@ -11,6 +11,12 @@
   --bp-copy-gap: 28px;
   --bp-font-label: 16px;
   --bp-font-caption: 14px;
+  --bp-control-height: 50px;
+  --bp-control-font-size: 16px;
+  --bp-control-line-height: 20px;
+  --bp-photo-hero-height: 828px;
+  --bp-photo-hero-top: 180px;
+  --bp-photo-hero-bottom: 60px;
   --bp-grid-gap: clamp(24px, 3.33vw, 48px);
   --bp-story-gap: clamp(32px, 6.66vw, 96px);
   --bp-section: clamp(64px, 8vw, 128px);
@@ -43,4 +49,21 @@
   --motion-panel: var(--bp-duration-panel);
   --motion-page: var(--bp-duration-page);
   --photo-radius: var(--bp-radius-photo);
+}
+@media (max-width: 1024px) {
+  :root {
+    --bp-photo-hero-height: 800px;
+  }
+}
+@media (max-width: 560px) {
+  :root {
+    --bp-photo-hero-height: 750px;
+    --bp-photo-hero-top: 204px;
+    --bp-photo-hero-bottom: 16px;
+  }
+}
+@media (max-width: 374px) {
+  :root {
+    --bp-photo-hero-height: 800px;
+  }
 }

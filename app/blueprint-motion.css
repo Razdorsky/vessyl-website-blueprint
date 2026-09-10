@@ -73,6 +73,11 @@
 }
 .editorial-film-controls {
   animation: bp-controls-in var(--bp-duration-panel) var(--bp-ease) both;
+  transition: opacity var(--bp-duration-control) var(--bp-ease);
+}
+.editorial-film-controls[data-activated='false'] {
+  opacity: 0.5;
+  animation: none;
 }
 @keyframes bp-controls-in {
   from {

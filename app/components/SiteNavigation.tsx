@@ -9,7 +9,6 @@ import {
   DialogDescription,
   DialogTrigger,
 } from '../../components/ui/dialog';
-import { BOOKING } from '../../lib/content';
 import { asset, pagePath } from '../../lib/paths';
 import { useLocale } from './LocaleProvider';
 import { LanguageSelector } from './LanguageSelector';
@@ -38,6 +37,10 @@ export function SiteNavigation({
   const focusExperienceOnOpen = useRef(false);
   const href = (p = 'home') => pagePath(edition, p, locale);
   const jointLogo = ['stay', 'rancho', 'contact'].includes(page);
+  const jointLogoSrc =
+    page === 'stay'
+      ? '/brand/logo-aken-refined-white.svg'
+      : '/brand/logo-aken-white.svg';
   const spaces = [
     ['dome', c('navDome'), 'dome-exterior'],
     ['hearth', c('hearth'), 'hearth'],
@@ -94,9 +97,12 @@ export function SiteNavigation({
       {c('download')}
     </a>
   );
-  const bookAction = (
-    <a className="nav-book" href={BOOKING} target="_blank" rel="noreferrer">
-      {c('bookStay')} <ArrowUpRight size={15} />
+  const bookLink = (
+    <a
+      href={href('stay')}
+      aria-current={page === 'stay' ? 'page' : undefined}
+    >
+      {c('bookStay')}
     </a>
   );
   return (
@@ -109,11 +115,11 @@ export function SiteNavigation({
       <a href={href()} className="brand" aria-label={c('ui.homeLink')}>
         <img
           src={asset(
-            jointLogo ? '/brand/logo-aken-white.svg' : '/brand/logo-white.svg',
+            jointLogo ? jointLogoSrc : '/brand/logo-white.svg',
           )}
-          alt="Vessyl"
-          width="176"
-          height="35"
+          alt={page === 'stay' ? 'Vessyl / AKEN Soul' : 'Vessyl'}
+          width={page === 'stay' ? 743 : jointLogo ? 176 : 3552}
+          height={page === 'stay' ? 203 : jointLogo ? 35 : 660}
         />
       </a>
       <nav
@@ -155,6 +161,7 @@ export function SiteNavigation({
         >
           {c('founder')}
         </a>
+        {bookLink}
         <a
           href={href('sessions')}
           aria-current={page === 'sessions' ? 'page' : undefined}
@@ -222,10 +229,6 @@ export function SiteNavigation({
       </nav>
       <div className="header-actions">
         <LanguageSelector edition={edition} page={page} />
-        <div className="header-action-group">
-          {bookAction}
-          {appAction}
-        </div>
       </div>
       <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
         <DialogTrigger className="menu-toggle" aria-label={c('ui.menu')}>
@@ -250,12 +253,12 @@ export function SiteNavigation({
               <img
                 src={asset(
                   jointLogo
-                    ? '/brand/logo-aken-white.svg'
+                    ? jointLogoSrc
                     : '/brand/logo-dark.svg',
                 )}
-                alt="Vessyl"
-                width="160"
-                height="32"
+                alt={page === 'stay' ? 'Vessyl / AKEN Soul' : 'Vessyl'}
+                width={page === 'stay' ? 743 : jointLogo ? 160 : 3552}
+                height={page === 'stay' ? 203 : jointLogo ? 32 : 660}
               />
             </a>
             <nav aria-label={c('ui.mobileNavigation')}>
@@ -278,12 +281,12 @@ export function SiteNavigation({
                 </AccordionItem>
               </Accordion>
               <a href={href('founder')}>{c('founder')}</a>
+              {bookLink}
               <a href={href('sessions')}>{c('navSessions')}</a>
               <a href={href('press')}>{c('navPress')}</a>
             </nav>
             <LanguageSelector edition={edition} page={page} mobile />
             <div className="mobile-actions">
-              {bookAction}
               {appAction}
             </div>
           </div>

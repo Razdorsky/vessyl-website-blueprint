@@ -4,6 +4,8 @@ Independent repository: `Razdorsky/vessyl-website-blueprint`, publication branch
 
 ## Systemic correction pass - 2026-09-10
 
+Latest desktop-header revision: Booking and App now share one navigation-like glass capsule. Language sits independently between navigation and that group, in visual and Tab order. Verified EN/es-LA at 1321/1440/1920px in Chromium and WebKit (12 final layout views): all three surfaces are 48px high, with no overlap, overflow or page errors. Checked language destinations, Experience opening/full width, action hover, keyboard sequence, reduced motion, and hidden desktop controls at 375/1320px. Mobile actions and content CTA styling remain unchanged. Required publication export and checks pass. This supersedes the separate Booking/App surfaces described below.
+
 Subsequent user correction: retain the rounded desktop navigation silhouette. Header navigation, Booking, App and language now share capsule corners at the same 48px height; the Experience panel keeps its full width and 24px corners. The earlier 4px header interpretation was wrong. Verified Home/Dome/Contact in both locales at 1321/1440/1920px (18 views), with no overflow or page errors; reviewed desktop dropdown and 375px mobile screenshots. All four header groups measure 48px high with 24px radii, dropdown remains x=0/full width, content CTAs stay at 4px, mobile burger remains centered in 50px. Required publication export and source checks pass.
 
 User screenshots exposed defects that the previous overflow checks missed. The earlier checks below are historical evidence, not proof of visual consistency. This pass measures alignment and proportions and reviews complete rendered pages.

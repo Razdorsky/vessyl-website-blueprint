@@ -15,7 +15,7 @@
   .site-header
   :is(
     .desktop-navigation,
-    .header-actions > a,
+    .header-action-group,
     .header-actions .language-trigger
   ) {
   height: var(--bp-header-control-height);
@@ -30,18 +30,44 @@
   backdrop-filter: blur(12px);
   box-shadow: var(--bp-glass-shadow);
 }
-.classic .site-header .desktop-navigation {
+.classic .site-header :is(.desktop-navigation, .header-action-group) {
   padding-inline: 22px;
   gap: 24px;
 }
-.classic .site-header .header-actions > .nav-book {
-  background: var(--cream);
-  border-color: var(--cream);
-  color: var(--ink);
+.classic .site-header .header-actions {
+  display: contents;
 }
-.classic .site-header .header-actions > .nav-book:hover {
-  background: var(--copper);
-  border-color: var(--copper);
+.classic .site-header .header-action-group {
+  display: flex;
+  flex-shrink: 0;
+}
+.classic .site-header .header-actions .header-action-group > a {
+  position: relative;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font-size: 16px;
+}
+.classic .header-action-group > a::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 5px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--bp-duration-control) var(--bp-ease);
+}
+.classic .header-action-group > .nav-book::after {
+  right: 27px;
+}
+.classic .header-action-group > a:is(:hover, :focus-visible)::after {
+  transform: scaleX(1);
 }
 .classic .desktop-navigation > a {
   display: inline-flex;
@@ -142,7 +168,7 @@
   }
 }
 @media (min-width: 1321px) and (max-width: 1500px) {
-  .classic .site-header .desktop-navigation {
+  .classic .site-header :is(.desktop-navigation, .header-action-group) {
     gap: 18px;
     padding-inline: 18px;
   }
@@ -631,6 +657,7 @@
 @media (prefers-reduced-motion: reduce) {
   .classic .experience-mega,
   .classic .experience-mega *,
+  .classic .header-action-group > a::after,
   .classic .practice-card {
     transition: none;
   }

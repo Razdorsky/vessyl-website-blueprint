@@ -47,7 +47,7 @@ Only `outputs/github-pages` is deployed. Run `npm run build` again to restore un
 - Approved English and Spanish copy, all 17 pages, booking/email destinations, and required disabled app-store placeholders.
 - Mobile minimum 360px, with 375px also required in design and QA.
 - H1 Bold; mobile H1 39px and shared 16px mobile content gutters; desktop display artwork preserved. Prose measure 680px, H3/prose gap 28px.
-- Outlined 4px CTAs, selected photograph/video radius 10px, original optical Dome alignment and 2× Dome mark.
+- Outlined 4px content CTAs; capsule-shaped desktop header controls at a shared 48px height. Selected photograph/video radius 10px, original optical Dome alignment and 2× Dome mark.
 - Film width 80% desktop and 95% at <=820px; silent loop on view, restart with sound/no loop at first activation, then icon-only sound/playback controls on every film.
 - Stacked gallery previews, keyboard/edge/swipe navigation, thumbnails, Escape and opener-focus restoration.
 - Header top, html/body canvas and theme-color all derive from `lib/header-theme.ts`, including mobile overscroll. Keep native zoom, safe-area behavior and scrolling.

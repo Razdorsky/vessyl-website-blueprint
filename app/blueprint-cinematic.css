@@ -9,6 +9,7 @@
     0 16px 48px -16px rgb(0 0 0 / 32%), inset 0 1px 0 rgb(245 235 231 / 22%);
   --bp-header-height: 110px;
   --bp-header-control-height: 48px;
+  --bp-header-control-radius: calc(var(--bp-header-control-height) / 2);
 }
 .classic
   .site-header
@@ -22,7 +23,7 @@
   padding-block: 0;
   align-items: center;
   border: 1px solid var(--bp-glass-edge);
-  border-radius: var(--bp-radius-control);
+  border-radius: var(--bp-header-control-radius);
   background:
     linear-gradient(135deg, rgb(245 235 231 / 12%), transparent 80%),
     color-mix(in srgb, var(--header-background) 78%, transparent);
@@ -61,7 +62,7 @@
   padding: 24px var(--page-pad) 32px;
   gap: 24px;
   border: 1px solid var(--bp-glass-edge);
-  border-radius: 0;
+  border-radius: var(--bp-radius-glass);
   background:
     linear-gradient(135deg, rgb(245 235 231 / 7%), transparent 60%),
     var(--bp-glass-dark);

@@ -4,6 +4,8 @@ Independent repository: `Razdorsky/vessyl-website-blueprint`, publication branch
 
 ## Systemic correction pass - 2026-09-10
 
+Subsequent user correction: retain the rounded desktop navigation silhouette. Header navigation, Booking, App and language now share capsule corners at the same 48px height; the Experience panel keeps its full width and 24px corners. The earlier 4px header interpretation was wrong. Verified Home/Dome/Contact in both locales at 1321/1440/1920px (18 views), with no overflow or page errors; reviewed desktop dropdown and 375px mobile screenshots. All four header groups measure 48px high with 24px radii, dropdown remains x=0/full width, content CTAs stay at 4px, mobile burger remains centered in 50px. Required publication export and source checks pass.
+
 User screenshots exposed defects that the previous overflow checks missed. The earlier checks below are historical evidence, not proof of visual consistency. This pass measures alignment and proportions and reviews complete rendered pages.
 
 - Shared fixes: 16px mobile heading/prose/photo alignment; container-based heading flow; 29px flowing quotation outlines; 48px desktop header controls and centered hamburger; full-width Experience menu; uncapped Home Founder container; source-aspect editorial photos; wrapping collection heading/action rows; restored lightweight Two Doors and original closing composition.

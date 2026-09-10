@@ -53,7 +53,7 @@ Only `outputs/github-pages` is deployed. Run `npm run build` again to restore un
 - Header top, html/body canvas and theme-color all derive from `lib/header-theme.ts`, including mobile overscroll. Keep native zoom, safe-area behavior and scrolling.
 - Progressive motion: content exists in SSR, reduced motion disables entrances and scenic drift, offscreen/background video pauses, focus reveals content immediately.
 
-`npm run check` validates types, lint, all 51 language/page exports, internal assets, source-linked copy, duplicate prose, heading artwork, translation completeness, numeric facts, usted register, Chinese font coverage and the localized press overview. UI changes also require browser inspection at desktop/mobile and the affected breakpoints.
+`npm run check` validates types, lint, all 51 language/page exports, internal assets, source-linked copy, duplicate prose, heading artwork, translation completeness, numeric facts, usted register, Chinese font coverage, protected names, page-by-page source correspondence and the localized press overview. UI changes also require browser inspection at desktop/mobile and the affected breakpoints.
 
 ## Simplified Chinese
 

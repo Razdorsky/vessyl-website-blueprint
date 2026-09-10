@@ -25,3 +25,17 @@ Blueprint H1/H2/H3 use the catalog's existing `mobileFlow` word outlines at ever
 `app/classic-typography.css` keeps mobile display headings inside their own content container. Blueprint owns shared 16px heading/prose/photo gutters; card frames and dialogs supply their own consistent inner inset. Never restore heading-only negative margins or fixed 280px mobile quotation masks. Session transition clips reserve room for the card frame, and dialog titles align with their descriptions.
 
 The normal generation command updates both fixed and flowing artwork. Add `--mobile-only` to regenerate only flowing Classic headings, preserving all shared desktop/Immersive assets. After changing localized headings, run `localize.py` before generation; it deliberately drops inherited flow data so Spanish words are regenerated from their own source text.
+
+## Chinese typefaces
+
+`zh-Hans` uses native HTML text: Noto Serif SC for display roles and quotations, Noto Sans SC for body and controls. The Latin SVG pipeline above still serves EN/ES. Chinese uses the existing shared font-size tokens, 1.4 display line height, balanced wrapping and sentence-aware H1 spans. No text is shortened to fit.
+
+Source masters are the official Google Fonts [Noto Serif SC](https://github.com/google/fonts/tree/main/ofl/notoserifsc) and [Noto Sans SC](https://github.com/google/fonts/tree/main/ofl/notosanssc) variable fonts. Both use SIL Open Font License 1.1; complete licenses are distributed in `public/font-licenses/`. Font source hashes, output hashes and character coverage are recorded in `lib/chinese-font-coverage.json`.
+
+Full masters remain outside this repository. Install FontTools with WOFF2 support in a separate environment and regenerate after adding Chinese characters:
+
+```sh
+python3 scripts/typography/generate-chinese.py --serif /absolute/path/NotoSerifSC.ttf --sans /absolute/path/NotoSansSC.ttf
+```
+
+The generator subsets first, then limits the weight axis to 400–700. It includes all Chinese dictionary values, all image alternatives, ASCII and language-selector symbols in both fonts. Builds use the checked-in WOFF2 files and do not need FontTools, Google Fonts requests or system-installed CJK fonts. The standard locale check verifies complete character coverage and output hashes. A linguistic review is still required; character coverage does not validate a translation.

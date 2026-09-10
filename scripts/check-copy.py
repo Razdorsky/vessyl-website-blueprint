@@ -29,9 +29,10 @@ def lowercase_start(t):
  if re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',t) or re.match(r'^(?:https?://|www\.)',t):return False
  return bool(re.match(r'^[\s\"\'“‘(]*[a-z]',t))
 spanish=json.loads((root/'lib/locales/es-LA.json').read_text())
+translations={locale:json.loads((root/f'lib/locales/{locale}.json').read_text()) for locale in ['es-LA','zh-Hans']}
 known={norm(x['text']):x for x in entries.values()}
 # Factual destinations and operational structure, not marketing prose.
-operational={'EN','ES','©','Vessyl','AKEN','AKEN Soul','Quantum','Wellness','All sessions','guestservices@thevessyl.com','reservations@akenhotels.com','+506 8608 0022','12 s ·','Sound off','Play film','Pause film','Page not found','Overview','Close','Vessyl navigation','Choose a page to explore.'}
+operational={'EN','ES','简中','©','Vessyl','AKEN','AKEN Soul','Quantum','Wellness','All sessions','guestservices@thevessyl.com','reservations@akenhotels.com','+506 8608 0022','12 s ·','Sound off','Play film','Pause film','Page not found','Overview','Close','Vessyl navigation','Choose a page to explore.'}
 ignored={'script','style','svg','template','noscript','head'}
 semantic={'h1','h2','h3','h4','p','blockquote','a','button','summary','li','label','dt','dd','figcaption','span','small'}
 def units(n):
@@ -61,8 +62,8 @@ for edition in ['classic']:
  for f in sorted(output.glob('**/index.html')):
   if f.parent==output/'404':continue
   slug=str(f.parent.relative_to(output));key=edition+'/'+('home' if slug=='.' else slug)
-  localized='es-LA' in f.relative_to(output).parts
-  known={norm(spanish[k] if localized else v['text']):v for k,v in entries.items()}
+  locale=next((loc for loc in translations if loc in f.relative_to(output).parts),'en')
+  known={norm(translations[locale][k] if locale!='en' else v['text']):v for k,v in entries.items()}
   p=Parser();p.feed(f.read_text());rows=[]
   for t in units(p.root):
    kind,source=classify(t);rows.append({'text':t,'kind':kind,'source':source})
@@ -72,7 +73,10 @@ for edition in ['classic']:
    if 'brand-heading' not in n.attrs.get('class','').split():continue
    label=n.attrs.get('data-heading','')
    uses=[x.attrs.get('href','') for x in allnodes(n) if x.tag=='use']
-   if 'heading-fluid' in n.attrs.get('class','').split():
+   if 'heading-cjk' in n.attrs.get('class','').split():
+    if locale!='zh-Hans' or norm(n.text())!=norm(label) or uses:
+     errors.append('Invalid native Chinese heading: '+key+': '+label)
+   elif 'heading-fluid' in n.attrs.get('class','').split():
     if len(uses)!=len(label.split()):errors.append('Incomplete Telugu word outlines: '+key+': '+label)
     for href in uses:
      parsed=urlsplit(href);name=Path(parsed.path).name
@@ -89,25 +93,27 @@ for edition in ['classic']:
 # short action labels remain consistent; prose and complete sentences must not
 # be reused from another Classic page, even inside a longer paragraph.
 def prose_sentences(text):
- return [norm(s).casefold() for s in re.split(r'(?<=[.!?])\s+',text)
-         if len(re.findall(r"\b[\w']+\b",s))>=8
+ return [norm(s).casefold() for s in re.split(r'(?<=[.!?])\s+|(?<=[。！？])',text)
+         if (len(re.findall(r"\b[\w']+\b",s))>=8 or len(re.findall(r"[\u3400-\u9fff]",s))>=18)
          # The Nature gallery repeats the activity's approved name. Its Spanish
          # title exceeds eight words; it is still a caption, not repeated prose.
          and norm(s) not in {entries['natureWalk']['text'],spanish['natureWalk']}]
 founder_duplicates=[]
-for locale_prefix in ['', 'es-LA/']:
+def page_locale(page):
+ return next((loc for loc in translations if page.startswith('classic/'+loc+'/')),'en')
+for locale_prefix in ['', 'es-LA/', 'zh-Hans/']:
  founder_page='classic/'+locale_prefix+'founder'
  for text in main.get(founder_page,[]):
   for sentence in prose_sentences(text):
    for page,texts in main.items():
-    if not page.startswith('classic/') or page==founder_page or ('/es-LA/' in page)!=bool(locale_prefix):continue
+    if not page.startswith('classic/') or page==founder_page or page_locale(page)!=page_locale(founder_page):continue
     if any(sentence in norm(other).casefold() for other in texts):
      founder_duplicates.append({'page':page,'sentence':sentence})
      errors.append('Founder editorial copy repeats '+page+': '+sentence)
 uniqueness_path=root/'docs/compliance/founder-uniqueness.json'
 uniqueness_path.parent.mkdir(parents=True,exist_ok=True)
 uniqueness_path.write_text(json.dumps({
- 'scope':'Founder editorial sentences of at least eight words versus every other Classic page; shared navigation, names and short UI labels excluded.',
+ 'scope':'Founder editorial sentences of at least eight words or 18 Han characters versus other pages in the same locale; shared navigation, names and short UI labels excluded.',
  'duplicates':founder_duplicates,
 },ensure_ascii=False,indent=2)+'\n')
 # Repeated functional labels stay consistent; complete editorial sentences must
@@ -130,11 +136,11 @@ for key,entry in art.items():
 # Blueprint is a Classic-only publishing surface, and must never initialize 3D.
 for f in output.glob('**/index.html'):
  if 'data-renderer="independent-scroll-world"' in f.read_text():errors.append('Immersive renderer leaked into Blueprint: '+str(f))
-if len(report)!=34:errors.append('Expected 34 Blueprint routes, found '+str(len(report)))
+if len(report)!=51:errors.append('Expected 51 Blueprint routes, found '+str(len(report)))
 report_path=root/'docs/compliance/copy-coverage.json'
 report_path.parent.mkdir(parents=True,exist_ok=True)
 report_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 if errors:print('\n'.join(errors));sys.exit(1)
-print(f'PASS: {len(report)} routes; every rendered text unit is source-linked copy or documented interface behavior; all display headings have Telugu MN artwork; Classic-only renderer verified.')
+print(f'PASS: {len(report)} routes; every rendered text unit is source-linked copy or documented interface behavior; display headings have approved Latin artwork or native Chinese text; Classic-only renderer verified.')
 print('PASS: Founder editorial sentences do not repeat another Classic page.')
 print('PASS: No repeated editorial sentences within any Classic page; responsive artwork references verified.')

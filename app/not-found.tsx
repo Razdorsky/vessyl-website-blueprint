@@ -1,4 +1,5 @@
 'use client';
+import { locales, localeFromSegment } from '../lib/locales';
 import { usePathname } from 'next/navigation';
 import { asset, pagePath } from '../lib/paths';
 import { copy } from '../lib/copy';
@@ -6,7 +7,11 @@ import { LocaleProvider } from './components/LocaleProvider';
 import { Heading } from './components/Typography';
 export default function NotFound() {
   const pathname = usePathname() || '';
-  const locale = pathname.split('/').includes('es-LA') ? 'es-LA' : 'en';
+  const locale = localeFromSegment(
+    pathname
+      .split('/')
+      .find((part) => locales.some((option) => option === part)),
+  );
   const edition = pathname.split('/').includes('immersive')
     ? 'immersive'
     : 'classic';

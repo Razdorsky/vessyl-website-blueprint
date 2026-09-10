@@ -35,7 +35,11 @@ function checkPageCanvas(html, file) {
 }
 let checked = 0;
 const targets = new Set();
-for (const locale of ['', 'es-LA'])
+for (const [locale, tag] of [
+  ['', 'en'],
+  ['es-LA', 'es-419'],
+  ['zh-Hans', 'zh-Hans'],
+])
   for (const page of pages) {
     const file = path.join(root, base, locale, page, 'index.html');
     let html;
@@ -49,7 +53,7 @@ for (const locale of ['', 'es-LA'])
     if (!html.includes('data-design-system="vessyl-blueprint"'))
       errors.push('Missing Blueprint renderer: ' + file);
     checkPageCanvas(html, file);
-    if (!html.includes(`<html lang="${locale ? 'es-419' : 'en'}"`))
+    if (!html.includes(`<html lang="${tag}"`))
       errors.push('Incorrect document language: ' + file);
     if ((html.match(/<h1[ >]/g) || []).length !== 1)
       errors.push('Invalid heading count: ' + file);

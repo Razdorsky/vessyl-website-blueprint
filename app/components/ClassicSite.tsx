@@ -32,6 +32,7 @@ import { classicPhoto } from '../../lib/classic-photography';
 import { useBlueprintMotion } from './BlueprintMotion';
 import { DomeJourney } from './DomeJourney';
 import { SiteNavigation } from './SiteNavigation';
+import { localeInfo } from '../../lib/locales';
 import { type CopyKey, type Locale } from '../../lib/copy';
 import { LocaleProvider, useLocale } from './LocaleProvider';
 import { FluidHeadings, Heading } from './Typography';
@@ -880,7 +881,7 @@ function ClassicPage({ page }: { page: string }) {
           <div className="resource-links">
             <a
               href={asset(
-                `/press/vessyl-overview${locale === 'es-LA' ? '-es-LA' : ''}.txt`,
+                `/press/vessyl-overview${locale === 'en' ? '' : '-' + locale}.txt`,
               )}
               download
             >
@@ -911,7 +912,7 @@ function ClassicPage({ page }: { page: string }) {
       data-design-system="vessyl-blueprint"
       data-page={page}
       data-locale={locale}
-      lang={locale === 'es-LA' ? 'es-419' : 'en'}
+      lang={localeInfo[locale].tag}
     >
       <a className="skip-link" href="#content">
         {c('ui.skip')}

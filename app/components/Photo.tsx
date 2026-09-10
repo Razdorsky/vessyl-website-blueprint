@@ -2,6 +2,7 @@
 import { asset } from '../../lib/paths';
 import { useLocale } from './LocaleProvider';
 import imageAlts from '../../lib/image-alts.json';
+import chineseAlts from '../../lib/locales/zh-Hans-images.json';
 import spanishAlts from '../../lib/locales/es-LA-images.json';
 import imageDimensions from '../../lib/image-dimensions.json';
 import { photoMetadata } from '../../lib/classic-photography';
@@ -29,10 +30,15 @@ export function Photo({
   const metadata = photoMetadata(id);
   const englishAlt =
     metadata?.alt || (imageAlts as Record<string, string>)[id] || alt;
-  const imageAlt =
-    locale === 'es-LA'
-      ? (spanishAlts as Record<string, string>)[englishAlt] || alt
-      : englishAlt;
+  const translatedAlts: Record<string, string> | undefined =
+    locale === 'zh-Hans'
+      ? chineseAlts
+      : locale === 'es-LA'
+        ? spanishAlts
+        : undefined;
+  const imageAlt = translatedAlts
+    ? translatedAlts[englishAlt] || alt
+    : englishAlt;
   return (
     <img
       className={className}

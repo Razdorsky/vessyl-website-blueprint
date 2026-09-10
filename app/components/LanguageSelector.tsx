@@ -3,7 +3,7 @@ import { Popover } from '@base-ui/react/popover';
 import { Globe2, ChevronDown, Check } from 'lucide-react';
 import { useLocale } from './LocaleProvider';
 import { pagePath } from '../../lib/paths';
-import type { Locale } from '../../lib/copy';
+import { locales, localeInfo } from '../../lib/locales';
 
 export function LanguageSelector({
   edition,
@@ -23,10 +23,10 @@ export function LanguageSelector({
       <Popover.Root>
         <Popover.Trigger
           className="language-trigger"
-          aria-label={`${c('ui.chooseLanguage')}: ${locale === 'en' ? 'English' : 'Español'}`}
+          aria-label={`${c('ui.chooseLanguage')}: ${localeInfo[locale].name}`}
         >
           <Globe2 size={19} strokeWidth={1.5} aria-hidden="true" />
-          <span>{locale === 'en' ? 'EN' : 'ES'}</span>
+          <span>{localeInfo[locale].short}</span>
           <ChevronDown
             className="language-chevron"
             size={12}
@@ -43,17 +43,17 @@ export function LanguageSelector({
             <Popover.Popup
               className="language-popover"
               aria-label={c('ui.language')}
-              lang={locale === 'es-LA' ? 'es-419' : 'en'}
+              lang={localeInfo[locale].tag}
             >
-              {(['en', 'es-LA'] as Locale[]).map((option) => (
+              {locales.map((option) => (
                 <a
                   key={option}
                   href={pagePath(edition, page, option)}
-                  hrefLang={option === 'en' ? 'en' : 'es-419'}
-                  lang={option === 'en' ? 'en' : 'es-419'}
+                  hrefLang={localeInfo[option].tag}
+                  lang={localeInfo[option].tag}
                   aria-current={locale === option ? 'true' : undefined}
                 >
-                  <span>{option === 'en' ? 'English' : 'Español'}</span>
+                  <span>{localeInfo[option].name}</span>
                   {locale === option && (
                     <Check size={16} strokeWidth={1.5} aria-hidden="true" />
                   )}

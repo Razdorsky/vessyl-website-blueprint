@@ -1,23 +1,24 @@
+import { locales, localeInfo, localeFromSegment } from '../../lib/locales';
 import { notFound } from 'next/navigation';
 import { ClassicSite } from '../components/ClassicSite';
 import { pageKeys, pageTitles } from '../../lib/content';
-import { copy, translateText, type Locale } from '../../lib/copy';
+import { copy, translateText } from '../../lib/copy';
 import { pagePath } from '../../lib/paths';
 import { headerColor } from '../../lib/header-theme';
 const route = (slug: string[] = []) => {
-  const locale: Locale = slug[0] === 'es-LA' ? 'es-LA' : 'en';
+  const locale = localeFromSegment(slug[0]);
   return {
     locale,
-    page: (locale === 'es-LA' ? slug.slice(1) : slug).join('/') || 'home',
+    page: (locale !== 'en' ? slug.slice(1) : slug).join('/') || 'home',
   };
 };
 export async function generateStaticParams() {
-  return (['en', 'es-LA'] as Locale[]).flatMap((locale) =>
+  return locales.flatMap((locale) =>
     pageKeys
       .filter((page) => locale !== 'en' || page !== 'home')
       .map((page) => ({
         slug: [
-          ...(locale === 'es-LA' ? ['es-LA'] : []),
+          ...(locale !== 'en' ? [locale] : []),
           ...(page === 'home' ? [] : [page]),
         ],
       })),
@@ -35,10 +36,12 @@ export async function generateMetadata({
     title: `${translateText(pageTitles[page] || 'Vessyl', locale)} — Vessyl`,
     description: copy('homeShort', locale),
     alternates: {
-      languages: {
-        en: pagePath(edition, page),
-        'es-419': pagePath(edition, page, 'es-LA'),
-      },
+      languages: Object.fromEntries(
+        locales.map((option) => [
+          localeInfo[option].tag,
+          pagePath(edition, page, option),
+        ]),
+      ),
     },
   };
 }
@@ -58,7 +61,7 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const { locale, page } = route(slug);
-  if (!pageKeys.includes(page) || (slug[0] !== 'es-LA' && slug.length !== 1))
+  if (!pageKeys.includes(page) || (locale === 'en' && slug.length !== 1))
     notFound();
   return <ClassicSite page={page} locale={locale} />;
 }

@@ -1501,5 +1501,10 @@
     "kind": "user-approved",
     "source": "User instruction, 2026-09-10: shorten the Contact footer label only.",
     "userBriefSha256": "f8cd3ca851d629d5ff40b282d203a2234f4980e337067cbf7dea8d74f531009b"
+  },
+  "ui.simplifiedChinese": {
+    "text": "简体中文",
+    "kind": "functional-ui",
+    "source": "User instruction, 2026-09-11: add Simplified Chinese to the shared language selector."
   }
 }

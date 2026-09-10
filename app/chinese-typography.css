@@ -1,0 +1,93 @@
+/* Chinese has native text shaping and punctuation-aware line breaking. The
+   approved Latin word artwork remains exclusive to the existing EN/ES locales. */
+@font-face {
+  font-family: 'Vessyl Noto Sans SC';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('./font-assets/noto-sans-sc-vessyl.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Vessyl Noto Serif SC';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('./font-assets/noto-serif-sc-vessyl.woff2') format('woff2');
+}
+html:lang(zh-Hans) {
+  --body-font:
+    'Vessyl Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --display-font: 'Vessyl Noto Serif SC', 'Songti SC', serif;
+}
+.language-popover a:lang(zh-Hans) {
+  font-family:
+    'Vessyl Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0;
+}
+:is(.classic #content, .classic-controls, .not-found-page)
+  .brand-heading.heading-cjk {
+  width: 100%;
+  max-width: 100%;
+  font-family: var(--display-font);
+  font-size: var(--heading-size);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  line-break: strict;
+  text-wrap: balance;
+  word-break: normal;
+  overflow-wrap: break-word;
+  font-synthesis: none;
+}
+.heading-cjk-phrase {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.heading-cjk.brand-heading-h1 {
+  --heading-size: var(--bp-type-h1);
+}
+.heading-cjk.brand-heading-h2 {
+  --heading-size: var(--bp-type-h2);
+}
+.heading-cjk.brand-heading-h3 {
+  --heading-size: var(--bp-type-h3);
+}
+.heading-cjk.brand-heading-quote {
+  --heading-size: 42px;
+}
+:is(.classic #content, .classic-controls, .not-found-page)
+  .brand-heading.heading-cjk-bold {
+  font-weight: 700;
+}
+:is(.classic #content, .classic-controls, .not-found-page)
+  .heading-cjk.heading-centered {
+  text-align: center;
+}
+:is(.classic #content, .classic-controls, .not-found-page)
+  .heading-cjk.heading-light {
+  color: var(--cream);
+}
+:is(.classic #content, .classic-controls) .brand-heading.heading-cjk:has(+ *) {
+  margin-bottom: var(--bp-heading-gap);
+}
+:is(.classic #content, .classic-controls) .brand-heading.heading-cjk + * {
+  margin-top: 0;
+}
+.classic #content .section-heading > .heading-cjk,
+.classic #content .experience-card > .heading-cjk:last-child {
+  margin-bottom: 0;
+}
+:lang(zh-Hans) :is(p, .faq-list) {
+  line-break: strict;
+}
+:lang(zh-Hans) :is(.button, .eyebrow, .language-trigger) {
+  letter-spacing: 0;
+}
+@media (max-width: 560px) {
+  .heading-cjk.brand-heading-quote {
+    --heading-size: 29px;
+  }
+}

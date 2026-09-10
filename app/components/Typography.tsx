@@ -53,11 +53,32 @@ export function Heading({
   align?: 'center';
   visualStyle?: 'h2' | 'h3';
 }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const flowing = useContext(FlowingHeadingsContext);
   const text = t(sourceText);
   const style =
     visualStyle ?? (as === 'blockquote' ? 'quote' : as === 'span' ? 'h2' : as);
+  if (locale === 'zh-Hans') {
+    const Tag = as;
+    return (
+      <Tag
+        className={`brand-heading brand-heading-${style} heading-cjk ${weight === 'bold' || (style === 'h1' && weight !== 'regular') ? 'heading-cjk-bold' : ''} ${align === 'center' ? 'heading-centered' : ''} ${light ? 'heading-light' : ''}`}
+        data-heading={text}
+        data-typography-role={style}
+      >
+        {style === 'h1'
+          ? text
+              .split(/(?<=[。！？])/u)
+              .filter(Boolean)
+              .map((phrase, index) => (
+                <span className="heading-cjk-phrase" key={index}>
+                  {phrase}
+                </span>
+              ))
+          : text}
+      </Tag>
+    );
+  }
   const artworkFor = (artStyle: string) => {
     const variant =
       (artStyle === 'h1' && weight ? `-${weight}` : '') +

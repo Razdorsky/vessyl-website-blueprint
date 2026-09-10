@@ -6,9 +6,9 @@ The `blueprint` branch in `Razdorsky/vessyl-website-blueprint` is the only publi
 
 ## Design
 
-The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English and Latin American Spanish copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. The cinematic iteration adds glass navigation and cards, a scroll-linked photographic Dome chapter, the Classic Founder text composition with an ordinary scrolling portrait, a wide Nature composition and the approved lightweight Two Doors composition. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
+The Blueprint interpretation uses Vessyl's approved Telugu MN/Roboto typography, forest/copper/paper palette, selected imagery and source-linked English, Latin American Spanish and Simplified Chinese copy. It introduces a shared semantic token layer, a two-column Experience collection, alternating editorial stories, consistent borders/elevation, a forest footer, polished control states and a restrained motion system. The cinematic iteration adds glass navigation and cards, a scroll-linked photographic Dome chapter, the Classic Founder text composition with an ordinary scrolling portrait, a wide Nature composition and the approved lightweight Two Doors composition. See [BLUEPRINT.md](BLUEPRINT.md) for the design contract and reference mapping.
 
-All 17 pages are available at clean URLs, such as `/founder/`, `/experience/`, `/sessions/` and `/stay/`. Spanish uses `/es-LA/` with formal usted and document language `es-419`. The globe selector preserves the current page.
+All 17 pages are available at clean URLs, such as `/founder/`, `/experience/`, `/sessions/` and `/stay/`. Spanish uses `/es-LA/` with formal usted and document language `es-419`. Simplified Chinese uses `/zh-Hans/`, native Chinese phrasing and the same document language tag. The shared globe selector preserves the current page in all three languages.
 
 ## Local development
 
@@ -44,13 +44,23 @@ Only `outputs/github-pages` is deployed. Run `npm run build` again to restore un
 
 ## Preserved product contracts
 
-- Approved English and Spanish copy, all 17 pages, booking/email destinations, and required disabled app-store placeholders.
+- Approved English source, Spanish and Simplified Chinese translations, all 17 pages, booking/email destinations, and required disabled app-store placeholders.
 - Mobile minimum 360px, with 375px also required in design and QA.
 - H1 Bold; mobile H1 39px and shared 16px mobile content gutters; desktop display artwork preserved. Prose measure 680px, H3/prose gap 28px.
-- Outlined 4px content CTAs; capsule-shaped desktop header groups at a shared 50px height and 16px text size, matching content CTAs: navigation (Experience, Founder, Book a stay, Sessions, Press), then language. The separate desktop Booking/App group is removed; mobile retains its App action. Selected photograph/video radius 10px, original optical Dome alignment and 2× Dome mark.
+- Outlined 12px content CTAs; capsule-shaped desktop header groups at a shared 50px height and 16px text size, matching content CTAs: navigation (Experience, Founder, Book a stay, Sessions), then language. The separate desktop Booking/App group is removed; mobile retains its App action. Selected photograph/video radius 10px, original optical Dome alignment and 2× Dome mark.
 - Film width 80% desktop and 95% at <=820px; silent loop on view, restart with sound/no loop at first activation, then icon-only sound/playback controls on every film.
 - Stacked gallery previews, keyboard/edge/swipe navigation, thumbnails, Escape and opener-focus restoration.
 - Header top, html/body canvas and theme-color all derive from `lib/header-theme.ts`, including mobile overscroll. Keep native zoom, safe-area behavior and scrolling.
 - Progressive motion: content exists in SSR, reduced motion disables entrances and scenic drift, offscreen/background video pauses, focus reveals content immediately.
 
-`npm run check` validates types, lint, all 34 language/page exports, internal assets, source-linked copy, duplicate prose, heading artwork, translation completeness, numeric facts and usted register. UI changes also require browser inspection at desktop/mobile and the affected breakpoints.
+`npm run check` validates types, lint, all 51 language/page exports, internal assets, source-linked copy, duplicate prose, heading artwork, translation completeness, numeric facts, usted register, Chinese font coverage and the localized press overview. UI changes also require browser inspection at desktop/mobile and the affected breakpoints.
+
+## Simplified Chinese
+
+Direct entry: https://razdorsky.github.io/vessyl-website-blueprint/zh-Hans/
+
+`lib/locales/zh-Hans.json` translates the approved en-US dictionary directly; `zh-Hans-images.json` covers every photograph description. Brand and personal names remain in their approved spelling. Page headings, prose, menus, FAQ answers, gallery/player controls, course dialogs and the downloadable press overview are localized. Existing booking destinations and app-store placeholders are retained.
+
+The primary translation received a separate source-versus-target review of all 253 original entries, 133 alt descriptions and 10 press-overview blocks; the added language endonym brings the dictionary to 254 entries. Corrections preserve intended effects, uncertainty, sourcing, timing and photograph descriptions without adding claims. Subsequent copy changes require the same independent second pass.
+
+Chinese headings and quotations use self-hosted Noto Serif SC; prose and controls use self-hosted Noto Sans SC. Chinese keeps Blueprint's shared H1/H2/H3 size tokens, Bold H1 and 16px mobile gutters. Native text shaping replaces Latin SVG outlines only for this locale. Both variable WOFF2 subsets cover the current copy and weights 400–700; `npm run check` rejects new characters outside their coverage. See [the typography tooling](scripts/typography/README.md) for regeneration and licenses.

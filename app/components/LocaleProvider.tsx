@@ -1,5 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
+import { localeInfo } from '../../lib/locales';
 import { copy, translateText, type Locale, type CopyKey } from '../../lib/copy';
 
 const LocaleContext = createContext<Locale>('en');
@@ -11,7 +12,7 @@ export function LocaleProvider({
   children: ReactNode;
 }) {
   useEffect(() => {
-    document.documentElement.lang = locale === 'es-LA' ? 'es-419' : 'en';
+    document.documentElement.lang = localeInfo[locale].tag;
   }, [locale]);
   return (
     <LocaleContext.Provider value={locale}>{children}</LocaleContext.Provider>

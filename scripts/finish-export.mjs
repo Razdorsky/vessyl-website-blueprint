@@ -4,18 +4,23 @@ const base = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(
   /^\/+|\/+$/g,
   '',
 );
-// The root layout is shared by the export. Mark each Spanish document before
+// The root layout is shared by the export. Mark each localized document before
 // publishing so its language is correct even without client-side JavaScript.
 {
-  const localizedRoot = path.join('dist/client', base, 'es-LA');
-  for (const name of await readdir(localizedRoot, { recursive: true })) {
-    if (!name.endsWith('.html')) continue;
-    const file = path.join(localizedRoot, name);
-    const html = await readFile(file, 'utf8');
-    await writeFile(
-      file,
-      html.replace('<html lang="en"', '<html lang="es-419"'),
-    );
+  for (const [locale, tag] of [
+    ['es-LA', 'es-419'],
+    ['zh-Hans', 'zh-Hans'],
+  ]) {
+    const localizedRoot = path.join('dist/client', base, locale);
+    for (const name of await readdir(localizedRoot, { recursive: true })) {
+      if (!name.endsWith('.html')) continue;
+      const file = path.join(localizedRoot, name);
+      const html = await readFile(file, 'utf8');
+      await writeFile(
+        file,
+        html.replace('<html lang="en"', `<html lang="${tag}"`),
+      );
+    }
   }
 }
 if (base) {

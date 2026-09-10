@@ -11,6 +11,7 @@ import './blueprint-cinematic.css';
 import './blueprint-typography.css';
 import './blueprint-photography.css';
 import './blueprint-buttons.css';
+import './chinese-typography.css';
 import { PageMotion } from './components/PageMotion';
 import { asset } from '../lib/paths';
 import { copy } from '../lib/copy';

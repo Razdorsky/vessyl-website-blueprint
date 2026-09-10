@@ -64,8 +64,9 @@ html[data-bp-header='shared'] .site-header {
   opacity: 1;
 }
 ::view-transition-new(bp-hero) {
-  animation: bp-photo-arrive var(--bp-transition-scene) var(--ease-dissolve)
-    both;
+  /* Only dissolve the full-width capture. Zoom its live photograph inside the
+     hero, so the capture/clip rectangle never scales with the photograph. */
+  animation: page-in var(--bp-transition-scene) var(--ease-dissolve) both;
 }
 ::view-transition-old(bp-hero):only-child {
   animation: page-out 450ms var(--ease-dissolve) both;
@@ -81,16 +82,6 @@ html[data-bp-header='shared'] .site-header {
 }
 ::view-transition-new(bp-header) {
   animation: page-in var(--bp-transition-header) var(--ease-dissolve) both;
-}
-@keyframes bp-photo-arrive {
-  from {
-    opacity: 0;
-    transform: scale(1.1);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 @keyframes bp-copy-arrive {
   from {

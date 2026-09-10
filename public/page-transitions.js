@@ -19,7 +19,10 @@
     }
   };
   let incoming = read();
+  let photoEntrance;
   const clear = () => {
+    photoEntrance?.cancel();
+    photoEntrance = undefined;
     delete root.dataset.bpTransition;
     delete root.dataset.bpHeader;
     delete root.dataset.bpNavigating;
@@ -81,6 +84,24 @@
       ready && (mode === 'hero' || mode === 'enter') && scrollY < 2;
     root.dataset.bpTransition = animatedHero ? 'hero' : 'dissolve';
     root.dataset.bpHeader = animatedHero ? 'shared' : 'none';
+    event.viewTransition.ready
+      .then(() => {
+        if (!animatedHero || reduced.matches) return;
+        const photo = hero.querySelector('.hero-photo');
+        if (photo) {
+          const tokens = getComputedStyle(root);
+          const time = tokens.getPropertyValue('--bp-transition-scene').trim();
+          const duration = parseFloat(time) * (time.endsWith('ms') ? 1 : 1000);
+          const scale = parseFloat(getComputedStyle(photo).scale) || 1;
+          // Animate the live image inside a stationary full-bleed capture.
+          // The existing parallax/Sessions crop stays part of its base framing.
+          photoEntrance = photo.animate([{ scale: scale * 1.1 }, { scale }], {
+            duration: Number.isFinite(duration) ? duration : 800,
+            easing: tokens.getPropertyValue('--ease-dissolve').trim(),
+          });
+        }
+      })
+      .catch(() => {});
     incoming = null;
     event.viewTransition.finished.catch(() => {}).finally(clear);
   });

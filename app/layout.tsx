@@ -45,7 +45,11 @@ export default function RootLayout({
       }
     >
       <head>
-        <script src={asset('/page-transitions.js')} defer blocking="render" />
+        <script
+          src={asset('/page-transitions.js?v=2')}
+          defer
+          blocking="render"
+        />
       </head>
       <body>
         <PageMotion />

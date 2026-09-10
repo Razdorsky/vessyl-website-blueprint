@@ -1,5 +1,5 @@
-/* Mobile word outlines preserve Telugu MN at a fixed size while the browser
-   wraps to the actual column width. Desktop and Immersive keep their artwork. */
+/* Mobile word outlines and shared heading gutters. Blueprint extends H1/H2/H3
+   flow to every viewport in blueprint-typography.css; quotes keep this rule. */
 .heading-mobile-flow {
   display: none;
 }

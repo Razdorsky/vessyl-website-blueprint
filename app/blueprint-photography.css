@@ -1,0 +1,79 @@
+.classic[data-page='home'] .home-hero > .hero-photo {
+  filter: saturate(1.15);
+}
+
+/* Portrait sources need room beyond a cover crop. Keep one full-bleed scene,
+   blend its outer edges into a defocused continuation of the same photograph. */
+.classic .hero-framing {
+  container-type: size;
+  overflow: hidden;
+}
+.hero-framing-fill {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  max-width: none;
+  object-fit: cover;
+  filter: blur(60px);
+}
+.hero-framing-source {
+  --framed-width: max(
+    calc(100cqw * var(--hero-zoom)),
+    calc(100cqh * var(--hero-photo-ratio) * var(--hero-zoom))
+  );
+  --fade-x: max(0px, calc((100cqw - var(--framed-width)) * 0.2));
+  --fade-y: max(
+    0px,
+    calc((100cqh - var(--framed-width) / var(--hero-photo-ratio)) * 0.35)
+  );
+  position: absolute;
+  left: 50%;
+  top: calc(
+    (100cqh - var(--framed-width) / var(--hero-photo-ratio)) *
+      var(--hero-photo-y)
+  );
+  width: var(--framed-width);
+  height: auto;
+  max-width: none;
+  translate: -50% 0;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent,
+      #000 var(--fade-x),
+      #000 calc(100% - var(--fade-x)),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      #000 var(--fade-y),
+      #000 calc(100% - var(--fade-y)),
+      transparent
+    );
+  mask-composite: intersect;
+}
+@media (max-width: 820px) {
+  .classic .hero-framing {
+    --hero-photo-y: 0.5 !important;
+  }
+}
+@media (min-width: 821px) {
+  .classic[data-page='quantum'] .hero-framing-source {
+    top: 72px;
+  }
+}
+@media (max-width: 560px) {
+  .hero-framing-source {
+    --framed-width: max(
+      100cqw,
+      calc(100cqh * var(--hero-photo-ratio) * var(--hero-zoom))
+    );
+  }
+}
+.classic:is([data-page='contact'], [data-page='faq'])
+  #content
+  > .section:last-child {
+  padding-bottom: var(--space-section);
+}

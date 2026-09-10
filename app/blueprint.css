@@ -1,6 +1,13 @@
 /* The inherited Classic establishes approved media/copy behavior. This file
    owns the Blueprint composition and consumes its semantic token layer. */
 .classic {
+  --bp-footer-color: var(--header-warm);
+  --bp-footer-fade: linear-gradient(
+    0deg,
+    var(--bp-footer-color),
+    color-mix(in srgb, var(--bp-footer-color) 60%, transparent) 42%,
+    color-mix(in srgb, var(--bp-footer-color) 0%, transparent)
+  );
   --page-pad: clamp(24px, 5.55vw, 96px);
   --space-section: var(--bp-section);
   --space-accent: calc(var(--bp-section) + var(--bp-space-4));
@@ -13,6 +20,13 @@
 }
 .classic #content p {
   text-wrap: pretty;
+}
+/* Reversible Home palette trial; preserve each original pattern's geometry. */
+.classic[data-page='home'] :is(#introduction, .two-doors) {
+  background-color: var(--header-warm);
+}
+.classic[data-page='home'] .home-quote-sequence > .quote-section {
+  background-color: var(--forest);
 }
 .classic #content :is(.section, .intro-section, .press-marks) {
   padding-inline: max(var(--page-pad), calc((100vw - var(--bp-measure)) / 2));
@@ -126,9 +140,6 @@
     white-space: nowrap;
   }
 }
-.classic #content .room-description > .brand-heading + p {
-  margin-top: var(--bp-copy-gap);
-}
 /* Photography follows its source proportions. Fixed-height portrait crops
    must be an explicit composition, never the default for editorial stories. */
 .classic .split-editorial > img {
@@ -236,9 +247,38 @@
   opacity: 0.85;
 }
 .classic .site-footer {
-  /* Every page uses the Home header color, independent of its own header tone. */
-  background: var(--header-warm);
+  /* Copper is the default; Founder follows its own header tone below. */
+  background: var(--bp-footer-color);
   color: var(--cream);
+}
+.classic[data-page='founder'] {
+  --bp-footer-color: var(--header-dark);
+}
+.classic .closing-invitation > div {
+  background:
+    var(--bp-footer-fade),
+    color-mix(in srgb, var(--brand-text) 54.9%, transparent);
+}
+.classic[data-page='home'] .closing-reference > div {
+  /* Retain the Home opacity profile and photographic shading. */
+  background:
+    linear-gradient(
+      0deg,
+      var(--bp-footer-color) 8.152%,
+      color-mix(in srgb, var(--bp-footer-color) 60%, transparent) 41.163%,
+      color-mix(in srgb, var(--bp-footer-color) 0%, transparent) 100%
+    ),
+    linear-gradient(180deg, rgb(0 0 0 / 60%), transparent);
+}
+.classic[data-page] .closing-invitation > div {
+  background-size: 100% var(--bp-footer-gradient-reach), 100% 100%;
+  background-position: center bottom, center;
+  background-repeat: no-repeat;
+}
+.classic #content > .footer-transition {
+  height: var(--bp-footer-gradient-reach);
+  background: var(--bp-footer-fade);
+  pointer-events: none;
 }
 .classic .footer-grid {
   border-color: color-mix(in srgb, var(--cream) 24%, transparent);
@@ -248,12 +288,14 @@
 }
 .classic .footer-grid a:not(.eyebrow) {
   opacity: 0.8;
-  min-height: 40px;
+  min-height: 30px;
+  line-height: 20px;
   display: flex;
   align-items: center;
 }
 .classic .footer-grid .eyebrow {
-  margin-bottom: var(--bp-space-2);
+  color: inherit;
+  margin-bottom: 12px;
 }
 .classic .footer-bottom {
   color: var(--cream);
@@ -261,7 +303,7 @@
 }
 .classic .footer-signature {
   width: clamp(220px, 26vw, 380px);
-  margin-bottom: var(--bp-space-8);
+  margin-bottom: 36px;
   height: auto;
   opacity: 0.95;
 }
@@ -359,9 +401,6 @@
   .classic .home-hero {
     min-height: 720px;
     height: 100svh;
-  }
-  .classic .footer-signature {
-    margin-bottom: 40px;
   }
 }
 @media (max-width: 560px) {

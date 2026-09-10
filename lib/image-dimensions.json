@@ -663,5 +663,11 @@
     "width": 1600,
     "height": 1067,
     "thumbnailWidth": 800
+  },
+  "music-studio-console": {
+    "width": 1920,
+    "height": 1080,
+    "thumbnailWidth": 720,
+    "thumbnailHeight": 405
   }
 }

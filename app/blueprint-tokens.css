@@ -9,6 +9,13 @@
   --bp-space-12: 96px;
   --bp-space-16: 128px;
   --bp-copy-gap: 28px;
+  /* Display type changes with the viewport, never with the content column. */
+  --bp-type-h1: 64px;
+  --bp-type-h2: 48px;
+  --bp-type-h3: 32px;
+  --bp-type-faq: 20px;
+  --bp-type-leading: 1.16;
+  --bp-heading-gap: 28px;
   --bp-font-label: 16px;
   --bp-font-caption: 14px;
   --bp-control-height: 50px;
@@ -22,7 +29,10 @@
   --bp-section: clamp(64px, 8vw, 128px);
   --bp-measure: 1280px;
   --bp-prose-measure: 680px;
-  --bp-radius-control: 4px;
+  --bp-radius-control: 12px;
+  --bp-button-copper: var(--header-warm);
+  --bp-button-beige: #fffaf5;
+  --bp-button-green: var(--header-dark);
   --bp-radius-photo: 10px;
   --bp-radius-panel: 18px;
   --bp-border: color-mix(in srgb, var(--forest) 18%, transparent);
@@ -50,6 +60,13 @@
   --motion-page: var(--bp-duration-page);
   --photo-radius: var(--bp-radius-photo);
 }
+@media (min-width: 561px) and (max-width: 1199px) {
+  :root {
+    --bp-type-h1: 52px;
+    --bp-type-h2: 42px;
+    --bp-type-h3: 30px;
+  }
+}
 @media (max-width: 1024px) {
   :root {
     --bp-photo-hero-height: 800px;
@@ -57,6 +74,10 @@
 }
 @media (max-width: 560px) {
   :root {
+    --bp-type-h1: 39px;
+    --bp-type-h2: 36px;
+    --bp-type-h3: 28px;
+    --bp-type-faq: 18px;
     --bp-photo-hero-height: 750px;
     --bp-photo-hero-top: 204px;
     --bp-photo-hero-bottom: 16px;

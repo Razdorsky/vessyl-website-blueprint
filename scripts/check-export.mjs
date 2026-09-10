@@ -53,7 +53,12 @@ for (const locale of ['', 'es-LA'])
       errors.push('Incorrect document language: ' + file);
     if ((html.match(/<h1[ >]/g) || []).length !== 1)
       errors.push('Invalid heading count: ' + file);
-    if (!html.includes('akenhotels.com/en/vessyl-home/'))
+    // FAQ sends visitors to the standard Stay page through global navigation.
+    const stayPath = `${base}/${locale ? `${locale}/` : ''}stay/`;
+    if (
+      !html.includes('akenhotels.com/en/vessyl-home/') &&
+      !(page === 'faq' && html.includes(`href="${stayPath}"`))
+    )
       errors.push('Missing booking path: ' + file);
     const expectedFilm = {
       '': 'main',

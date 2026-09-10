@@ -180,7 +180,8 @@ h3 {
 .site-header nav a {
   position: relative;
 }
-.site-header nav a:after {
+.site-header nav a:after,
+.experience-mega .mega-label::after {
   content: '';
   position: absolute;
   left: 0;
@@ -3024,9 +3025,15 @@ blockquote {
   height: auto;
   object-fit: cover;
 }
-.experience-mega a:is(:hover, :focus-visible) .mega-label {
-  text-decoration: underline;
-  text-underline-offset: 5px;
+.experience-mega .mega-label {
+  position: relative;
+  align-self: flex-start;
+}
+.experience-mega .mega-label::after {
+  bottom: -5px;
+}
+.experience-mega a:is(:hover, :focus-visible) .mega-label::after {
+  width: 100%;
 }
 .experience-mega .mega-index {
   flex-direction: row;
@@ -4365,7 +4372,7 @@ blockquote {
   min-height: 50px;
   padding: 14px 24px;
   border: 1px solid currentColor;
-  border-radius: 4px;
+  border-radius: var(--bp-radius-control, 4px);
   background: transparent;
   color: inherit;
   font-size: 16px;
@@ -4386,7 +4393,7 @@ blockquote {
 }
 .classic :is(.nav-download, .nav-book),
 .classic-controls :is(.nav-download, .nav-book) {
-  border-radius: 4px;
+  border-radius: var(--bp-radius-control, 4px);
   font-weight: 500;
   line-height: 20px;
   letter-spacing: 0.02em;
@@ -4448,13 +4455,13 @@ blockquote {
   margin-top: 12px;
 }
 
-/* All paragraph shadows are dark; dark text uses the softer 10% treatment. */
+/* All paragraph shadows are dark; dark text uses the softer 6% treatment. */
 .classic,
 .practice-dialog.classic-controls {
   --paragraph-shadow-dark:
     0 2px 2px rgb(0 0 0 / 80%), 0 4px 6px rgb(0 0 0 / 60%);
   --paragraph-shadow-subtle:
-    0 2px 2px rgb(0 0 0 / 10%), 0 4px 6px rgb(0 0 0 / 10%);
+    0 2px 2px rgb(0 0 0 / 6%), 0 4px 6px rgb(0 0 0 / 6%);
   --paragraph-shadow: var(--paragraph-shadow-subtle);
 }
 .classic
@@ -4663,12 +4670,7 @@ blockquote {
 }
 .classic .home-hero .button,
 .classic .home-dome-feature :is(.button, .text-link) {
-  background: linear-gradient(0deg, rgb(49 21 0 / 60%), rgb(49 21 0 / 35%));
   text-shadow: 0 1px 3px rgb(0 0 0 / 55%);
-}
-.classic .home-hero .button:hover,
-.classic .home-dome-feature :is(.button, .text-link):hover {
-  background: linear-gradient(0deg, rgb(49 21 0 / 75%), rgb(49 21 0 / 50%));
 }
 .classic
   :is(
@@ -5042,7 +5044,7 @@ blockquote {
   height: 44px;
   padding: 0;
   border: 1px solid color-mix(in srgb, var(--cream) 50%, transparent);
-  border-radius: 4px;
+  border-radius: var(--bp-radius-control, 4px);
   color: var(--cream);
   background: color-mix(in srgb, var(--deep) 80%, transparent);
   cursor: pointer;

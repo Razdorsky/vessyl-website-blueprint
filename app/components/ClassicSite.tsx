@@ -34,10 +34,11 @@ import { DomeJourney } from './DomeJourney';
 import { SiteNavigation } from './SiteNavigation';
 import { type CopyKey, type Locale } from '../../lib/copy';
 import { LocaleProvider, useLocale } from './LocaleProvider';
-import { FluidMobileHeadings, Heading } from './Typography';
+import { FluidHeadings, Heading } from './Typography';
 import { PressMarks } from './PressMarks';
 import { AutoHeight } from './MotionPrimitives';
 import { EditorialFilm } from './EditorialFilm';
+import { HeroPhoto } from './HeroPhoto';
 import { PhotoCarousel } from './PhotoCarousel';
 import { Photo, LinkArrow, Pattern, Gallery, FaqList } from './SitePrimitives';
 export function ClassicSite({
@@ -49,9 +50,9 @@ export function ClassicSite({
 }) {
   return (
     <LocaleProvider locale={locale}>
-      <FluidMobileHeadings>
+      <FluidHeadings>
         <ClassicPage page={page} />
-      </FluidMobileHeadings>
+      </FluidHeadings>
     </LocaleProvider>
   );
 }
@@ -82,24 +83,10 @@ function ClassicPage({ page }: { page: string }) {
     actions?: ReactNode,
   ) => (
     <section className="page-hero photo-hero">
-      <Photo
-        id={photo('hero', image)}
-        eager
-        className="hero-photo"
-        alt={pageTitles[page]}
-        sizes={
-          page === 'sessions' ? '(max-width: 820px) 1600px, 100vw' : undefined
-        }
-      />
+      <HeroPhoto page={page} id={photo('hero', image)} alt={pageTitles[page]} />
       <div className="hero-shade" />
       <div className="page-hero-copy">
-        <Heading
-          as="h1"
-          weight="bold"
-          text={c(key)}
-          light
-          align="center"
-        />
+        <Heading as="h1" weight="bold" text={c(key)} light align="center" />
         {body && text(body)}
         {actions}
       </div>
@@ -217,7 +204,10 @@ function ClassicPage({ page }: { page: string }) {
   const hasTwoDoors = page === 'home' || page === 'experience';
   const twoDoors = (
     <section className="two-doors section pattern-panel">
-      <Pattern tone="forest" />
+      <Pattern
+        tone={page === 'home' ? 'copper' : 'forest'}
+        variant={page === 'home' ? 'direction-forest-copper' : undefined}
+      />
       <div className="two-doors-content" data-bp-reveal="copy">
         <div className="two-doors-heading">
           {heading('twoDoors', true)}
@@ -244,7 +234,14 @@ function ClassicPage({ page }: { page: string }) {
   );
   const quote = (key: CopyKey, tone: 'paper' | 'copper' = 'paper') => (
     <section className={`quote-section quote-${tone} pattern-panel`}>
-      <Pattern tone={tone} />
+      <Pattern
+        tone={page === 'home' && tone === 'copper' ? 'forest' : tone}
+        variant={
+          page === 'home' && tone === 'copper'
+            ? 'direction-copper-forest'
+            : undefined
+        }
+      />
       <Heading
         as="blockquote"
         text={c(key)}
@@ -340,13 +337,13 @@ function ClassicPage({ page }: { page: string }) {
               light
             />
             {text('homeApproach')}
-            <LinkArrow href={href('experience')} button light>
+            <a href="#introduction" className="button cream">
               {c('discover')}
-            </LinkArrow>
+            </a>
           </div>
         </section>
         <div id="introduction" className="pattern-panel">
-          <Pattern tone="forest" />
+          <Pattern tone="copper" variant="direction-forest-copper" />
           <section className="intro-section home-introduction">
             <div>
               <Heading
@@ -734,11 +731,11 @@ function ClassicPage({ page }: { page: string }) {
         {intro('appDoor', ['appStory'])}
         <section className="section three-columns app-features">
           <article>
-            {heading('appLibrary', false, true)}
+            <Heading text={c('appLibrary')} visualStyle="h3" align="center" />
             {text('appLibraryIntro')}
           </article>
           <article>
-            {heading('appGuides', false, true)}
+            <Heading text={c('appGuides')} visualStyle="h3" align="center" />
             {text('appGuidesIntro')}
             <LinkArrow href={href('facilitators')}>{c('guidesCta')}</LinkArrow>
           </article>
@@ -802,10 +799,7 @@ function ClassicPage({ page }: { page: string }) {
   else if (page === 'contact')
     content = (
       <>
-        <section className="plain-hero section">
-          <Heading as="h1" weight="bold" align="center" text={c('contact')} />
-          {text('locationIntro')}
-        </section>
+        {hero('contact', 'locationIntro', 'still-hero-082')}
         <section className="section contact-grid">
           <div>
             <div className="contact-links">
@@ -867,9 +861,7 @@ function ClassicPage({ page }: { page: string }) {
   else if (page === 'faq')
     content = (
       <>
-        <section className="plain-hero section">
-          <Heading as="h1" weight="bold" align="center" text={c('faq')} />
-        </section>
+        {hero('faq', null, 'still-hero-086')}
         <section className="section faq-page">
           <aside>
             <LinkArrow href={href('contact')}>{c('contact')}</LinkArrow>
@@ -927,35 +919,40 @@ function ClassicPage({ page }: { page: string }) {
       <SiteNavigation edition={edition} page={page} />
       <main id="content">
         {content}
-        <section
-          className={`closing-invitation ${hasTwoDoors ? 'closing-signature' : ''} ${page === 'home' ? 'closing-reference' : ''}`}
-        >
-          <Photo
-            id={photo(
-              'closing',
-              page === 'home'
-                ? 'closing-design-direction'
-                : page === 'experience'
-                  ? 'nature-waterfall'
-                  : 'hero-arenal',
+        {!['contact', 'faq'].includes(page) && (
+          <section
+            className={`closing-invitation ${hasTwoDoors ? 'closing-signature' : ''} ${page === 'home' ? 'closing-reference' : ''}`}
+          >
+            <Photo
+              id={photo(
+                'closing',
+                page === 'home'
+                  ? 'closing-design-direction'
+                  : page === 'experience'
+                    ? 'nature-waterfall'
+                    : 'hero-arenal',
+              )}
+              alt=""
+              sizes={
+                page === 'home' ? '(max-width: 1000px) 1120px, 100vw' : '100vw'
+              }
+            />
+            <div />
+            <Heading
+              text={c(hasTwoDoors ? 'closingPresence' : 'stayCta')}
+              light
+              align="center"
+            />
+            {!hasTwoDoors && (
+              <LinkArrow href={BOOKING} button light external>
+                {c('bookStay')}
+              </LinkArrow>
             )}
-            alt=""
-            sizes={
-              page === 'home' ? '(max-width: 1000px) 1120px, 100vw' : '100vw'
-            }
-          />
-          <div />
-          <Heading
-            text={c(hasTwoDoors ? 'closingPresence' : 'stayCta')}
-            light
-            align="center"
-          />
-          {!hasTwoDoors && (
-            <LinkArrow href={BOOKING} button light external>
-              {c('bookStay')}
-            </LinkArrow>
-          )}
-        </section>
+          </section>
+        )}
+        {['contact', 'faq'].includes(page) && (
+          <div className="footer-transition" aria-hidden="true" />
+        )}
       </main>
       <footer className="site-footer">
         <img
@@ -967,57 +964,40 @@ function ClassicPage({ page }: { page: string }) {
           loading="lazy"
         />
         <div className="footer-grid">
-          {[
-            [
-              'founder',
-              [
-                ['founder', 'founder'],
-                ['press', 'press'],
-              ],
-            ],
-            [
-              'experience',
-              [
-                ['experience', 'experience'],
-                ['dome', 'dome'],
-                ['hearth', 'hearth'],
-                ['nature', 'nature'],
-                ['music', 'music'],
-              ],
-            ],
-            [
-              'sessions',
-              [
-                ['sessions', 'sessions'],
-                ['quantum', 'quantum'],
-                ['wellness', 'wellness'],
-                ['facilitators', 'facilitators'],
-                ['app', 'app'],
-              ],
-            ],
-            [
-              'stay',
-              [
-                ['stay', 'stay'],
-                ['rancho', 'rancho'],
-                ['contact', 'contact'],
-                ['faq', 'faq'],
-              ],
-            ],
-          ].map(([key, links]) => (
-            <div key={key as string}>
-              <a className="eyebrow" href={href(key as string)}>
-                {c(key as CopyKey)}
-              </a>
-              {(links as string[][])
-                .filter(([p]) => p !== key)
-                .map(([p, label]) => (
-                  <a href={href(p)} key={p}>
-                    {c(label as CopyKey)}
-                  </a>
-                ))}
-            </div>
-          ))}
+          <div>
+            <a className="eyebrow" href={href('experience')}>
+              {c('navExperience')}
+            </a>
+            <a href={href('dome')}>{c('dome')}</a>
+            <a href={href('hearth')}>{c('hearth')}</a>
+            <a href={href('nature')}>{c('nature')}</a>
+            <a href={href('music')}>{c('music')}</a>
+          </div>
+          <div>
+            <a className="eyebrow" href={href('sessions')}>
+              {c('sessions')}
+            </a>
+            <a href={href('quantum')}>{c('quantum')}</a>
+            <a href={href('wellness')}>{c('wellness')}</a>
+            <a href={href('facilitators')}>{c('facilitators')}</a>
+          </div>
+          <div>
+            <a className="eyebrow" href={href('contact')}>
+              {c('footerContact')}
+            </a>
+            <a href={href('faq')}>{c('faq')}</a>
+            <a href={href('press')}>{c('press')}</a>
+            <a href={href('founder')}>{c('founder')}</a>
+          </div>
+          <div>
+            <a className="eyebrow" href={href('stay')}>
+              {c('stay')}
+            </a>
+            <a href={href('rancho')}>{c('rancho')}</a>
+            <a href={BOOKING} target="_blank" rel="noopener noreferrer">
+              {c('bookStay')}
+            </a>
+          </div>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Vessyl</span>

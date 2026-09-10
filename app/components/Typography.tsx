@@ -31,7 +31,7 @@ const catalog = art as Record<
   }
 >;
 const FlowingHeadingsContext = createContext(false);
-export function FluidMobileHeadings({ children }: { children: ReactNode }) {
+export function FluidHeadings({ children }: { children: ReactNode }) {
   return (
     <FlowingHeadingsContext.Provider value>
       {children}
@@ -39,7 +39,7 @@ export function FluidMobileHeadings({ children }: { children: ReactNode }) {
   );
 }
 export function Heading({
-  text,
+  text: sourceText,
   as = 'h2',
   light = false,
   weight,
@@ -54,18 +54,28 @@ export function Heading({
   visualStyle?: 'h2' | 'h3';
 }) {
   const { t } = useLocale();
-  const flowingMobile = useContext(FlowingHeadingsContext);
-  text = t(text);
+  const flowing = useContext(FlowingHeadingsContext);
+  const text = t(sourceText);
   const style =
     visualStyle ?? (as === 'blockquote' ? 'quote' : as === 'span' ? 'h2' : as);
-  const variant =
-    (style === 'h1' && weight ? `-${weight}` : '') +
-    (align === 'center' ? '-center' : '');
-  let hash = 2166136261;
-  for (const char of style + variant + '|' + text)
-    hash = Math.imul(hash ^ char.charCodeAt(0), 16777619) >>> 0;
-  const entry = catalog[hash.toString(16)];
-  const flow = flowingMobile ? entry?.mobileFlow : undefined;
+  const artworkFor = (artStyle: string) => {
+    const variant =
+      (artStyle === 'h1' && weight ? `-${weight}` : '') +
+      (align === 'center' ? '-center' : '');
+    let hash = 2166136261;
+    for (const char of artStyle + variant + '|' + text)
+      hash = Math.imul(hash ^ char.charCodeAt(0), 16777619) >>> 0;
+    return catalog[hash.toString(16)];
+  };
+  // Regular H2/H3 word outlines have identical letterforms. Reuse the exact
+  // approved copy's artwork when its visual role changes; CSS owns its size.
+  const entry =
+    artworkFor(style) ??
+    (flowing && visualStyle && (as === 'h2' || as === 'h3')
+      ? artworkFor(as)
+      : undefined);
+  const flow = flowing ? entry?.mobileFlow : undefined;
+  const viewportFlow = Boolean(flow && style !== 'quote');
   const responsiveStyle = entry?.responsive
     ? ({
         '--heading-wide-image': `url("${asset('/typography/' + entry.desktop)}")`,
@@ -86,31 +96,34 @@ export function Heading({
   const Tag = as;
   return (
     <Tag
-      className={`brand-heading brand-heading-${style} ${weight === 'regular' ? 'heading-regular' : ''} ${align === 'center' ? 'heading-centered' : ''} ${light ? 'heading-light' : ''} ${entry?.responsive ? 'heading-adaptive' : ''} ${flow ? 'heading-fluid-mobile' : ''}`}
+      className={`brand-heading brand-heading-${style} ${weight === 'regular' ? 'heading-regular' : ''} ${align === 'center' ? 'heading-centered' : ''} ${light ? 'heading-light' : ''} ${entry?.responsive && !viewportFlow ? 'heading-adaptive' : ''} ${flow ? 'heading-fluid-mobile' : ''} ${viewportFlow ? 'heading-fluid' : ''}`}
       data-heading={text}
+      data-typography-role={style}
     >
       {entry ? (
         <>
           <span className="sr-only">{text}</span>
-          <picture
-            className={entry.responsive ? 'heading-fallback' : undefined}
-          >
-            <source
-              media="(max-width: 560px)"
-              width={entry.mobileWidth}
-              height={entry.mobileHeight}
-              srcSet={asset('/typography/' + entry.mobile)}
-            />
-            <img
-              src={asset('/typography/' + entry.desktop)}
-              width={entry.desktopWidth}
-              height={entry.desktopHeight}
-              alt=""
-              decoding="async"
-              loading={entry.responsive ? 'lazy' : undefined}
-            />
-          </picture>
-          {responsiveStyle && (
+          {!viewportFlow && (
+            <picture
+              className={entry.responsive ? 'heading-fallback' : undefined}
+            >
+              <source
+                media="(max-width: 560px)"
+                width={entry.mobileWidth}
+                height={entry.mobileHeight}
+                srcSet={asset('/typography/' + entry.mobile)}
+              />
+              <img
+                src={asset('/typography/' + entry.desktop)}
+                width={entry.desktopWidth}
+                height={entry.desktopHeight}
+                alt=""
+                decoding="async"
+                loading={entry.responsive ? 'lazy' : undefined}
+              />
+            </picture>
+          )}
+          {!viewportFlow && responsiveStyle && (
             <span
               aria-hidden="true"
               className="heading-responsive-art"
@@ -124,6 +137,7 @@ export function Heading({
               style={
                 {
                   '--heading-word-space': `${flow.spaceWidth}px`,
+                  '--heading-word-space-em': flow.spaceWidth / flow.size,
                 } as CSSProperties
               }
               data-type-size={flow.size}
@@ -136,6 +150,11 @@ export function Heading({
                   viewBox={`0 0 ${word.width} ${flow.lineHeight}`}
                   focusable="false"
                   aria-hidden="true"
+                  style={
+                    {
+                      '--heading-word-width-em': word.width / flow.size,
+                    } as CSSProperties
+                  }
                 >
                   <use
                     href={`${asset('/typography/' + flow.file)}#word-${index}`}

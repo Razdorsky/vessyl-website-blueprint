@@ -98,10 +98,7 @@ export function SiteNavigation({
     </a>
   );
   const bookLink = (
-    <a
-      href={href('stay')}
-      aria-current={page === 'stay' ? 'page' : undefined}
-    >
+    <a href={href('stay')} aria-current={page === 'stay' ? 'page' : undefined}>
       {c('bookStay')}
     </a>
   );
@@ -114,9 +111,7 @@ export function SiteNavigation({
     >
       <a href={href()} className="brand" aria-label={c('ui.homeLink')}>
         <img
-          src={asset(
-            jointLogo ? jointLogoSrc : '/brand/logo-white.svg',
-          )}
+          src={asset(jointLogo ? jointLogoSrc : '/brand/logo-white.svg')}
           alt={page === 'stay' ? 'Vessyl / AKEN Soul' : 'Vessyl'}
           width={page === 'stay' ? 743 : jointLogo ? 176 : 3552}
           height={page === 'stay' ? 203 : jointLogo ? 35 : 660}
@@ -167,12 +162,6 @@ export function SiteNavigation({
           aria-current={page === 'sessions' ? 'page' : undefined}
         >
           {c('navSessions')}
-        </a>
-        <a
-          href={href('press')}
-          aria-current={page === 'press' ? 'page' : undefined}
-        >
-          {c('navPress')}
         </a>
       </nav>
       <nav
@@ -251,11 +240,7 @@ export function SiteNavigation({
               aria-label={c('ui.homeLink')}
             >
               <img
-                src={asset(
-                  jointLogo
-                    ? jointLogoSrc
-                    : '/brand/logo-dark.svg',
-                )}
+                src={asset(jointLogo ? jointLogoSrc : '/brand/logo-white.svg')}
                 alt={page === 'stay' ? 'Vessyl / AKEN Soul' : 'Vessyl'}
                 width={page === 'stay' ? 743 : jointLogo ? 160 : 3552}
                 height={page === 'stay' ? 203 : jointLogo ? 32 : 660}
@@ -271,7 +256,7 @@ export function SiteNavigation({
                   <AccordionContent className="mobile-experience-links">
                     {spaces.map(([id, label]) => (
                       <a href={href(id)} key={id}>
-                        {label}
+                        {id === 'dome' ? c('navDomeMobile') : label}
                       </a>
                     ))}
                     <a href={href('experience')}>
@@ -283,12 +268,9 @@ export function SiteNavigation({
               <a href={href('founder')}>{c('founder')}</a>
               {bookLink}
               <a href={href('sessions')}>{c('navSessions')}</a>
-              <a href={href('press')}>{c('navPress')}</a>
             </nav>
             <LanguageSelector edition={edition} page={page} mobile />
-            <div className="mobile-actions">
-              {appAction}
-            </div>
+            <div className="mobile-actions">{appAction}</div>
           </div>
         </DialogContent>
       </Dialog>

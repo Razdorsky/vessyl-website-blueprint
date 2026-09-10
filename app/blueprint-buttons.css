@@ -1,0 +1,65 @@
+/* Ordinary content actions inherit the palette of their enclosing surface.
+   Navigation, filters, film and gallery controls are deliberately outside this scope. */
+@property --bp-cta-top-opacity {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 35%;
+}
+@property --bp-cta-bottom-opacity {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 60%;
+}
+
+.classic #content,
+.practice-dialog.classic-controls {
+  --bp-cta-fill: var(--bp-button-beige);
+}
+.classic #content :is(.photo-hero, .closing-invitation),
+.classic #content :has(> .pattern-forest) {
+  --bp-cta-fill: var(--bp-button-green);
+}
+/* Retain Home's approved copper actions and match copper pattern surfaces. */
+.classic #content :has(> .pattern-copper),
+.classic #content :is(.home-hero, .home-dome-feature) {
+  --bp-cta-fill: var(--bp-button-copper);
+}
+
+.classic #content :is(.button, .text-link),
+.practice-dialog.classic-controls :is(.button, .text-link) {
+  --bp-cta-top-opacity: 35%;
+  --bp-cta-bottom-opacity: 60%;
+  background: linear-gradient(
+    0deg,
+    color-mix(
+      in srgb,
+      var(--bp-cta-fill) var(--bp-cta-bottom-opacity),
+      transparent
+    ),
+    color-mix(
+      in srgb,
+      var(--bp-cta-fill) var(--bp-cta-top-opacity),
+      transparent
+    )
+  );
+  transition:
+    --bp-cta-top-opacity var(--bp-duration-control),
+    --bp-cta-bottom-opacity var(--bp-duration-control),
+    border-color var(--bp-duration-control),
+    color var(--bp-duration-control),
+    scale var(--bp-duration-response) var(--bp-ease);
+}
+.classic
+  #content
+  :is(.button, .text-link):not(:disabled):is(:hover, :focus-visible),
+.practice-dialog.classic-controls
+  :is(.button, .text-link):not(:disabled):is(:hover, :focus-visible) {
+  --bp-cta-top-opacity: 50%;
+  --bp-cta-bottom-opacity: 75%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .classic #content :is(.button, .text-link),
+  .practice-dialog.classic-controls :is(.button, .text-link) {
+    transition-duration: 0s;
+  }
+}

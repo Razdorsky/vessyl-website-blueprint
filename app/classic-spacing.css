@@ -95,7 +95,7 @@
   padding-top: var(--photo-clearance);
 }
 .classic #content .press-marks {
-  --block-start: var(--space-support);
+  --block-start: calc(var(--space-support) * 2);
 }
 .classic #content .press-marks > p {
   margin: 0 0 var(--space-support);
@@ -342,14 +342,18 @@
 /* The closing photograph touches the footer. Its navigation is one compact
    information group, without the old doubled outer/inner top padding. */
 .classic > .site-footer {
-  padding-block: var(--space-related);
+  --footer-divider-space: calc(
+    (var(--space-related) + var(--space-support)) / 4
+  );
+  padding-block: var(--footer-divider-space);
+  padding-top: 12px;
 }
 .classic .site-footer .footer-grid {
-  padding-block: 0 var(--space-related);
+  padding-block: 0 var(--footer-divider-space);
   row-gap: var(--space-stack);
 }
 .classic .site-footer .footer-bottom {
-  padding-top: var(--space-support);
+  padding-top: var(--footer-divider-space);
 }
 
 @media (max-width: 560px) {

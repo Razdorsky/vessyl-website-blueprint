@@ -4,6 +4,8 @@ from pathlib import Path
 from html.parser import HTMLParser
 from collections import Counter
 import json,re,os,sys
+from urllib.parse import urlsplit
+from xml.etree import ElementTree
 root=Path(__file__).resolve().parents[1]
 base=os.environ.get('NEXT_PUBLIC_BASE_PATH','').strip('/')
 output=root/'dist/client'/base
@@ -50,7 +52,7 @@ def classify(t):
  for k in sorted(set(known)|operational,key=len,reverse=True):remaining=remaining.replace(k,'')
  if not re.sub(r'[\d\s/·©]+','',remaining):return 'composed-approved-labels','multiple documented entries'
  return 'UNSOURCED',None
-errors=[];report={};main={}
+errors=[];report={};main={};word_symbols={}
 for copy_key,entry in entries.items():
  if lowercase_start(entry['text']):errors.append('Lowercase copy start: '+copy_key+': '+entry['text'])
  if entry.get('kind')=='capitalization-corrected' and entry['text'].lower()!=entry.get('sourceText','').lower():
@@ -67,8 +69,19 @@ for edition in ['classic']:
    if kind=='UNSOURCED':errors.append(key+': '+t)
    if lowercase_start(t):errors.append('Lowercase rendered copy: '+key+': '+t)
   for n in allnodes(p.root):
-   if 'brand-heading' in n.attrs.get('class','').split() and not any(x.tag=='picture' for x in allnodes(n)):
-    errors.append('Missing Telugu artwork: '+key+': '+n.attrs.get('data-heading',''))
+   if 'brand-heading' not in n.attrs.get('class','').split():continue
+   label=n.attrs.get('data-heading','')
+   uses=[x.attrs.get('href','') for x in allnodes(n) if x.tag=='use']
+   if 'heading-fluid' in n.attrs.get('class','').split():
+    if len(uses)!=len(label.split()):errors.append('Incomplete Telugu word outlines: '+key+': '+label)
+    for href in uses:
+     parsed=urlsplit(href);name=Path(parsed.path).name
+     if name not in word_symbols:
+      path=root/'public/typography'/name
+      word_symbols[name]={x.attrib['id'] for x in ElementTree.parse(path).iter() if x.tag.endswith('symbol') and 'id' in x.attrib} if path.is_file() else set()
+     if parsed.fragment not in word_symbols[name]:errors.append('Missing Telugu word symbol: '+key+': '+href)
+   elif not any(x.tag=='picture' for x in allnodes(n)):
+    errors.append('Missing Telugu artwork: '+key+': '+label)
   report[key]=rows
   content=next(n for n in allnodes(p.root) if n.attrs.get('id')=='content')
   main[key]=[t for t in units(content) if t not in {'Loading','Interactive interpretation','Play','Pause'}]

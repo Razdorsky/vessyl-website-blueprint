@@ -39,7 +39,7 @@ export function Pattern({
   variant,
 }: {
   tone?: 'forest' | 'copper' | 'paper';
-  variant?: 'fans';
+  variant?: 'fans' | 'direction-forest-copper' | 'direction-copper-forest';
 }) {
   return (
     <div

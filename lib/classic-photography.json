@@ -150,7 +150,7 @@
       "hero": "hero-ambient-poster"
     },
     "music": {
-      "hero": "still-events-010",
+      "hero": "music-studio-console",
       "story:dome": "still-program-066",
       "closing": "photo-suite-7"
     },
@@ -161,11 +161,11 @@
       "closing": "photo-pr9-2026"
     },
     "contact": {
-      "aside": "still-hero-082",
-      "closing": "still-hero-114"
+      "aside": "still-hero-114",
+      "hero": "still-hero-082"
     },
     "faq": {
-      "closing": "still-hero-086"
+      "hero": "still-hero-086"
     },
     "press": {
       "hero": "photo-pr9-1558",
@@ -602,10 +602,17 @@
     "hero-ambient-poster": {
       "alt": "Clouds drifting around Arenal Volcano above the rainforest",
       "objectPosition": "50% center"
+    },
+    "music-studio-console": {
+      "alt": "A mixing console in the Vessyl recording studio",
+      "objectPosition": "50% 50%"
     }
   },
   "allowedRepeats": {
-    "founder": ["home:portrait", "founder:portrait"],
+    "founder": [
+      "home:portrait",
+      "founder:portrait"
+    ],
     "hearth": [
       "hearth:hero",
       "sessions:practice:hearth",
@@ -620,7 +627,10 @@
       "sessions:practice:mobility",
       "quantum:practice:mobility"
     ],
-    "photo-pr9-1822": ["quantum:practice:chakra", "app:practice:chakra"]
+    "photo-pr9-1822": [
+      "quantum:practice:chakra",
+      "app:practice:chakra"
+    ]
   },
   "repeatReasons": {
     "founder": "The only confirmed original portrait of Josh Stanley; retained on Home and Founder.",

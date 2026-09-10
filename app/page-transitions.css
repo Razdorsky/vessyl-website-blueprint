@@ -1,0 +1,139 @@
+/* Photo, editorial copy and header share one rhythm across all locales. */
+:root {
+  --bp-transition-scene: 800ms;
+  --bp-transition-copy: 400ms;
+  --bp-transition-header: 750ms;
+}
+.photo-hero {
+  background-color: var(--header-background);
+}
+html[data-bp-transition='hero'] .photo-hero {
+  view-transition-name: bp-hero;
+}
+html[data-bp-transition='hero'] :is(.hero-copy, .page-hero-copy) {
+  view-transition-name: bp-hero-copy;
+}
+html[data-bp-header='shared'] .site-header {
+  view-transition-name: bp-header;
+}
+::view-transition-group(root) {
+  z-index: 0;
+  animation: none;
+}
+::view-transition-group(bp-hero) {
+  z-index: 1;
+  animation: none;
+}
+::view-transition-image-pair(bp-hero) {
+  /* Keep the browser's captured border-box instead of re-framing its image. */
+  overflow: clip;
+  background: var(--header-background);
+}
+::view-transition-old(bp-hero),
+::view-transition-new(bp-hero) {
+  width: 100%;
+  height: auto;
+  object-fit: fill;
+  object-position: center top;
+}
+::view-transition-group(bp-hero-copy) {
+  z-index: 2;
+  animation: none;
+}
+::view-transition-group(bp-header) {
+  z-index: 3;
+  animation: none;
+}
+::view-transition-old(root) {
+  animation: page-out 450ms var(--ease-dissolve) both;
+}
+::view-transition-new(root) {
+  animation: page-in 600ms var(--ease-dissolve) both;
+}
+::view-transition-old(bp-hero),
+::view-transition-new(bp-hero),
+::view-transition-old(bp-hero-copy),
+::view-transition-new(bp-hero-copy),
+::view-transition-old(bp-header),
+::view-transition-new(bp-header) {
+  mix-blend-mode: normal;
+}
+::view-transition-old(bp-hero) {
+  /* Keep full coverage while the destination appears over this photograph. */
+  animation: none;
+  opacity: 1;
+}
+::view-transition-new(bp-hero) {
+  animation: bp-photo-arrive var(--bp-transition-scene) var(--ease-dissolve)
+    both;
+}
+::view-transition-old(bp-hero):only-child {
+  animation: page-out 450ms var(--ease-dissolve) both;
+}
+::view-transition-old(bp-hero-copy) {
+  animation: page-out 120ms ease-out both;
+}
+::view-transition-new(bp-hero-copy) {
+  animation: bp-copy-arrive var(--bp-transition-copy) 240ms var(--bp-ease) both;
+}
+::view-transition-old(bp-header) {
+  animation: page-out var(--bp-transition-header) var(--ease-dissolve) both;
+}
+::view-transition-new(bp-header) {
+  animation: page-in var(--bp-transition-header) var(--ease-dissolve) both;
+}
+@keyframes bp-photo-arrive {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bp-copy-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Never capture a dropdown or a mobile modal over the departing photograph. */
+html[data-bp-navigating='true']
+  :is(
+    .experience-mega,
+    .menu-dialog,
+    .language-positioner,
+    [data-slot='dialog-overlay']
+  ) {
+  visibility: hidden !important;
+  transition: none !important;
+  animation: none !important;
+}
+html[data-page-motion='fallback'] body {
+  animation: none;
+}
+html[data-page-motion='fallback'][data-bp-fallback-enter='true'] body {
+  animation: page-in 300ms var(--ease-dissolve) both;
+}
+html[data-leaving='true'] body {
+  transition-duration: 140ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-bp-transition]
+    :is(.photo-hero, .hero-copy, .page-hero-copy, .site-header) {
+    view-transition-name: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  html[data-page-motion='fallback'][data-bp-fallback-enter='true'] body {
+    animation: none;
+  }
+}

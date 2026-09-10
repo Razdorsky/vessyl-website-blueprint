@@ -1,5 +1,6 @@
 'use client';
 import { Popover } from '@base-ui/react/popover';
+import { useEffect, useState } from 'react';
 import { Globe2, ChevronDown, Check } from 'lucide-react';
 import { useLocale } from './LocaleProvider';
 import { pagePath } from '../../lib/paths';
@@ -15,12 +16,18 @@ export function LanguageSelector({
   mobile?: boolean;
 }) {
   const { locale, c } = useLocale();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const close = () => setOpen(false);
+    window.addEventListener('bp:close-navigation', close);
+    return () => window.removeEventListener('bp:close-navigation', close);
+  }, []);
   return (
     <div
       className={`language-selector${mobile ? ' language-selector-mobile' : ''}`}
     >
       {mobile && <span className="language-label">{c('ui.language')}</span>}
-      <Popover.Root>
+      <Popover.Root open={open} onOpenChange={setOpen}>
         <Popover.Trigger
           className="language-trigger"
           aria-label={`${c('ui.chooseLanguage')}: ${localeInfo[locale].name}`}

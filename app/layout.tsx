@@ -12,6 +12,7 @@ import './blueprint-typography.css';
 import './blueprint-photography.css';
 import './blueprint-buttons.css';
 import './chinese-typography.css';
+import './page-transitions.css';
 import { PageMotion } from './components/PageMotion';
 import { asset } from '../lib/paths';
 import { copy } from '../lib/copy';
@@ -43,6 +44,9 @@ export default function RootLayout({
         } as CSSProperties
       }
     >
+      <head>
+        <script src={asset('/page-transitions.js')} defer blocking="render" />
+      </head>
       <body>
         <PageMotion />
         {children}

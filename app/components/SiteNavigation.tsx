@@ -90,7 +90,11 @@ export function SiteNavigation({
       setExperienceOpen(false);
     };
     breakpoint.addEventListener('change', closeMenus);
-    return () => breakpoint.removeEventListener('change', closeMenus);
+    window.addEventListener('bp:close-navigation', closeMenus);
+    return () => {
+      breakpoint.removeEventListener('change', closeMenus);
+      window.removeEventListener('bp:close-navigation', closeMenus);
+    };
   }, [edition]);
   const appAction = (
     <a className="nav-download" href={href('app')}>

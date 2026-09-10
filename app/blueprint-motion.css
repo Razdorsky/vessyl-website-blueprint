@@ -17,8 +17,14 @@
   transition: none;
   transition-delay: 0ms;
 }
-.hero-photo[data-bp-scene='true'] {
+/* Overscan is present before the first paint and remains constant during a
+   page transition. Hydration only starts the vertical scroll offset. */
+.classic:not([data-page='sessions'])
+  :is(.home-hero, .page-hero:not(.people-hero))
+  > .hero-photo {
   scale: 1.04;
+}
+.hero-photo[data-bp-scene='true'] {
   translate: 0 var(--bp-hero-offset, 0px);
 }
 .classic .experience-mega {
@@ -128,6 +134,9 @@ html[data-page-motion='fallback'] body {
     translate: none;
     transition: none;
   }
+  .classic:not([data-page='sessions'])
+    :is(.home-hero, .page-hero:not(.people-hero))
+    > .hero-photo,
   .hero-photo[data-bp-scene] {
     scale: 1;
     translate: none;
